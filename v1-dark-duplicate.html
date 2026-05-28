@@ -1,0 +1,2571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gaura Style â€” Variation A: Dark Immersion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="./Gaura Style Design System/colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --content-width: 1440px;
+      --gutter: 40px;
+      --nav-h: 72px;
+      --bar-h: 44px;
+      --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg1);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── ANNOUNCEMENT BAR ─── */
+    .announcement-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: var(--bar-h);
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transform: translateY(-100%);
+      transition: transform 0.5s var(--ease-expo);
+    }
+
+    .announcement-bar.visible {
+      transform: translateY(0);
+    }
+
+    .announcement-bar.hidden {
+      transform: translateY(-100%);
+      pointer-events: none;
+    }
+
+    .announcement-bar p {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg1);
+    }
+
+    .announcement-bar a {
+      color: var(--fg1);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .bar-dismiss {
+      position: absolute;
+      right: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--fg1);
+      font-size: 18px;
+      line-height: 1;
+      padding: 4px 8px;
+      opacity: 0.7;
+      transition: opacity 0.15s;
+    }
+
+    .bar-dismiss:hover { opacity: 1; }
+
+    /* ─── NAVBAR ─── */
+    .navbar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      height: var(--nav-h);
+      top: var(--bar-h);
+      transition:
+        top 0.3s var(--ease-quart),
+        background 0.4s ease,
+        backdrop-filter 0.4s ease,
+        box-shadow 0.4s ease,
+        opacity 0.5s ease;
+      opacity: 0;
+    }
+
+    .nav-inner {
+      max-width: var(--content-width);
+      margin-inline: auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0;
+    }
+
+    .navbar.visible {
+      opacity: 1;
+    }
+
+    .navbar.bar-gone { top: 0; }
+
+    .navbar.scrolled {
+      background: rgba(250, 250, 248, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 1px 0 rgba(26, 23, 20, 0.08);
+    }
+
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .nav-logo img {
+      height: 52px;
+      width: auto;
+      filter: brightness(0) invert(1) drop-shadow(0 2px 12px rgba(26,23,20,0.35));
+      transform-origin: left center;
+      transition: filter 0.4s ease, transform 0.4s ease;
+    }
+
+    .navbar.scrolled .nav-logo img {
+      filter: none;
+      transform: scale(0.846);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Design system nav-dark: inverse text, gold active underline */
+    .nav-link {
+      position: relative;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: rgba(250, 250, 248, 0.80);
+      transition: color 0.2s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.28s var(--ease-expo);
+    }
+
+    .nav-link:hover { color: var(--fg-inverse); }
+    .nav-link:hover::after { transform: scaleX(1); }
+
+    /* Scrolled: switch to light nav styling */
+    .navbar.scrolled .nav-link { color: var(--fg1); }
+    .navbar.scrolled .nav-link:hover { color: var(--brown); }
+    .navbar.scrolled .nav-link::after { background: var(--brown); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* Design system nav-icon with cart badge */
+    .nav-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: rgba(250, 250, 248, 0.80);
+      transition: color 0.2s ease, transform 0.2s var(--ease-expo);
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      position: relative;
+    }
+
+    .nav-icon:hover {
+      color: var(--gold);
+      transform: scale(1.08);
+    }
+
+    .navbar.scrolled .nav-icon { color: var(--fg1); }
+    .navbar.scrolled .nav-icon:hover { color: var(--brown); transform: scale(1.08); }
+
+    .nav-icon svg { width: 20px; height: 20px; stroke-width: 1.5; }
+
+    /* Cart count badge â€” design system pattern */
+    .cart-count {
+      position: absolute;
+      top: -4px;
+      right: -6px;
+      background: var(--gold);
+      color: var(--brown-dark);
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      font-size: 9px;
+      font-weight: 700;
+      font-family: var(--font-sans);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100dvh;
+      min-height: 640px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      contain: layout style;
+    }
+
+    .hero-bg-fallback {
+      position: absolute;
+      inset: 0;
+      background: #1A1714;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .hero-bg-fallback::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      background: radial-gradient(
+        ellipse 80% 60% at 60% 40%,
+        #6B3D10 0%,
+        #4A2C10 30%,
+        #2C1E0C 55%,
+        #1A1714 100%
+      );
+      animation: bg-breathe 14s ease-in-out infinite;
+    }
+
+    @keyframes bg-breathe {
+      0%   { transform: translate(0%, 0%); }
+      33%  { transform: translate(-15%, 10%); }
+      66%  { transform: translate(10%, -12%); }
+      100% { transform: translate(0%, 0%); }
+    }
+
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(26, 23, 20, 0.48) 0%, rgba(26, 23, 20, 0.22) 48%, rgba(26, 23, 20, 0.04) 100%),
+        linear-gradient(to bottom, rgba(26, 23, 20, 0.18) 0%, transparent 40%, rgba(26, 23, 20, 0.38) 100%);
+      z-index: 2;
+    }
+
+    .hero-vignette {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 180px;
+      background: linear-gradient(to top, rgba(26, 23, 20, 0.7), transparent);
+      z-index: 3;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 4;
+      text-align: left;
+      width: 100%;
+      max-width: var(--content-width);
+      margin-inline: auto;
+      padding: 0 0 72px;
+    }
+
+    /* ─── STAGGERED ENTRANCE ─── */
+    @keyframes fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* Eyebrow: each letter animates via JS-injected --i variable */
+    @keyframes letter-rise {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 36px;
+      display: block;
+    }
+
+    /* Letters get this applied by JS */
+    .hero-eyebrow .char {
+      display: inline-block;
+      opacity: 0;
+      animation: letter-rise 0.5s var(--ease-expo) both;
+      animation-delay: calc(0.25s + var(--i, 0) * 0.045s);
+    }
+
+    /* Headline lines */
+    .hero-line {
+      display: block; /* each line on its own row */
+      opacity: 0;
+      animation: fade-up 1s var(--ease-expo) both;
+    }
+
+    .hero-line:first-child {
+      animation-delay: 0.32s;
+    }
+
+    .hero-line:last-child {
+      animation-delay: 0.48s;
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 5vw, 72px);
+      font-weight: 300;
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      color: var(--fg-inverse);
+      margin-bottom: 20px;
+    }
+
+    .hero-headline em {
+      font-style: italic;
+      color: rgba(250, 250, 248, 0.65);
+    }
+
+    .hero-subline {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: rgba(250, 250, 248, 0.60);
+      margin-bottom: 28px;
+      max-width: 340px;
+      line-height: 1.75;
+      opacity: 0;
+      animation: fade-up 0.9s var(--ease-expo) 0.68s both;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fade-up 0.9s var(--ease-expo) 0.84s both;
+    }
+
+    /* ─── BUTTONS (design system) ─── */
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 32px;
+      height: 52px;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      border-radius: 4px;
+      transition: all 280ms cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .btn:active { transform: translateY(0) scale(0.98); }
+
+    /* Arrow flourish */
+    .btn .arrow {
+      display: inline-block;
+      width: 18px;
+      height: 1px;
+      background: currentColor;
+      position: relative;
+      transition: width 280ms ease;
+      flex-shrink: 0;
+    }
+
+    .btn .arrow::after {
+      content: '';
+      position: absolute;
+      right: -1px;
+      top: -3px;
+      width: 7px;
+      height: 7px;
+      border-right: 1px solid currentColor;
+      border-top: 1px solid currentColor;
+      transform: rotate(45deg);
+    }
+
+    .btn:hover .arrow { width: 28px; }
+
+    /* Primary â€” gold fill */
+    .btn-primary {
+      background: var(--gold);
+      color: var(--brown-dark);
+      box-shadow: 0 1px 0 var(--brown-dark);
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 0 var(--brown-dark);
+    }
+
+    /* Ghost light â€” for dark hero backgrounds */
+    .btn-ghost-inv {
+      background: transparent;
+      color: rgba(250, 250, 248, 0.85);
+      border: 1px solid rgba(250, 250, 248, 0.30);
+    }
+
+    .btn-ghost-inv:hover {
+      background: rgba(250, 250, 248, 0.08);
+      color: var(--fg-inverse);
+      border-color: rgba(250, 250, 248, 0.55);
+    }
+
+    /* ─── SCROLL INDICATOR ─── */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      animation: fade-in 0.8s ease 1.4s forwards;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(255, 207, 54, 0.6), transparent);
+      animation: scroll-drop 1.8s ease-in-out 1.4s infinite;
+      transform-origin: top center;
+      opacity: 0;
+    }
+
+    @keyframes scroll-drop {
+      0%   { transform: scaleY(0); opacity: 0; }
+      20%  { opacity: 1; }
+      70%  { transform: scaleY(1); opacity: 1; }
+      100% { transform: scaleY(1); opacity: 0; }
+    }
+
+    /* ─── SHOP BY CATEGORY ─── */
+    .shop-cat {
+      position: relative;
+      background: var(--surface-white, #FFFFFF);
+      padding: clamp(64px, 7vw, 96px) 0 clamp(72px, 8vw, 112px);
+      content-visibility: auto;
+      contain-intrinsic-size: auto 760px;
+      overflow: hidden;
+      max-width: var(--content-width);
+      margin-inline: auto;
+    }
+
+    .shop-cat-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: end;
+      margin-bottom: clamp(48px, 6vw, 80px);
+    }
+
+    .shop-cat-head {
+      padding-bottom: 4px;
+    }
+
+    .shop-cat-title {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 5.6vw, 76px);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.025em;
+      color: var(--fg1);
+      white-space: nowrap;
+    }
+
+    .shop-cat-title em {
+      font-style: italic;
+      color: var(--brown);
+      letter-spacing: -0.03em;
+      margin-left: 0.22em;
+    }
+
+    .shop-cat-track-wrap {
+      position: relative;
+    }
+
+    .shop-cat-track {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 20px;
+      overflow: visible;
+    }
+
+    .shop-cat-tile {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      border-radius: var(--radius-sm, 4px);
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+      background: var(--surface-warm, #F5F1EA);
+      isolation: isolate;
+    }
+
+    .shop-cat-tile-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s var(--ease-expo);
+      will-change: transform;
+    }
+
+    .shop-cat-tile:hover .shop-cat-tile-img { transform: scale(1.05); }
+
+    .shop-cat-tile-veil {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(26, 23, 20, 0.62) 0%,
+        rgba(26, 23, 20, 0.18) 40%,
+        rgba(26, 23, 20, 0) 65%
+      );
+      z-index: 1;
+      transition: opacity 0.5s var(--ease-quart);
+    }
+
+    .shop-cat-tile-label {
+      position: absolute;
+      left: 26px;
+      right: 26px;
+      bottom: 26px;
+      z-index: 2;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(28px, 2.4vw, 36px);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--fg-inverse);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .shop-cat-tile-label::after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width 0.6s var(--ease-expo);
+    }
+
+    .shop-cat-tile:hover .shop-cat-tile-label::after { width: 44px; }
+
+    .shop-cat-tile-count {
+      font-family: var(--font-mono, var(--font-sans));
+      font-style: normal;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255, 207, 54, 0.85);
+    }
+
+    .shop-cat-tile-index {
+      position: absolute;
+      top: 22px;
+      left: 26px;
+      z-index: 2;
+      font-family: var(--font-mono, var(--font-sans));
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      color: rgba(250, 250, 248, 0.78);
+    }
+
+    .shop-cat-tile-index::before {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 1px;
+      background: rgba(250, 250, 248, 0.45);
+      vertical-align: middle;
+      margin-right: 10px;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 1100px) {
+      .shop-cat-track { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 900px) {
+      .shop-cat-grid {
+        grid-template-columns: 1fr;
+        row-gap: 28px;
+        padding-inline: 24px;
+        margin-bottom: 32px;
+      }
+      .shop-cat-head { max-width: none; }
+    }
+
+    @media (max-width: 768px) {
+      .shop-cat { padding: 52px 0 64px; }
+      .shop-cat-title { font-size: clamp(36px, 9vw, 56px); white-space: normal; }
+      .shop-cat-track-wrap {
+        margin: 0 24px;
+      }
+      .shop-cat-track {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .shop-cat-tile-label { font-size: 26px; bottom: 22px; left: 22px; right: 22px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .shop-cat-tile-img { transition: none; }
+    }
+
+
+    /* ─── REDUCED MOTION ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-eyebrow .char,
+      .hero-line,
+      .hero-subline,
+      .hero-cta-group,
+      .scroll-indicator {
+        animation: fade-in 0.3s ease both !important;
+        animation-delay: 0.1s !important;
+      }
+
+      .scroll-line {
+        animation: none !important;
+        opacity: 0.5;
+        transform: none;
+      }
+
+      @keyframes bg-breathe {
+        0%, 100% { transform: translate(0%, 0%); }
+      }
+    }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 24px; }
+      .nav-links { display: none; }
+      .nav-logo img { height: 36px; }
+      .hero-content { padding: 0 0 64px; }
+      .hero-subline { display: none; }
+    }
+
+    /* ─── 2×2 SHOWCASE GRID ─── */
+    .showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: max(50vh, 800px) max(50vh, 800px);
+      width: min(calc(100% - clamp(32px, 5vw, 80px)), var(--content-width));
+      margin-inline: auto;
+      margin-bottom: 0;
+      height: auto;
+      min-height: 1600px;
+      overflow: hidden;
+    }
+
+    .showcase-quad {
+      position: relative;
+      overflow: hidden;
+      display: block;
+      text-decoration: none;
+      background: var(--bg);
+      isolation: isolate;
+    }
+
+    .showcase-quad-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s var(--ease-expo);
+      will-change: transform;
+    }
+
+    .showcase-quad:hover .showcase-quad-img {
+      transform: scale(1.04);
+    }
+
+    /* Video media: disable scale transform (causes repaint) */
+    .showcase-quad:hover video.showcase-quad-img {
+      transform: none;
+    }
+
+    /* Per-quadrant gradient direction */
+    .showcase-quad-veil {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      transition: opacity 0.5s var(--ease-quart);
+    }
+
+    /* TL: text at top-right → gradient from top-right corner */
+    .showcase-quad--tl .showcase-quad-veil {
+      background:
+        linear-gradient(to bottom-left, rgba(26,23,20,0.72) 0%, rgba(26,23,20,0.30) 45%, rgba(26,23,20,0.04) 80%),
+        linear-gradient(to bottom, rgba(26,23,20,0.18) 0%, transparent 55%);
+    }
+
+    /* TR, BL, BR: text at top-left → gradient from top-left corner */
+    .showcase-quad--tr .showcase-quad-veil,
+    .showcase-quad--bl .showcase-quad-veil,
+    .showcase-quad--br .showcase-quad-veil {
+      background:
+        linear-gradient(to bottom-right, rgba(26,23,20,0.72) 0%, rgba(26,23,20,0.30) 45%, rgba(26,23,20,0.04) 80%),
+        linear-gradient(to bottom, rgba(26,23,20,0.18) 0%, transparent 55%);
+    }
+
+    .showcase-quad:hover .showcase-quad-veil {
+      opacity: 1.15; /* darken slightly on hover */
+    }
+
+    .showcase-quad-body {
+      position: absolute;
+      z-index: 2;
+      top: 36px;
+      max-width: 92%;
+      white-space: nowrap;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* TL: text at top-right */
+    .showcase-quad--tl .showcase-quad-body {
+      right: 36px;
+      text-align: right;
+      align-items: flex-end;
+    }
+
+    /* TR, BR: text at top-left */
+    .showcase-quad--tr .showcase-quad-body,
+    .showcase-quad--br .showcase-quad-body {
+      left: 36px;
+      text-align: left;
+      align-items: flex-start;
+    }
+
+    /* BL: text at top-right */
+    .showcase-quad--bl .showcase-quad-body {
+      right: 36px;
+      text-align: right;
+      align-items: flex-end;
+    }
+
+    .showcase-quad-headline {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 2.2vw, 38px);
+      font-weight: 300;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: #FAFAF8;
+      text-shadow: 0 1px 4px rgba(26,23,20,0.9), 0 4px 24px rgba(26,23,20,0.7);
+      margin: 0;
+    }
+
+    .showcase-quad-cta {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #FAFAF8;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(250,250,248,0.55);
+      text-shadow: 0 1px 6px rgba(26,23,20,0.8);
+      padding-bottom: 2px;
+      transition:
+        color 0.22s ease,
+        border-color 0.22s ease,
+        gap 0.28s var(--ease-expo);
+    }
+
+    .showcase-quad:hover .showcase-quad-cta {
+      color: var(--fg-inverse);
+      border-color: var(--gold);
+      gap: 16px;
+    }
+
+    .showcase-quad-cta .cta-arrow {
+      display: inline-block;
+      width: 16px;
+      height: 1px;
+      background: currentColor;
+      position: relative;
+      flex-shrink: 0;
+      transition: width 0.28s var(--ease-expo);
+    }
+
+    .showcase-quad-cta .cta-arrow::after {
+      content: '';
+      position: absolute;
+      right: -1px;
+      top: -3px;
+      width: 6px;
+      height: 6px;
+      border-right: 1px solid currentColor;
+      border-top: 1px solid currentColor;
+      transform: rotate(45deg);
+    }
+
+    .showcase-quad:hover .showcase-quad-cta .cta-arrow {
+      width: 24px;
+    }
+
+    /* Thin seam between quads */
+    .showcase-quad::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(26,23,20,0.6);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* Mobile: single column stack */
+    @media (max-width: 768px) {
+      .showcase {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, 60vw);
+        height: auto;
+        min-height: unset;
+      }
+
+      .showcase-quad-body {
+        top: 24px;
+        max-width: 88%;
+        white-space: normal;
+      }
+
+      .showcase-quad--tl .showcase-quad-body {
+        right: 24px;
+      }
+
+      .showcase-quad--tr .showcase-quad-body,
+      .showcase-quad--br .showcase-quad-body {
+        left: 24px;
+      }
+
+      .showcase-quad--bl .showcase-quad-body {
+        right: 24px;
+        text-align: right;
+        align-items: flex-end;
+      }
+
+      /* Stronger overlays for legibility on small screens */
+      .showcase-quad--tl .showcase-quad-veil {
+        background:
+          linear-gradient(to bottom-left, rgba(26,23,20,0.82) 0%, rgba(26,23,20,0.40) 55%, rgba(26,23,20,0.10) 80%);
+      }
+
+      .showcase-quad--tr .showcase-quad-veil,
+      .showcase-quad--bl .showcase-quad-veil,
+      .showcase-quad--br .showcase-quad-veil {
+        background:
+          linear-gradient(to bottom-right, rgba(26,23,20,0.82) 0%, rgba(26,23,20,0.40) 55%, rgba(26,23,20,0.10) 80%);
+      }
+
+      .showcase-quad-headline {
+        font-size: clamp(24px, 6vw, 32px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .showcase-quad-img {
+        transition: none;
+      }
+      .showcase-quad-cta,
+      .showcase-quad-cta .cta-arrow {
+        transition: none;
+      }
+      /* pause looping video for reduced-motion users (JS below handles autoplay pause) */
+      video.showcase-quad-img {
+        animation-play-state: paused;
+      }
+    }
+
+    /* ─── SINGLE-COLUMN SHOWCASE ─── */
+    .showcase--single {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: max(75vh, 680px);
+      min-height: unset;
+    }
+
+    .showcase--single .showcase-quad--tl .showcase-quad-veil,
+    .showcase--single .showcase-quad--bl .showcase-quad-veil {
+      background:
+        linear-gradient(to bottom-right, rgba(26,23,20,0.72) 0%, rgba(26,23,20,0.30) 45%, rgba(26,23,20,0.04) 80%),
+        linear-gradient(to bottom, rgba(26,23,20,0.18) 0%, transparent 55%);
+    }
+
+    .showcase--single .showcase-quad--tl .showcase-quad-body,
+    .showcase--single .showcase-quad--bl .showcase-quad-body {
+      left: 36px;
+      right: auto;
+      text-align: left;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 768px) {
+      .showcase--single {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(2, 72vw);
+      }
+
+      .showcase--single .showcase-quad--tl .showcase-quad-body,
+      .showcase--single .showcase-quad--bl .showcase-quad-body {
+        left: 24px;
+        right: auto;
+        text-align: left;
+        align-items: flex-start;
+      }
+    }
+
+    /* --- ATELIER SELECTION --- */
+    .atelier-selection {
+      background: var(--bg, #FAFAF8);
+      padding: clamp(62px, 5.4vw, 76px) 0 clamp(68px, 5.7vw, 92px);
+      content-visibility: auto;
+      contain-intrinsic-size: auto 920px;
+      max-width: var(--content-width);
+      margin-inline: auto;
+    }
+
+    .atelier-head {
+      margin-bottom: clamp(42px, 4.4vw, 48px);
+    }
+
+    .atelier-title {
+      font-family: var(--font-display);
+      font-size: clamp(54px, 4.7vw, 70px);
+      font-weight: 300;
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      color: var(--fg1);
+      margin-bottom: 21px;
+      text-wrap: balance;
+    }
+
+    .atelier-link {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 17px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg1);
+      text-decoration: none;
+      padding: 0 0 8px;
+    }
+
+    .atelier-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--gold);
+      transform-origin: left;
+      transition: transform 0.28s var(--ease-expo);
+    }
+
+    .atelier-link:hover::after,
+    .atelier-link:focus-visible::after {
+      transform: scaleX(0.58);
+    }
+
+    .atelier-link:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 5px;
+      border-radius: var(--radius-sm);
+    }
+
+    .atelier-link-arrow {
+      width: 18px;
+      height: 1px;
+      position: relative;
+      background: currentColor;
+      transition: transform 0.28s var(--ease-expo);
+    }
+
+    .atelier-link-arrow::after {
+      content: '';
+      position: absolute;
+      right: -1px;
+      top: -3px;
+      width: 7px;
+      height: 7px;
+      border-top: 1px solid currentColor;
+      border-right: 1px solid currentColor;
+      transform: rotate(45deg);
+    }
+
+    .atelier-link:hover .atelier-link-arrow,
+    .atelier-link:focus-visible .atelier-link-arrow {
+      transform: translateX(5px);
+    }
+
+    .atelier-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(18px, 1.4vw, 24px);
+    }
+
+    .atelier-card {
+      display: block;
+      color: var(--fg1);
+      text-decoration: none;
+      transition: opacity 0.28s var(--ease-expo);
+    }
+
+    .atelier-card:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 4px;
+    }
+
+    .atelier-media {
+      position: relative;
+      aspect-ratio: 0.705;
+      overflow: hidden;
+      background: var(--bg);
+      margin-bottom: 14px;
+    }
+
+    .atelier-card-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.55s var(--ease-expo);
+    }
+
+    .atelier-card:hover .atelier-card-img,
+    .atelier-card:focus-visible .atelier-card-img {
+      transform: scale(1.035);
+    }
+
+    .atelier-media--duo {
+      display: grid;
+      grid-template-columns: 1.5fr 0.9fr;
+      gap: 3px;
+    }
+
+    .atelier-badge {
+      position: absolute;
+      z-index: 2;
+      top: 18px;
+      left: 18px;
+      padding: 9px 12px 8px;
+      background: rgba(250, 247, 240, 0.93);
+      color: var(--fg1);
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .atelier-name {
+      font-family: var(--font-display);
+      font-size: clamp(25px, 1.72vw, 29px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.015em;
+      margin-bottom: 7px;
+      text-wrap: balance;
+    }
+
+    .atelier-material {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg2);
+      margin-bottom: 10px;
+    }
+
+    .atelier-price {
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 400;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.055em;
+      color: var(--fg1);
+    }
+
+    @media (max-width: 1024px) {
+      .atelier-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 38px 22px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .atelier-selection {
+        padding: 58px 0 68px;
+        overflow: hidden;
+      }
+
+      .atelier-head {
+        padding: 0 24px;
+        margin-bottom: 34px;
+      }
+
+      .atelier-title {
+        font-size: clamp(40px, 12vw, 52px);
+      }
+
+      .atelier-grid {
+        display: flex;
+        gap: 14px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        padding: 0 24px 10px;
+      }
+
+      .atelier-grid::-webkit-scrollbar { display: none; }
+
+      .atelier-card {
+        flex: 0 0 min(76vw, 320px);
+        scroll-snap-align: start;
+      }
+
+      .atelier-name { font-size: 27px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .atelier-card,
+      .atelier-card-img,
+      .atelier-link::after,
+      .atelier-link-arrow {
+        transition: none;
+      }
+
+      .atelier-card:hover .atelier-card-img,
+      .atelier-card:focus-visible .atelier-card-img { transform: none; }
+    }
+
+    /* ─── ATELIER HOVER IMAGE SWITCH ─── */
+    .atelier-hover-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      opacity: 0;
+      transition: opacity 0.6s var(--ease-expo);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .atelier-card:hover .atelier-hover-img,
+    .atelier-card:focus-visible .atelier-hover-img {
+      opacity: 1;
+    }
+
+    /* Keep the badge above the hover image */
+    .atelier-badge { z-index: 2; }
+
+    /* ─── SALE BADGE + PRICE CUT ─── */
+    .atelier-badge--sale {
+      background: var(--brown-dark, #5A4228);
+      color: var(--fg-inverse, #FAFAF8);
+    }
+
+    .atelier-price-group {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .atelier-price--was {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--fg3, #A8988E);
+      text-decoration: line-through;
+      text-decoration-color: var(--fg3, #A8988E);
+      letter-spacing: 0.03em;
+    }
+
+    .atelier-price--now {
+      color: var(--brown, #7A5C38);
+    }
+
+    /* ─── QUICK ADD TO BAG ─── */
+    .atelier-quick-add {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      padding: 12px 14px;
+      transform: translateY(6px);
+      opacity: 0;
+      transition:
+        opacity 0.3s var(--ease-expo),
+        transform 0.3s var(--ease-expo);
+      transition-delay: 0.06s;
+    }
+
+    .atelier-card:hover .atelier-quick-add,
+    .atelier-card:focus-visible .atelier-quick-add {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .atelier-quick-add-btn {
+      width: 100%;
+      height: 44px;
+      background: rgba(26, 23, 20, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: var(--fg-inverse, #FAFAF8);
+      border: 1px solid rgba(250, 250, 248, 0.18);
+      border-radius: var(--radius-sm, 4px);
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      transition:
+        background 0.22s ease,
+        border-color 0.22s ease,
+        color 0.22s ease,
+        transform 0.2s var(--ease-expo);
+    }
+
+    .atelier-quick-add-btn:hover {
+      background: var(--gold, #FFCF36);
+      color: var(--brown-dark, #5A4228);
+      border-color: var(--gold, #FFCF36);
+    }
+
+    .atelier-quick-add-btn:active {
+      transform: scale(0.98);
+    }
+
+    .atelier-quick-add-btn svg {
+      width: 13px;
+      height: 13px;
+      stroke-width: 1.8;
+      flex-shrink: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .atelier-hover-img { transition: none; }
+      .atelier-quick-add { transition: none; }
+    }
+
+    /* ─── UGC SOCIAL PROOF ─── */
+    .ugc-gallery {
+      background: var(--surface-white, #FFFFFF);
+      padding: clamp(62px, 5.4vw, 76px) 0 clamp(68px, 5.7vw, 92px);
+      content-visibility: auto;
+      contain-intrinsic-size: auto 960px;
+    }
+
+    .ugc-inner {
+      max-width: var(--content-width);
+      margin-inline: auto;
+    }
+
+    .ugc-head {
+      margin-bottom: clamp(42px, 4.4vw, 56px);
+    }
+
+    .ugc-title {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 4.4vw, 64px);
+      font-weight: 300;
+      line-height: 1.02;
+      letter-spacing: -0.025em;
+      color: var(--fg1);
+    }
+
+    .ugc-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: clamp(10px, 1vw, 14px);
+    }
+
+    .ugc-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ugc-thumb {
+      position: relative;
+      aspect-ratio: 9 / 16;
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--surface-warm, #F5F1EA);
+    }
+
+    .ugc-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      transition: transform 0.65s var(--ease-expo);
+    }
+
+    .ugc-item:hover .ugc-thumb-img {
+      transform: scale(1.04);
+    }
+
+    .ugc-play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .ugc-play-ring {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(250, 250, 248, 0.86);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(250, 250, 248, 0.5);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition:
+        background 0.22s ease,
+        transform 0.28s var(--ease-expo);
+      flex-shrink: 0;
+    }
+
+    .ugc-item:hover .ugc-play-ring {
+      background: rgba(250, 250, 248, 0.97);
+      transform: scale(1.1);
+    }
+
+    .ugc-play-ring svg {
+      width: 14px;
+      height: 14px;
+      fill: var(--fg1, #1A1714);
+      margin-left: 3px;
+    }
+
+    .ugc-product {
+      margin-top: -38px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ugc-product-card {
+      display: block;
+      background: var(--surface-white, #FFFFFF);
+      border-radius: 4px;
+      padding: 5px;
+      box-shadow: 0 4px 20px rgba(26, 23, 20, 0.12);
+      text-decoration: none;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      transition:
+        box-shadow 0.28s var(--ease-expo),
+        transform 0.28s var(--ease-expo);
+    }
+
+    .ugc-product-card:hover {
+      box-shadow: 0 8px 28px rgba(26, 23, 20, 0.18);
+      transform: translateY(-2px);
+    }
+
+    .ugc-product-card:focus-visible {
+      outline: 2px solid var(--gold, #FFCF36);
+      outline-offset: 3px;
+    }
+
+    .ugc-product-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 2px;
+      display: block;
+    }
+
+    @media (max-width: 1100px) {
+      .ugc-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .ugc-head { padding: 0 24px; }
+    }
+
+    @media (max-width: 640px) {
+      .ugc-gallery { overflow: hidden; }
+      .ugc-head { padding: 0 24px; }
+      .ugc-grid {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 0 24px 20px;
+      }
+      .ugc-grid::-webkit-scrollbar { display: none; }
+      .ugc-item {
+        flex: 0 0 66vw;
+        scroll-snap-align: start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ugc-thumb-img,
+      .ugc-play-ring,
+      .ugc-product-card { transition: none; }
+      .ugc-item:hover .ugc-thumb-img { transform: none; }
+      .ugc-item:hover .ugc-play-ring { transform: none; }
+    }
+
+    /* ─── TRUST BAR ─── */
+    .trust-bar {
+      background: var(--surface-white, #FFFFFF);
+      padding: 28px 0;
+    }
+
+    .trust-bar-inner {
+      max-width: var(--content-width);
+      margin-inline: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 clamp(24px, 2.8vw, 44px);
+      border-right: 1px solid var(--border-default, #E8E3DA);
+    }
+
+    .trust-item:last-child {
+      border-right: none;
+    }
+
+    .trust-icon {
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      color: var(--fg1, #1A1714);
+    }
+
+    .trust-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .trust-label {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg1, #1A1714);
+      line-height: 1.6;
+    }
+
+    .trust-label em {
+      font-style: normal;
+      color: var(--brown, #7A5C38);
+    }
+
+    @media (max-width: 768px) {
+      .trust-bar-inner {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px 0;
+      }
+      .trust-item {
+        padding: 0 16px;
+        border-right: 1px solid var(--border-default, #E8E3DA);
+      }
+      .trust-item:last-child { border-right: none; }
+    }
+
+    /* --- PROMOTION MODAL POPUP --- */
+    .promo-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s var(--ease-expo), visibility 0.5s var(--ease-expo);
+      pointer-events: none;
+    }
+
+    .promo-overlay.visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .promo-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(26, 23, 20, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: pointer;
+    }
+
+    .promo-modal {
+      position: relative;
+      width: min(580px, 92%);
+      background: var(--surface-dark);
+      border: 1px solid rgba(250, 250, 248, 0.12);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+      padding: 40px 48px;
+      z-index: 1001;
+      transform: translateY(24px) scale(0.96);
+      transition: transform 0.6s var(--ease-expo);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .promo-overlay.visible .promo-modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .promo-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: rgba(250, 250, 248, 0.6);
+      padding: 8px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out), transform 0.4s var(--ease-expo);
+    }
+
+    .promo-close:hover {
+      color: var(--gold);
+      background-color: rgba(250, 250, 248, 0.05);
+      transform: rotate(90deg);
+    }
+
+    .promo-close svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .promo-header {
+      margin-bottom: 24px;
+    }
+
+    .promo-logo {
+      display: block;
+      height: 38px;
+      width: auto;
+      filter: brightness(0) invert(1);
+    }
+
+    .promo-body {
+      width: 100%;
+      margin-bottom: 28px;
+    }
+
+    .promo-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--fg-inverse);
+      margin-bottom: 12px;
+    }
+
+    .promo-subtitle {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(250, 250, 248, 0.7);
+      margin-bottom: 16px;
+    }
+
+    .promo-code-container {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto 12px;
+    }
+
+    .promo-code-box {
+      flex-grow: 1;
+      border: 1px dashed rgba(250, 250, 248, 0.3);
+      border-right: none;
+      border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+      background: rgba(250, 250, 248, 0.02);
+    }
+
+    .promo-code {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      color: var(--fg-inverse);
+    }
+
+    .promo-code-btn {
+      background: var(--gold);
+      color: var(--fg1);
+      border: 1px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 12px 24px;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      min-width: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), transform 0.2s var(--ease-expo);
+    }
+
+    .promo-code-btn:hover {
+      background: var(--gold-hover);
+      border-color: var(--gold-hover);
+      transform: scale(1.02);
+    }
+
+    .promo-code-btn:active {
+      transform: scale(0.98);
+    }
+
+    .promo-code-btn .btn-icon svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      margin-left: 6px;
+    }
+
+    .promo-footnote {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: rgba(250, 250, 248, 0.5);
+    }
+
+    .promo-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      width: 100%;
+      margin-bottom: 32px;
+      border-top: 1px solid rgba(250, 250, 248, 0.08);
+      padding-top: 28px;
+    }
+
+    .promo-product-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .promo-product-img-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      margin-bottom: 12px;
+      overflow: hidden;
+      background: rgba(250, 250, 248, 0.02);
+      border-radius: var(--radius-sm);
+    }
+
+    .promo-product-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s var(--ease-out);
+    }
+
+    .promo-product-card:hover .promo-product-img {
+      transform: scale(1.04);
+    }
+
+    .promo-product-name {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--fg-inverse);
+      margin-bottom: 4px;
+      letter-spacing: 0.02em;
+    }
+
+    .promo-product-price {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: rgba(255, 207, 54, 0.95);
+      letter-spacing: 0.05em;
+    }
+
+    .promo-footer {
+      width: 100%;
+    }
+
+    .promo-cta {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    /* ─── RESPONSIVE POPUP ─── */
+    @media (max-width: 580px) {
+      .promo-modal {
+        padding: 36px 24px;
+      }
+      .promo-title {
+        font-size: 26px;
+      }
+      .promo-gallery {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        max-height: 240px;
+        overflow-y: auto;
+        padding-right: 4px;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(250, 250, 248, 0.1) transparent;
+      }
+      .promo-product-card {
+        flex-direction: row;
+        text-align: left;
+        align-items: center;
+        gap: 16px;
+      }
+      .promo-product-img-wrapper {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+      }
+      .promo-product-name {
+        margin-bottom: 2px;
+        font-size: 14px;
+      }
+      .promo-product-price {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar" id="announcementBar" role="banner">
+    <p>New Summer Arrivals. <a href="#">Shop Now</a></p>
+    <button class="bar-dismiss" id="barDismiss" aria-label="Dismiss announcement">Ã—</button>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo" aria-label="Gaura Style home">
+        <img src="logo.webp" alt="Gaura Style" width="120" height="36">
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="#" class="nav-link">Rings</a></li>
+        <li><a href="#" class="nav-link">Earrings</a></li>
+        <li><a href="#" class="nav-link">Bracelets</a></li>
+        <li><a href="#" class="nav-link">Pendants</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="nav-icon" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button class="nav-icon" aria-label="Account">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </button>
+        <button class="nav-icon" aria-label="Cart (0 items)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-count" aria-hidden="true">0</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero" aria-label="Hero">
+    <div class="hero-bg-fallback" aria-hidden="true"></div>
+
+    <video
+      class="hero-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      aria-hidden="true"
+      preload="metadata"
+    >
+      <source src="./prototype-assets/gaura-ring-hero.mp4" type="video/mp4">
+    </video>
+
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-vignette" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <h1 class="hero-headline">
+        <span class="hero-line">The piece</span>
+        <span class="hero-line"><em>you never take off.</em></span>
+      </h1>
+
+      <p class="hero-subline">Rings, earrings, and pendants. Crafted to last.</p>
+
+      <div class="hero-cta-group">
+        <a href="#" class="btn btn-primary">Shop the Collection<span class="arrow" aria-hidden="true"></span></a>
+      </div>
+    </div>
+
+    <div class="scroll-indicator" aria-hidden="true">
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- SHOP BY CATEGORY -->
+  <section class="shop-cat" aria-labelledby="shopCatTitle">
+    <div class="shop-cat-grid">
+      <div class="shop-cat-head">
+        <h2 class="shop-cat-title" id="shopCatTitle">Shop by<em>category.</em></h2>
+      </div>
+    </div>
+
+    <div class="shop-cat-track-wrap">
+      <div class="shop-cat-track" id="catTrack" role="list">
+        <a class="shop-cat-tile" role="listitem" href="#rings">
+          <span class="shop-cat-tile-index">01</span>
+          <img class="shop-cat-tile-img" src="./prototype-assets/Second Section Image/rings.webp" alt="" loading="lazy">
+          <div class="shop-cat-tile-veil" aria-hidden="true"></div>
+          <span class="shop-cat-tile-label"><span class="shop-cat-tile-count">24 pieces</span>Rings</span>
+        </a>
+        <a class="shop-cat-tile" role="listitem" href="#earrings">
+          <span class="shop-cat-tile-index">02</span>
+          <img class="shop-cat-tile-img" src="./prototype-assets/Second Section Image/KALLICLOSEUPLIFESTYLE4170_4x5-477x600-0c84d7d.webp" alt="" loading="lazy">
+          <div class="shop-cat-tile-veil" aria-hidden="true"></div>
+          <span class="shop-cat-tile-label"><span class="shop-cat-tile-count">18 pieces</span>Earrings</span>
+        </a>
+        <a class="shop-cat-tile" role="listitem" href="#bracelets">
+          <span class="shop-cat-tile-index">03</span>
+          <img class="shop-cat-tile-img" src="./prototype-assets/Second Section Image/0L6A9415_cropped_3f30682f-8dfb-4b57-b9a6-9b3c608729ad.webp" alt="" loading="lazy">
+          <div class="shop-cat-tile-veil" aria-hidden="true"></div>
+          <span class="shop-cat-tile-label"><span class="shop-cat-tile-count">12 pieces</span>Bracelets</span>
+        </a>
+        <a class="shop-cat-tile" role="listitem" href="#pendants">
+          <span class="shop-cat-tile-index">04</span>
+          <img class="shop-cat-tile-img" src="./prototype-assets/Second Section Image/WPJANU134026_a5ee8be8-2ba0-4651-8a49-476e00fb76ef.webp" alt="" loading="lazy">
+          <div class="shop-cat-tile-veil" aria-hidden="true"></div>
+          <span class="shop-cat-tile-label"><span class="shop-cat-tile-count">15 pieces</span>Pendants</span>
+        </a>
+        <a class="shop-cat-tile" role="listitem" href="#new">
+          <span class="shop-cat-tile-index">05</span>
+          <img class="shop-cat-tile-img" src="./prototype-assets/Second Section Image/WPJANU134026_a5ee8be8-2ba0-4651-8a49-476e00fb76ef (1).webp" alt="" loading="lazy">
+          <div class="shop-cat-tile-veil" aria-hidden="true"></div>
+          <span class="shop-cat-tile-label"><span class="shop-cat-tile-count">New season</span>New arrivals</span>
+        </a>
+        <a class="shop-cat-tile" role="listitem" href="#best">
+          <span class="shop-cat-tile-index">06</span>
+          <img class="shop-cat-tile-img" src="./prototype-assets/Second Section Image/rings.webp" alt="" loading="lazy">
+          <div class="shop-cat-tile-veil" aria-hidden="true"></div>
+          <span class="shop-cat-tile-label"><span class="shop-cat-tile-count">Most desired</span>Best sellers</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2×2 SHOWCASE GRID -->
+  <section class="showcase" aria-label="Featured Collections">
+
+    <!-- Top-Left: Graduation — text at top-right -->
+    <a class="showcase-quad showcase-quad--tl" href="#graduation" aria-label="Shop Graduation">
+      <img
+        class="showcase-quad-img"
+        src="https://images.unsplash.com/photo-1611085583191-a3b181a88401?auto=format&fit=crop&w=1200&q=80"
+        alt="Silver chain against clean white background"
+        loading="lazy"
+      >
+      <div class="showcase-quad-veil" aria-hidden="true"></div>
+      <div class="showcase-quad-body">
+        <h2 class="showcase-quad-headline">Nicely done, grads.</h2>
+        <span class="showcase-quad-cta">
+          Shop Graduation
+          <span class="cta-arrow" aria-hidden="true"></span>
+        </span>
+      </div>
+    </a>
+
+    <!-- Top-Right: Gifts — text at top-left -->
+    <a class="showcase-quad showcase-quad--tr" href="#gifts" aria-label="Customize gifts for loved ones">
+      <img
+        class="showcase-quad-img"
+        src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1200&q=80"
+        alt="Stacked silver, gold, and diamond interlocking rings"
+        loading="lazy"
+      >
+      <div class="showcase-quad-veil" aria-hidden="true"></div>
+      <div class="showcase-quad-body">
+        <h2 class="showcase-quad-headline">For the ones wrapped around your finger.</h2>
+        <span class="showcase-quad-cta">
+          Customize gifts for loved ones
+          <span class="cta-arrow" aria-hidden="true"></span>
+        </span>
+      </div>
+    </a>
+
+    <!-- Bottom-Left: Zodiac / Collection — text at top-left -->
+    <a class="showcase-quad showcase-quad--bl" href="#collection" aria-label="Shop The Collection">
+      <img
+        class="showcase-quad-img"
+        src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=1200&q=80"
+        alt="Gold jewelry on warm beige background"
+        loading="lazy"
+      >
+      <div class="showcase-quad-veil" aria-hidden="true"></div>
+      <div class="showcase-quad-body">
+        <h2 class="showcase-quad-headline">Take It As A Sign.</h2>
+        <span class="showcase-quad-cta">
+          Shop The Collection
+          <span class="cta-arrow" aria-hidden="true"></span>
+        </span>
+      </div>
+    </a>
+
+    <!-- Bottom-Right: Engagement — text at top-left -->
+    <a class="showcase-quad showcase-quad--br" href="#engagement" aria-label="Shop Engagement">
+      <img
+        class="showcase-quad-img"
+        src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1200&q=80"
+        alt="Close-up of interlocking silver, diamond, gold, and rose gold rings"
+        loading="lazy"
+      >
+      <div class="showcase-quad-veil" aria-hidden="true"></div>
+      <div class="showcase-quad-body">
+        <h2 class="showcase-quad-headline">Crafted for love.</h2>
+        <span class="showcase-quad-cta">
+          Shop Engagement
+          <span class="cta-arrow" aria-hidden="true"></span>
+        </span>
+      </div>
+    </a>
+
+  </section>
+
+  <!-- ATELIER SELECTION -->
+  <section class="atelier-selection" id="atelier" aria-labelledby="atelierTitle">
+    <header class="atelier-head">
+      <h2 class="atelier-title" id="atelierTitle">Chosen for now.</h2>
+      <a class="atelier-link" href="#atelier">
+        Explore the atelier
+        <span class="atelier-link-arrow" aria-hidden="true"></span>
+      </a>
+    </header>
+
+    <div class="atelier-grid">
+      <a class="atelier-card" href="#luna-pear-ring" aria-label="Shop Luna Pear Ring, new, $2,650">
+        <div class="atelier-media">
+          <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_27 PM.png" alt="Luna pear-cut sapphire ring in yellow gold on warm carved stone" loading="lazy">
+          <img class="atelier-hover-img" src="./prototype-assets/hand-photo.webp" alt="" aria-hidden="true" loading="lazy">
+          <span class="atelier-badge">New</span>
+          <div class="atelier-quick-add">
+            <button class="atelier-quick-add-btn" aria-label="Add Luna Pear Ring to bag">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              Add to Bag
+            </button>
+          </div>
+        </div>
+        <h3 class="atelier-name">Luna Pear Ring</h3>
+        <p class="atelier-material">18K yellow gold, diamond</p>
+        <p class="atelier-price">$2,650</p>
+      </a>
+
+      <a class="atelier-card" href="#mira-hoops" aria-label="Shop Mira Hoops, was $1,810 now $1,450">
+        <div class="atelier-media">
+          <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_25 PM.png" alt="Deep blue emerald-cut gold ring resting on warm stone" loading="lazy">
+          <img class="atelier-hover-img" src="./prototype-assets/hand-photo.webp" alt="" aria-hidden="true" loading="lazy">
+          <span class="atelier-badge atelier-badge--sale">20% Off</span>
+          <div class="atelier-quick-add">
+            <button class="atelier-quick-add-btn" aria-label="Add Mira Hoops to bag">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              Add to Bag
+            </button>
+          </div>
+        </div>
+        <h3 class="atelier-name">Mira Hoops</h3>
+        <p class="atelier-material">18K yellow gold</p>
+        <p class="atelier-price atelier-price-group">
+          <span class="atelier-price--was">$1,810</span>
+          <span class="atelier-price--now">$1,450</span>
+        </p>
+      </a>
+
+      <a class="atelier-card" href="#elan-solitaire-ring" aria-label="Shop Élan Solitaire Ring, best seller, $3,900">
+        <div class="atelier-media">
+          <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_39 PM.png" alt="Oval-cut diamond solitaire ring in yellow gold on warm stone" loading="lazy">
+          <img class="atelier-hover-img" src="./prototype-assets/hand-photo.webp" alt="" aria-hidden="true" loading="lazy">
+          <span class="atelier-badge">Best Seller</span>
+          <div class="atelier-quick-add">
+            <button class="atelier-quick-add-btn" aria-label="Add Élan Solitaire Ring to bag">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              Add to Bag
+            </button>
+          </div>
+        </div>
+        <h3 class="atelier-name">Élan Solitaire Ring</h3>
+        <p class="atelier-material">18K yellow gold, diamond</p>
+        <p class="atelier-price">$3,900</p>
+      </a>
+
+      <a class="atelier-card" href="#aurea-twist-ring" aria-label="Shop Aurea Twist Ring, $1,850">
+        <div class="atelier-media atelier-media--duo">
+          <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_34 PM.png" alt="Aurea twist diamond ring in silver-toned metal on warm stone" loading="lazy">
+          <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_31 PM.png" alt="Rose gold pear-cut ring detail on warm stone" loading="lazy">
+          <img class="atelier-hover-img" src="./prototype-assets/hand-photo.webp" alt="" aria-hidden="true" loading="lazy">
+          <div class="atelier-quick-add">
+            <button class="atelier-quick-add-btn" aria-label="Add Aurea Twist Ring to bag">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              Add to Bag
+            </button>
+          </div>
+        </div>
+        <h3 class="atelier-name">Aurea Twist Ring</h3>
+        <p class="atelier-material">18K yellow gold, diamond</p>
+        <p class="atelier-price">$1,850</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- FULL-WIDTH EDITORIAL SHOWCASE -->
+  <section class="showcase showcase--single" aria-label="Editorial Highlights">
+
+    <a class="showcase-quad showcase-quad--tr" href="#new-arrivals" aria-label="Shop New Arrivals">
+      <img
+        class="showcase-quad-img"
+        src="https://images.unsplash.com/photo-1734019523113-501bfba06c5c?auto=format&fit=crop&w=1600&q=80"
+        alt="Woman's hand holding a ring against a dark background"
+        loading="lazy"
+      >
+      <div class="showcase-quad-veil" aria-hidden="true"></div>
+      <div class="showcase-quad-body">
+        <h2 class="showcase-quad-headline">New this season.</h2>
+        <span class="showcase-quad-cta">
+          Shop New Arrivals
+          <span class="cta-arrow" aria-hidden="true"></span>
+        </span>
+      </div>
+    </a>
+
+    <a class="showcase-quad showcase-quad--bl" href="#rings" aria-label="Shop Rings">
+      <img
+        class="showcase-quad-img"
+        src="https://images.unsplash.com/photo-1561715679-677241815677?auto=format&fit=crop&w=1600&q=80"
+        alt="Hand wearing rings in a dark moody setting"
+        loading="lazy"
+      >
+      <div class="showcase-quad-veil" aria-hidden="true"></div>
+      <div class="showcase-quad-body">
+        <h2 class="showcase-quad-headline">The ring edit.</h2>
+        <span class="showcase-quad-cta">
+          Explore Rings
+          <span class="cta-arrow" aria-hidden="true"></span>
+        </span>
+      </div>
+    </a>
+
+  </section>
+
+  <!-- UGC SOCIAL PROOF -->
+  <section class="ugc-gallery" aria-labelledby="ugcTitle">
+    <div class="ugc-inner">
+
+      <header class="ugc-head">
+        <h2 class="ugc-title" id="ugcTitle">Worn and shared.</h2>
+      </header>
+
+      <div class="ugc-grid" role="list">
+
+        <div class="ugc-item" role="listitem">
+          <div class="ugc-thumb">
+            <img class="ugc-thumb-img" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&h=940&q=80" alt="" loading="lazy" aria-hidden="true">
+            <button class="ugc-play" aria-label="Play video">
+              <span class="ugc-play-ring" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </button>
+          </div>
+          <div class="ugc-product">
+            <a class="ugc-product-card" href="#luna-pear-ring" aria-label="Shop Luna Pear Ring">
+              <img class="ugc-product-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_27 PM.png" alt="Luna Pear Ring" loading="lazy">
+            </a>
+          </div>
+        </div>
+
+        <div class="ugc-item" role="listitem">
+          <div class="ugc-thumb">
+            <img class="ugc-thumb-img" src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=600&h=940&q=80" alt="" loading="lazy" aria-hidden="true">
+            <button class="ugc-play" aria-label="Play video">
+              <span class="ugc-play-ring" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </button>
+          </div>
+          <div class="ugc-product">
+            <a class="ugc-product-card" href="#mira-hoops" aria-label="Shop Mira Hoops">
+              <img class="ugc-product-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_25 PM.png" alt="Mira Hoops" loading="lazy">
+            </a>
+          </div>
+        </div>
+
+        <div class="ugc-item" role="listitem">
+          <div class="ugc-thumb">
+            <img class="ugc-thumb-img" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=600&h=940&q=80" alt="" loading="lazy" aria-hidden="true">
+            <button class="ugc-play" aria-label="Play video">
+              <span class="ugc-play-ring" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </button>
+          </div>
+          <div class="ugc-product">
+            <a class="ugc-product-card" href="#elan-solitaire-ring" aria-label="Shop Élan Solitaire Ring">
+              <img class="ugc-product-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_39 PM.png" alt="Élan Solitaire Ring" loading="lazy">
+            </a>
+          </div>
+        </div>
+
+        <div class="ugc-item" role="listitem">
+          <div class="ugc-thumb">
+            <img class="ugc-thumb-img" src="https://images.unsplash.com/photo-1496440737103-cd596325d314?auto=format&fit=crop&w=600&h=940&q=80" alt="" loading="lazy" aria-hidden="true">
+            <button class="ugc-play" aria-label="Play video">
+              <span class="ugc-play-ring" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </button>
+          </div>
+          <div class="ugc-product">
+            <a class="ugc-product-card" href="#aurea-twist-ring" aria-label="Shop Aurea Twist Ring">
+              <img class="ugc-product-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_34 PM.png" alt="Aurea Twist Ring" loading="lazy">
+            </a>
+          </div>
+        </div>
+
+        <div class="ugc-item" role="listitem">
+          <div class="ugc-thumb">
+            <img class="ugc-thumb-img" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&h=940&q=80" alt="" loading="lazy" aria-hidden="true">
+            <button class="ugc-play" aria-label="Play video">
+              <span class="ugc-play-ring" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </button>
+          </div>
+          <div class="ugc-product">
+            <a class="ugc-product-card" href="#luna-pear-ring" aria-label="Shop Luna Pear Ring">
+              <img class="ugc-product-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_31 PM.png" alt="Luna Pear Ring" loading="lazy">
+            </a>
+          </div>
+        </div>
+
+        <div class="ugc-item" role="listitem">
+          <div class="ugc-thumb">
+            <img class="ugc-thumb-img" src="https://images.unsplash.com/photo-1485893086445-ed75865251e0?auto=format&fit=crop&w=600&h=940&q=80" alt="" loading="lazy" aria-hidden="true">
+            <button class="ugc-play" aria-label="Play video">
+              <span class="ugc-play-ring" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </button>
+          </div>
+          <div class="ugc-product">
+            <a class="ugc-product-card" href="#mira-hoops" aria-label="Shop Mira Hoops">
+              <img class="ugc-product-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_25 PM.png" alt="Mira Hoops" loading="lazy">
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar" role="list" aria-label="Our commitments">
+    <div class="trust-bar-inner">
+
+      <div class="trust-item" role="listitem">
+        <span class="trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M26 8A18 18 0 1 1 8 26"/>
+            <polyline points="3,22 8,26 13,22"/>
+            <rect x="17" y="21" width="18" height="14" rx="1.5"/>
+            <line x1="17" y1="27" x2="35" y2="27"/>
+            <line x1="23" y1="21" x2="23" y2="27"/>
+            <line x1="29" y1="21" x2="29" y2="27"/>
+          </svg>
+        </span>
+        <span class="trust-label">Easy Exchanges<br>&amp; Returns</span>
+      </div>
+
+      <div class="trust-item" role="listitem">
+        <span class="trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="26,6 38,20 26,44 14,20"/>
+            <polyline points="14,20 26,14 38,20"/>
+            <line x1="26" y1="6" x2="26" y2="44"/>
+            <line x1="14" y1="20" x2="38" y2="20"/>
+            <circle cx="26" cy="3" r="1.8" fill="currentColor" stroke="none"/>
+            <circle cx="44" cy="14" r="1.8" fill="currentColor" stroke="none"/>
+            <circle cx="44" cy="30" r="1.8" fill="currentColor" stroke="none"/>
+            <circle cx="8" cy="14" r="1.8" fill="currentColor" stroke="none"/>
+            <circle cx="8" cy="30" r="1.8" fill="currentColor" stroke="none"/>
+          </svg>
+        </span>
+        <span class="trust-label">100% Natural<br>Gemstones</span>
+      </div>
+
+      <div class="trust-item" role="listitem">
+        <span class="trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="26" y1="34" x2="26" y2="18"/>
+            <path d="M26 26 Q31 21 36 23"/>
+            <path d="M26 21 Q21 16 16 18"/>
+            <path d="M10 36 Q9 40 14 42 L38 42 Q43 40 42 36 Q40 30 34 30 L18 30 Q12 30 10 36Z"/>
+          </svg>
+        </span>
+        <span class="trust-label">Made by Hand</span>
+      </div>
+
+      <div class="trust-item" role="listitem">
+        <span class="trust-icon" aria-hidden="true">
+          <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="11" y="24" width="30" height="20" rx="1.5"/>
+            <rect x="9" y="19" width="34" height="7" rx="1.5"/>
+            <line x1="26" y1="19" x2="26" y2="44"/>
+            <path d="M26 19 Q20 12 15 15 Q12 19 19 19"/>
+            <path d="M26 19 Q32 12 37 15 Q40 19 33 19"/>
+            <line x1="43" y1="9" x2="43" y2="14"/>
+            <line x1="40.5" y1="11.5" x2="45.5" y2="11.5"/>
+            <line x1="7" y1="12" x2="7" y2="17"/>
+            <line x1="4.5" y1="14.5" x2="9.5" y2="14.5"/>
+          </svg>
+        </span>
+        <span class="trust-label">Best <em>in</em> Gifting</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PROMOTIONAL MODAL POPUP -->
+  <div class="promo-overlay" id="promoOverlay" role="dialog" aria-modal="true" aria-labelledby="promoTitle" aria-hidden="true">
+    <div class="promo-backdrop" id="promoBackdrop"></div>
+    <div class="promo-modal" id="promoModal">
+      <!-- Close Button -->
+      <button class="promo-close" id="promoClose" aria-label="Close modal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <!-- Logo & Header -->
+      <div class="promo-header">
+        <img class="promo-logo" src="logo.webp" alt="Gaura Style" width="120" height="52">
+      </div>
+
+      <!-- Main Welcome Content -->
+      <div class="promo-body">
+        <h2 class="promo-title" id="promoTitle">Begin your collection</h2>
+        <p class="promo-subtitle">Your introductory offer:</p>
+
+        <!-- Promo Code Copy Box -->
+        <div class="promo-code-container">
+          <div class="promo-code-box">
+            <span class="promo-code" id="promoCodeVal">GAURA5</span>
+          </div>
+          <button class="promo-code-btn" id="promoCopyBtn" aria-live="polite">
+            <span class="btn-text">Copy</span>
+            <span class="btn-icon" style="display: none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </span>
+          </button>
+        </div>
+        <p class="promo-footnote">Valid on your first order. Code valid for 30 days.</p>
+      </div>
+
+      <!-- Curated Product Gallery -->
+      <div class="promo-gallery">
+        <!-- Product 1 -->
+        <div class="promo-product-card">
+          <div class="promo-product-img-wrapper">
+            <img class="promo-product-img" src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=400&q=80" alt="Signature Solitaire Ring" loading="lazy">
+          </div>
+          <h3 class="promo-product-name">Signature Solitaire</h3>
+          <span class="promo-product-price">$1,850 â€“ $4,200</span>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="promo-product-card">
+          <div class="promo-product-img-wrapper">
+            <img class="promo-product-img" src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=400&q=80" alt="Classic Gold Band" loading="lazy">
+          </div>
+          <h3 class="promo-product-name">Classic Band</h3>
+          <span class="promo-product-price">$850 â€“ $1,600</span>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="promo-product-card">
+          <div class="promo-product-img-wrapper">
+            <img class="promo-product-img" src="https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=400&q=80" alt="Textured Eternity Ring" loading="lazy">
+          </div>
+          <h3 class="promo-product-name">Textured Eternity</h3>
+          <span class="promo-product-price">$2,400 â€“ $5,800</span>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <div class="promo-footer">
+        <a href="#" class="btn btn-ghost-inv promo-cta">Explore the collection<span class="arrow" aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const bar = document.getElementById('announcementBar');
+    const nav = document.getElementById('navbar');
+    const dismiss = document.getElementById('barDismiss');
+    // ── Announcement bar slide-in ──────────────────────────────────
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        bar.classList.add('visible');
+        nav.classList.add('visible');
+      }, 80);
+    });
+
+    dismiss.addEventListener('click', () => {
+      bar.classList.add('hidden');
+      nav.classList.add('bar-gone');
+    });
+
+    // ── Scroll: transparent â†’ frosted glass ───────────────────────
+    let rafPending = false;
+    window.addEventListener('scroll', () => {
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(() => {
+        nav.classList.toggle('scrolled', window.scrollY > 40);
+        rafPending = false;
+      });
+    }, { passive: true });
+    // ── Reduced motion: pause video ───────────────────────────────
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      document.querySelectorAll('.hero-video, .showcase-quad video').forEach(v => v.pause());
+    }
+
+    // ── Promotional Popup Overlay ──────────────────────────────────
+    const promoOverlay = document.getElementById('promoOverlay');
+    const promoClose = document.getElementById('promoClose');
+    const promoBackdrop = document.getElementById('promoBackdrop');
+    const promoCopyBtn = document.getElementById('promoCopyBtn');
+    const promoCodeVal = document.getElementById('promoCodeVal').textContent;
+
+    function showPromo() {
+      if (!sessionStorage.getItem('gaura_promo_dismissed')) {
+        setTimeout(() => {
+          promoOverlay.classList.add('visible');
+          promoOverlay.removeAttribute('aria-hidden');
+          // Set focus to close button for accessibility
+          promoClose.focus();
+        }, 6000);
+      }
+    }
+
+    function dismissPromo() {
+      promoOverlay.classList.remove('visible');
+      promoOverlay.setAttribute('aria-hidden', 'true');
+      sessionStorage.setItem('gaura_promo_dismissed', 'true');
+    }
+
+    // Close Events
+    promoClose.addEventListener('click', dismissPromo);
+    promoBackdrop.addEventListener('click', dismissPromo);
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && promoOverlay.classList.contains('visible')) {
+        dismissPromo();
+      }
+    });
+
+    // Copy to Clipboard Action
+    promoCopyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(promoCodeVal);
+        
+        // Visual feedback state
+        const btnText = promoCopyBtn.querySelector('.btn-text');
+        const btnIcon = promoCopyBtn.querySelector('.btn-icon');
+        
+        btnText.textContent = 'Copied';
+        btnIcon.style.display = 'inline-block';
+        promoCopyBtn.style.backgroundColor = 'var(--success)';
+        promoCopyBtn.style.borderColor = 'var(--success)';
+        promoCopyBtn.style.color = '#FFFFFF';
+        
+        setTimeout(() => {
+          btnText.textContent = 'Copy';
+          btnIcon.style.display = 'none';
+          promoCopyBtn.style.backgroundColor = '';
+          promoCopyBtn.style.borderColor = '';
+          promoCopyBtn.style.color = '';
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+      }
+    });
+
+    // Initialize promo check on load
+    if (document.readyState === 'complete') {
+      showPromo();
+    } else {
+      window.addEventListener('load', showPromo);
+    }
+  </script>
+</body>
+</html>

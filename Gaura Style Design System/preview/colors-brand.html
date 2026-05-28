@@ -1,0 +1,30 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--bg); font-family: var(--font-sans); }
+  .row { display: flex; gap: 0; height: 80px; border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+  .swatch { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 8px 10px; }
+  .swatch span { font-size: 10px; font-weight: 500; letter-spacing: 0.06em; opacity: 0.85; }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .cell { height: 56px; border-radius: var(--radius-sm); display: flex; flex-direction: column; justify-content: flex-end; padding: 6px 8px; box-shadow: var(--shadow-sm); }
+  .cell span { font-size: 9px; font-weight: 600; letter-spacing: 0.05em; }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; color: var(--fg3); text-transform: uppercase; margin: 0 0 8px; }
+</style>
+</head><body>
+<p class="section-label">Primary — Gold</p>
+<div class="row">
+  <div class="swatch" style="background:#FFF8D6"><span style="color:#7A5C38">Subtle</span></div>
+  <div class="swatch" style="background:#FFF3B0"><span style="color:#7A5C38">Light</span></div>
+  <div class="swatch" style="background:#FFCF36"><span style="color:#5A4228">Gold</span></div>
+  <div class="swatch" style="background:#F0C020"><span style="color:#5A4228">Hover</span></div>
+  <div class="swatch" style="background:#C9A010"><span style="color:#fff">Dark</span></div>
+</div>
+<p class="section-label" style="margin-top:4px">Secondary — Brown</p>
+<div class="row">
+  <div class="swatch" style="background:#F0E8DA"><span style="color:#7A5C38">Subtle</span></div>
+  <div class="swatch" style="background:#C4A882"><span style="color:#5A4228">Light</span></div>
+  <div class="swatch" style="background:#7A5C38"><span style="color:#F0E8DA">Brown</span></div>
+  <div class="swatch" style="background:#5A4228"><span style="color:#F0E8DA">Dark</span></div>
+  <div class="swatch" style="background:#3A2A18"><span style="color:#C4A882">Darkest</span></div>
+</div>
+</body></html>

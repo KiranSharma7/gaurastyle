@@ -1,0 +1,35 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--bg); font-family: var(--font-sans); }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; color: var(--fg3); text-transform: uppercase; margin: 0 0 10px; }
+  .row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+  .field { display: flex; flex-direction: column; gap: 6px; min-width: 200px; }
+  label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg2); }
+  input, select, textarea { font-family: var(--font-sans); font-size: 14px; color: var(--fg1); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 10px 14px; outline: none; transition: border-color var(--dur-fast); width: 100%; }
+  input:focus, select:focus { border-color: var(--brown); }
+  input::placeholder { color: var(--fg3); }
+  .input-error { border-color: var(--error) !important; }
+  .helper { font-size: 11px; color: var(--fg3); margin-top: 2px; }
+  .error-text { font-size: 11px; color: var(--error); margin-top: 2px; }
+  .search-wrap { position: relative; }
+  .search-wrap input { padding-left: 36px; }
+  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--fg3); font-size: 14px; }
+</style>
+</head><body>
+<p class="section-label">Text Inputs</p>
+<div class="row">
+  <div class="field"><label>Email</label><input type="email" placeholder="hello@gaurastyle.com"><div class="helper">Enter your email address</div></div>
+  <div class="field"><label>Ring Size</label><input type="text" value="6.5"></div>
+  <div class="field"><label>Size — Error</label><input type="text" value="abc" class="input-error"><div class="error-text">Please enter a valid ring size</div></div>
+</div>
+<p class="section-label">Select & Search</p>
+<div class="row">
+  <div class="field"><label>Collection</label>
+    <select><option>Gold Rings</option><option>Silver Rings</option><option>Diamond Collection</option></select>
+  </div>
+  <div class="field"><label>Search</label>
+    <div class="search-wrap"><span class="search-icon">⌕</span><input type="search" placeholder="Search rings…"></div>
+  </div>
+</div>
+</body></html>

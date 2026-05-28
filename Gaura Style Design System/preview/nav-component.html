@@ -1,0 +1,54 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; background: var(--bg); font-family: var(--font-sans); }
+  nav { height: 72px; background: rgba(250,250,248,0.95); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; backdrop-filter: blur(12px); }
+  .nav-logo img { height: 28px; width: auto; }
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links a { font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg1); text-decoration: none; transition: color var(--dur-fast); }
+  .nav-links a:hover { color: var(--brown); }
+  .nav-links a.active { color: var(--brown); border-bottom: 1px solid var(--brown); padding-bottom: 1px; }
+  .nav-icons { display: flex; gap: 20px; align-items: center; }
+  .nav-icon { color: var(--fg1); cursor: pointer; font-size: 16px; position: relative; }
+  .cart-count { position: absolute; top: -6px; right: -8px; background: var(--gold); color: var(--brown-dark); width: 16px; height: 16px; border-radius: 50%; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  /* Scrolled state */
+  nav.scrolled { background: var(--surface); box-shadow: var(--shadow-sm); }
+  .nav-dark { background: var(--surface-dark); border-bottom-color: rgba(255,255,255,0.1); margin-top: 8px; }
+  .nav-dark .nav-links a { color: var(--fg-inverse); opacity: 0.8; }
+  .nav-dark .nav-links a.active { color: var(--gold); border-bottom-color: var(--gold); opacity: 1; }
+  .nav-dark .nav-icon { color: var(--fg-inverse); }
+  .label { font-size: 10px; color: var(--fg3); font-family: var(--font-mono); padding: 6px 40px; letter-spacing: 0.06em; }
+</style>
+</head><body>
+<div class="label">Default (light)</div>
+<nav>
+  <div class="nav-logo"><img src="../assets/logo-brown.webp" alt="Gaura Style"></div>
+  <div class="nav-links">
+    <a href="#" class="active">Rings</a>
+    <a href="#">Collections</a>
+    <a href="#">Journal</a>
+    <a href="#">About</a>
+  </div>
+  <div class="nav-icons">
+    <span class="nav-icon">⌕</span>
+    <span class="nav-icon" style="position:relative">🛍
+      <span class="cart-count">2</span>
+    </span>
+    <span class="nav-icon">◯</span>
+  </div>
+</nav>
+<div class="label" style="margin-top:8px">Dark (over hero image)</div>
+<nav class="nav-dark">
+  <div class="nav-logo"><img src="../assets/logo-brown.webp" alt="Gaura Style" style="filter:brightness(0) invert(1)"></div>
+  <div class="nav-links">
+    <a href="#">Rings</a>
+    <a href="#" class="active">Collections</a>
+    <a href="#">Journal</a>
+    <a href="#">About</a>
+  </div>
+  <div class="nav-icons">
+    <span class="nav-icon">⌕</span>
+    <span class="nav-icon">◯</span>
+  </div>
+</nav>
+</body></html>

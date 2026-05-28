@@ -1,0 +1,45 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--bg); font-family: var(--font-sans); }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; color: var(--fg3); text-transform: uppercase; margin: 0 0 10px; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; align-items: center; }
+  .badge { display: inline-flex; align-items: center; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: var(--radius-xs); }
+  .badge-gold { background: var(--gold); color: var(--brown-dark); }
+  .badge-dark { background: var(--fg1); color: var(--fg-inverse); }
+  .badge-brown { background: var(--brown); color: #fff; }
+  .badge-outline { background: transparent; color: var(--fg2); border: 1px solid var(--border-strong); }
+  .badge-success { background: var(--success-bg); color: var(--success); }
+  .badge-error { background: var(--error-bg); color: var(--error); }
+  .badge-warm { background: var(--surface-warm); color: var(--fg2); border: 1px solid var(--border); }
+  .pill { border-radius: var(--radius-pill); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; margin-right: 5px; }
+</style>
+</head><body>
+<p class="section-label">Status Badges</p>
+<div class="row">
+  <span class="badge badge-gold">New</span>
+  <span class="badge badge-dark">Sold Out</span>
+  <span class="badge badge-brown">Limited</span>
+  <span class="badge badge-outline">Pre-order</span>
+  <span class="badge badge-success"><span class="dot"></span>In Stock</span>
+  <span class="badge badge-error"><span class="dot"></span>Low Stock</span>
+</div>
+<p class="section-label">Category Tags</p>
+<div class="row">
+  <span class="badge badge-warm pill">Gold</span>
+  <span class="badge badge-warm pill">Silver</span>
+  <span class="badge badge-warm pill">Diamond</span>
+  <span class="badge badge-warm pill">Stackable</span>
+  <span class="badge badge-warm pill">Bestseller</span>
+  <span class="badge badge-gold pill">Sale</span>
+</div>
+<p class="section-label">Size Indicators</p>
+<div class="row">
+  <span class="badge badge-outline" style="width:36px;justify-content:center">5</span>
+  <span class="badge badge-outline" style="width:36px;justify-content:center">5.5</span>
+  <span class="badge badge-gold" style="width:36px;justify-content:center">6</span>
+  <span class="badge badge-outline" style="width:36px;justify-content:center">6.5</span>
+  <span class="badge badge-outline" style="width:36px;justify-content:center;opacity:0.4">7</span>
+</div>
+</body></html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--bg); font-family: var(--font-sans); }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; color: var(--fg3); text-transform: uppercase; margin: 0 0 10px; }
+  .sp-row { display: flex; align-items: flex-end; gap: 6px; margin-bottom: 16px; }
+  .sp-bar { background: var(--brown-light); border-radius: 1px; }
+  .sp-label { font-family: var(--font-mono); font-size: 9px; color: var(--fg3); text-align: center; }
+  .radius-row { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+  .radius-box { width: 52px; height: 36px; background: var(--surface); border: 1.5px solid var(--border-strong); display: flex; align-items: center; justify-content: center; }
+  .radius-label { font-size: 9px; color: var(--fg3); font-family: var(--font-mono); text-align: center; margin-top: 4px; }
+  .shadow-row { display: flex; gap: 16px; }
+  .shadow-box { width: 72px; height: 44px; background: var(--surface); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; }
+  .shadow-label { font-size: 9px; color: var(--fg3); font-family: var(--font-mono); text-align: center; margin-top: 6px; }
+  .shadow-item { text-align: center; }
+</style>
+</head><body>
+<p class="section-label">Spacing Scale</p>
+<div class="sp-row">
+  <div><div class="sp-bar" style="width:4px;height:4px"></div><div class="sp-label">4</div></div>
+  <div><div class="sp-bar" style="width:8px;height:8px"></div><div class="sp-label">8</div></div>
+  <div><div class="sp-bar" style="width:12px;height:12px"></div><div class="sp-label">12</div></div>
+  <div><div class="sp-bar" style="width:16px;height:16px"></div><div class="sp-label">16</div></div>
+  <div><div class="sp-bar" style="width:24px;height:24px"></div><div class="sp-label">24</div></div>
+  <div><div class="sp-bar" style="width:32px;height:32px"></div><div class="sp-label">32</div></div>
+  <div><div class="sp-bar" style="width:40px;height:40px"></div><div class="sp-label">40</div></div>
+  <div><div class="sp-bar" style="width:48px;height:48px"></div><div class="sp-label">48</div></div>
+  <div><div class="sp-bar" style="width:64px;height:64px"></div><div class="sp-label">64</div></div>
+  <div><div class="sp-bar" style="width:80px;height:80px"></div><div class="sp-label">80</div></div>
+</div>
+<p class="section-label">Corner Radius</p>
+<div class="radius-row">
+  <div><div class="radius-box" style="border-radius:2px"></div><div class="radius-label">2px<br>xs</div></div>
+  <div><div class="radius-box" style="border-radius:4px"></div><div class="radius-label">4px<br>sm</div></div>
+  <div><div class="radius-box" style="border-radius:8px"></div><div class="radius-label">8px<br>md</div></div>
+  <div><div class="radius-box" style="border-radius:12px"></div><div class="radius-label">12px<br>lg</div></div>
+  <div><div class="radius-box" style="border-radius:100px;width:72px"></div><div class="radius-label">100px<br>pill</div></div>
+</div>
+<p class="section-label">Shadows</p>
+<div class="shadow-row">
+  <div class="shadow-item"><div class="shadow-box" style="box-shadow:0 1px 3px rgba(26,23,20,0.08)"></div><div class="shadow-label">sm</div></div>
+  <div class="shadow-item"><div class="shadow-box" style="box-shadow:0 4px 16px rgba(26,23,20,0.10)"></div><div class="shadow-label">md</div></div>
+  <div class="shadow-item"><div class="shadow-box" style="box-shadow:0 12px 40px rgba(26,23,20,0.12)"></div><div class="shadow-label">lg</div></div>
+  <div class="shadow-item"><div class="shadow-box" style="box-shadow:0 24px 64px rgba(26,23,20,0.14)"></div><div class="shadow-label">xl</div></div>
+</div>
+</body></html>

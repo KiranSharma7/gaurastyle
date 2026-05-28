@@ -1,0 +1,33 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--bg); font-family: var(--font-sans); }
+  .row { display: flex; gap: 0; height: 72px; border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 10px; box-shadow: var(--shadow-sm); }
+  .swatch { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 7px 10px; border-right: 1px solid rgba(0,0,0,0.05); }
+  .swatch:last-child { border-right: none; }
+  .swatch .name { font-size: 9px; font-weight: 600; letter-spacing: 0.08em; }
+  .swatch .val { font-size: 9px; opacity: 0.6; letter-spacing: 0.04em; font-family: var(--font-mono); }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; color: var(--fg3); text-transform: uppercase; margin: 0 0 7px; }
+  .semantic { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 10px; }
+  .sem-cell { padding: 10px 12px; border-radius: var(--radius-sm); }
+  .sem-cell .name { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; }
+  .sem-cell .val { font-size: 9px; opacity: 0.65; font-family: var(--font-mono); }
+</style>
+</head><body>
+<p class="section-label">Neutrals & Surfaces</p>
+<div class="row">
+  <div class="swatch" style="background:#1A1714"><span class="name" style="color:#A8988E">fg1</span><span class="val" style="color:#A8988E">#1A1714</span></div>
+  <div class="swatch" style="background:#6B5E57"><span class="name" style="color:#F0E8DA">fg2</span><span class="val" style="color:#F0E8DA">#6B5E57</span></div>
+  <div class="swatch" style="background:#A8988E"><span class="name" style="color:#1A1714">fg3</span><span class="val" style="color:#1A1714">#A8988E</span></div>
+  <div class="swatch" style="background:#E8E3DA;border:1px solid #C8BFB4"><span class="name" style="color:#6B5E57">border</span><span class="val" style="color:#6B5E57">#E8E3DA</span></div>
+  <div class="swatch" style="background:#F5F1EA;border:1px solid #E8E3DA"><span class="name" style="color:#6B5E57">warm</span><span class="val" style="color:#6B5E57">#F5F1EA</span></div>
+  <div class="swatch" style="background:#FAFAF8;border:1px solid #E8E3DA"><span class="name" style="color:#6B5E57">bg</span><span class="val" style="color:#6B5E57">#FAFAF8</span></div>
+  <div class="swatch" style="background:#FFFFFF;border:1px solid #E8E3DA"><span class="name" style="color:#6B5E57">white</span><span class="val" style="color:#6B5E57">#FFFFFF</span></div>
+</div>
+<p class="section-label" style="margin-top:4px">Semantic</p>
+<div class="semantic">
+  <div class="sem-cell" style="background:#FDECEA"><span class="name" style="color:#C0392B">Error</span><span class="val" style="color:#C0392B">#C0392B</span></div>
+  <div class="sem-cell" style="background:#E8F5EE"><span class="name" style="color:#2D6A4F">Success</span><span class="val" style="color:#2D6A4F">#2D6A4F</span></div>
+  <div class="sem-cell" style="background:#FEF3C7"><span class="name" style="color:#D97706">Warning</span><span class="val" style="color:#D97706">#D97706</span></div>
+</div>
+</body></html>

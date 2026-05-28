@@ -1,0 +1,12 @@
+.mcp.json
+.agents/
+.claude/
+.impeccable/
+.superpowers/
+
+node_modules/
+dist/
+build/
+.env
+.env.*
+*.log
