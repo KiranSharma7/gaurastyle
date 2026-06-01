@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newsletter CTA — Gaura Style Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--surface-warm); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+
+    .specimen-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      padding: 24px 40px 12px;
+    }
+
+    /* ── NEWSLETTER SIGNUP ── */
+    .newsletter-signup {
+      position: relative;
+      background: var(--bg);
+      color: var(--fg1);
+      overflow: hidden;
+      padding: 116px var(--gutter) 104px;
+      text-align: center;
+    }
+
+    /* Subtle corner ambient */
+    .newsletter-signup::before {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 220px; height: 140px;
+      background:
+        radial-gradient(ellipse at 0% 100%, rgba(122, 92, 56, 0.13), transparent 66%),
+        radial-gradient(ellipse at 26% 88%, rgba(255, 207, 54, 0.10), transparent 58%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .newsletter-signup::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 0;
+      width: 180px; height: 120px;
+      background:
+        radial-gradient(ellipse at 100% 0%, rgba(122, 92, 56, 0.10), transparent 60%);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .newsletter-inner {
+      position: relative;
+      max-width: 860px;
+      margin-inline: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .newsletter-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--brown);
+      margin-bottom: 22px;
+    }
+
+    .newsletter-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--fg1);
+      margin-bottom: 18px;
+      text-wrap: balance;
+    }
+
+    .newsletter-title em {
+      font-style: italic;
+      color: var(--brown);
+    }
+
+    .newsletter-text {
+      max-width: 600px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--fg2);
+      margin-bottom: 48px;
+    }
+
+    .newsletter-form {
+      width: min(100%, 620px);
+      display: grid;
+      grid-template-columns: 1fr 148px;
+      gap: 12px;
+      margin-bottom: 26px;
+    }
+
+    .newsletter-field {
+      display: flex;
+      align-items: center;
+      height: 52px;
+      border: 1px solid var(--border-strong);
+      background: rgba(255, 255, 255, 0.36);
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .newsletter-field:focus-within {
+      border-color: var(--fg1);
+      background: var(--surface);
+    }
+
+    .newsletter-input {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--fg1);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      letter-spacing: 0;
+      outline: none;
+      padding: 0 22px;
+    }
+
+    .newsletter-input::placeholder { color: var(--fg3); }
+
+    .newsletter-submit {
+      height: 52px;
+      border: 1px solid var(--fg1);
+      background: var(--fg1);
+      color: var(--fg-inverse);
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: background-color 0.2s ease, transform 0.2s var(--ease-expo);
+    }
+
+    .newsletter-submit:hover {
+      background: var(--brown-dark);
+      border-color: var(--brown-dark);
+      transform: translateY(-1px);
+    }
+
+    .newsletter-submit:active { transform: scale(0.98); }
+
+    .newsletter-note {
+      max-width: 600px;
+      min-height: 20px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--fg3);
+    }
+
+    .newsletter-note.is-success { color: var(--success); }
+
+    .newsletter-note a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* ── GOLD ACCENT VARIANT ── */
+    .newsletter-signup--gold {
+      background: var(--brown-dark);
+    }
+
+    .newsletter-signup--gold .newsletter-eyebrow { color: var(--gold); }
+    .newsletter-signup--gold .newsletter-title { color: var(--fg-inverse); }
+    .newsletter-signup--gold .newsletter-title em { color: var(--gold); }
+    .newsletter-signup--gold .newsletter-text { color: rgba(250, 250, 248, 0.72); }
+    .newsletter-signup--gold::before,
+    .newsletter-signup--gold::after { display: none; }
+
+    .newsletter-signup--gold .newsletter-field {
+      border-color: rgba(250,250,248,0.22);
+      background: rgba(250,250,248,0.08);
+    }
+
+    .newsletter-signup--gold .newsletter-field:focus-within {
+      border-color: var(--gold);
+      background: rgba(250,250,248,0.14);
+    }
+
+    .newsletter-signup--gold .newsletter-input {
+      color: var(--fg-inverse);
+    }
+
+    .newsletter-signup--gold .newsletter-input::placeholder {
+      color: rgba(250,250,248,0.38);
+    }
+
+    .newsletter-signup--gold .newsletter-submit {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--brown-dark);
+    }
+
+    .newsletter-signup--gold .newsletter-submit:hover {
+      background: var(--gold-hover);
+      border-color: var(--gold-hover);
+    }
+
+    .newsletter-signup--gold .newsletter-note {
+      color: rgba(250,250,248,0.42);
+    }
+
+    @media (max-width: 640px) {
+      .newsletter-signup { padding: 82px 24px 76px; }
+      .newsletter-form { grid-template-columns: 1fr; }
+      .newsletter-field, .newsletter-submit { height: 54px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Default: page background -->
+  <div class="specimen-label">Newsletter CTA — default (page background)</div>
+  <section class="newsletter-signup">
+    <div class="newsletter-inner">
+      <span class="newsletter-eyebrow">The Gaura Edit</span>
+      <h2 class="newsletter-title">First look at new<br><em>arrivals and atelier stories</em></h2>
+      <p class="newsletter-text">New designs, behind-the-scenes process, and early access to limited editions. No noise.</p>
+      <form class="newsletter-form" novalidate>
+        <div class="newsletter-field">
+          <input
+            class="newsletter-input"
+            type="email"
+            placeholder="Your email address"
+            autocomplete="email"
+            aria-label="Email address"
+          >
+        </div>
+        <button type="submit" class="newsletter-submit">Subscribe</button>
+      </form>
+      <p class="newsletter-note">
+        By subscribing you agree to our <a href="#">Privacy Policy</a>. Unsubscribe anytime.
+      </p>
+    </div>
+  </section>
+
+  <!-- Dark / gold variant -->
+  <div class="specimen-label" style="margin-top:40px">Newsletter CTA — dark (inverted sections, campaign pages)</div>
+  <section class="newsletter-signup newsletter-signup--gold">
+    <div class="newsletter-inner">
+      <span class="newsletter-eyebrow">The Gaura Edit</span>
+      <h2 class="newsletter-title">First look at new<br><em>arrivals and atelier stories</em></h2>
+      <p class="newsletter-text">New designs, behind-the-scenes process, and early access to limited editions. No noise.</p>
+      <form class="newsletter-form" novalidate>
+        <div class="newsletter-field">
+          <input
+            class="newsletter-input"
+            type="email"
+            placeholder="Your email address"
+            autocomplete="email"
+            aria-label="Email address"
+          >
+        </div>
+        <button type="submit" class="newsletter-submit">Subscribe</button>
+      </form>
+      <p class="newsletter-note">
+        By subscribing you agree to our <a href="#">Privacy Policy</a>. Unsubscribe anytime.
+      </p>
+    </div>
+  </section>
+
+  <script>
+    document.querySelectorAll('.newsletter-form').forEach(form => {
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const note = form.nextElementSibling;
+        note.textContent = 'You\'re in. First access to new arrivals coming your way.';
+        note.classList.add('is-success');
+      });
+    });
+  </script>
+</body>
+</html>

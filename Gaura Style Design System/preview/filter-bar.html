@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filter Bar — Gaura Style Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--surface-warm); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; padding: 40px 0 80px; }
+
+    .specimen-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      padding: 0 40px 14px;
+    }
+
+    .specimen { margin-bottom: 48px; }
+
+    /* ── REFINE / FILTER BAR ── */
+    .refine-bar {
+      background: var(--surface-white);
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .refine-inner {
+      max-width: var(--content-width);
+      margin-inline: auto;
+      padding: 14px var(--gutter);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .refine-label {
+      margin-right: 4px;
+      color: var(--fg2);
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    /* Pill with dropdown */
+    .refine-pill {
+      position: relative;
+      display: inline-flex;
+    }
+
+    .refine-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 0 18px;
+      background: transparent;
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      color: var(--fg1);
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease, transform 0.18s var(--ease-expo);
+    }
+
+    .refine-pill-btn:hover { border-color: var(--brown); color: var(--brown); }
+    .refine-pill-btn:active { transform: scale(0.97); }
+
+    .refine-pill-btn svg {
+      width: 12px; height: 12px;
+      stroke-width: 2.2;
+      flex-shrink: 0;
+      transition: transform 0.24s var(--ease-expo);
+    }
+
+    .refine-pill.is-open .refine-pill-btn svg,
+    .refine-pill:focus-within .refine-pill-btn svg { transform: rotate(180deg); }
+
+    /* Active/selected pill */
+    .refine-pill.is-selected .refine-pill-btn {
+      background: rgba(255, 207, 54, 0.22);
+      border-color: var(--brown-light);
+      color: var(--brown-dark);
+    }
+
+    .refine-pill-value { text-transform: none; letter-spacing: 0.02em; font-weight: 500; }
+
+    /* Dropdown menu */
+    .refine-menu {
+      position: absolute;
+      top: calc(100% + 9px);
+      left: 0;
+      z-index: 10;
+      min-width: 188px;
+      padding: 6px;
+      background: var(--surface-white);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      transition: opacity 0.22s var(--ease-expo), transform 0.22s var(--ease-expo), visibility 0.22s;
+    }
+
+    /* hover bridge so gap doesn't close menu */
+    .refine-menu::before {
+      content: '';
+      position: absolute;
+      top: -9px; left: 0; right: 0;
+      height: 9px;
+    }
+
+    .refine-menu--right { left: auto; right: 0; }
+
+    .refine-pill:hover .refine-menu,
+    .refine-pill:focus-within .refine-menu,
+    .refine-pill.is-open .refine-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .refine-menu-item {
+      text-align: left;
+      padding: 9px 14px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm);
+      color: var(--fg2);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      transition: background-color 0.18s ease, color 0.18s ease;
+    }
+
+    .refine-menu-item:hover { background: rgba(122, 92, 56, 0.10); color: var(--brown); }
+
+    .refine-menu-item.is-active {
+      background: rgba(255, 207, 54, 0.22);
+      color: var(--brown-dark);
+      font-weight: 600;
+    }
+
+    .refine-menu-divider {
+      height: 1px;
+      background: var(--border-default);
+      margin: 4px 6px;
+    }
+
+    /* Toggle pill (on/off, no dropdown) */
+    .refine-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 40px;
+      padding: 0 18px;
+      background: transparent;
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      color: var(--fg1);
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .refine-toggle:hover { border-color: var(--brown); color: var(--brown); }
+
+    .refine-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--border-strong);
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .refine-toggle.is-on {
+      border-color: var(--brown);
+      color: var(--brown);
+    }
+
+    .refine-toggle.is-on .refine-dot {
+      background: #2FAE5E;
+      box-shadow: 0 0 0 3px rgba(47, 174, 94, 0.18);
+    }
+
+    /* Meta: count + reset */
+    .refine-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      margin-left: auto;
+    }
+
+    .refine-count {
+      color: var(--fg2);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .refine-reset {
+      background: none;
+      border: none;
+      padding: 6px 2px;
+      color: var(--fg1);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .refine-reset:hover { color: var(--brown); }
+
+    .refine-reset:focus-visible,
+    .refine-pill-btn:focus-visible,
+    .refine-toggle:focus-visible,
+    .refine-menu-item:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Default state (no filters applied) -->
+  <div class="specimen">
+    <p class="specimen-label">Filter Bar — default (no active filters)</p>
+    <div class="refine-bar">
+      <div class="refine-inner">
+        <span class="refine-label">Filter:</span>
+
+        <div class="refine-pill">
+          <button class="refine-pill-btn" aria-haspopup="listbox" aria-expanded="false">
+            Metal
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="refine-menu" role="listbox">
+            <button class="refine-menu-item" role="option">Yellow Gold</button>
+            <button class="refine-menu-item" role="option">White Gold</button>
+            <button class="refine-menu-item" role="option">Rose Gold</button>
+            <button class="refine-menu-item" role="option">Sterling Silver</button>
+            <button class="refine-menu-item" role="option">Platinum</button>
+          </div>
+        </div>
+
+        <div class="refine-pill">
+          <button class="refine-pill-btn" aria-haspopup="listbox" aria-expanded="false">
+            Stone
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="refine-menu" role="listbox">
+            <button class="refine-menu-item" role="option">Diamond</button>
+            <button class="refine-menu-item" role="option">Sapphire</button>
+            <button class="refine-menu-item" role="option">Emerald</button>
+            <button class="refine-menu-item" role="option">Ruby</button>
+            <button class="refine-menu-item" role="option">No Stone</button>
+          </div>
+        </div>
+
+        <div class="refine-pill">
+          <button class="refine-pill-btn" aria-haspopup="listbox" aria-expanded="false">
+            Price
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="refine-menu refine-menu--right" role="listbox">
+            <button class="refine-menu-item" role="option">Under ₹10,000</button>
+            <button class="refine-menu-item" role="option">₹10,000 – ₹25,000</button>
+            <button class="refine-menu-item" role="option">₹25,000 – ₹50,000</button>
+            <button class="refine-menu-item" role="option">Above ₹50,000</button>
+          </div>
+        </div>
+
+        <div class="refine-pill">
+          <button class="refine-pill-btn" aria-haspopup="listbox" aria-expanded="false">
+            Sort
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="refine-menu refine-menu--right" role="listbox">
+            <button class="refine-menu-item is-active" role="option">Featured</button>
+            <button class="refine-menu-item" role="option">Newest</button>
+            <button class="refine-menu-item" role="option">Price: Low to High</button>
+            <button class="refine-menu-item" role="option">Price: High to Low</button>
+            <div class="refine-menu-divider"></div>
+            <button class="refine-menu-item" role="option">Best Selling</button>
+          </div>
+        </div>
+
+        <button class="refine-toggle" aria-pressed="false">
+          <span class="refine-dot" aria-hidden="true"></span>
+          In Stock Only
+        </button>
+
+        <div class="refine-meta">
+          <span class="refine-count">48 rings</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active filters state -->
+  <div class="specimen">
+    <p class="specimen-label">Filter Bar — active filters applied</p>
+    <div class="refine-bar">
+      <div class="refine-inner">
+        <span class="refine-label">Filter:</span>
+
+        <div class="refine-pill is-selected">
+          <button class="refine-pill-btn" aria-haspopup="listbox" aria-expanded="false">
+            Metal:
+            <span class="refine-pill-value">Yellow Gold</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="refine-menu" role="listbox">
+            <button class="refine-menu-item is-active" role="option">Yellow Gold</button>
+            <button class="refine-menu-item" role="option">White Gold</button>
+            <button class="refine-menu-item" role="option">Rose Gold</button>
+            <button class="refine-menu-item" role="option">Sterling Silver</button>
+            <button class="refine-menu-item" role="option">Platinum</button>
+          </div>
+        </div>
+
+        <div class="refine-pill">
+          <button class="refine-pill-btn" aria-haspopup="listbox" aria-expanded="false">
+            Stone
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="refine-menu" role="listbox">
+            <button class="refine-menu-item" role="option">Diamond</button>
+            <button class="refine-menu-item" role="option">Sapphire</button>
+          </div>
+        </div>
+
+        <div class="refine-pill">
+          <button class="refine-pill-btn" aria-haspopup="listbox" aria-expanded="false">
+            Price
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="refine-menu refine-menu--right" role="listbox">
+            <button class="refine-menu-item" role="option">Under ₹10,000</button>
+            <button class="refine-menu-item" role="option">₹10,000 – ₹25,000</button>
+          </div>
+        </div>
+
+        <div class="refine-pill">
+          <button class="refine-pill-btn" aria-haspopup="listbox" aria-expanded="false">
+            Sort
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="refine-menu refine-menu--right" role="listbox">
+            <button class="refine-menu-item is-active" role="option">Featured</button>
+            <button class="refine-menu-item" role="option">Newest</button>
+          </div>
+        </div>
+
+        <button class="refine-toggle is-on" aria-pressed="true">
+          <span class="refine-dot" aria-hidden="true"></span>
+          In Stock Only
+        </button>
+
+        <div class="refine-meta">
+          <span class="refine-count">12 rings</span>
+          <button class="refine-reset">Clear all</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Toggle is-on for toggle pills */
+    document.querySelectorAll('.refine-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const on = btn.classList.toggle('is-on');
+        btn.setAttribute('aria-pressed', on);
+      });
+    });
+  </script>
+</body>
+</html>

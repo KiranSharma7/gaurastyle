@@ -1,0 +1,1041 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart â€” Gaura Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="Gaura Style Design System/colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --content-width: 1440px;
+      --gutter: 40px;
+      --bar-h: 44px;
+      --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* Design-system focus ring */
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--gold); outline-offset: 3px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg1);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* â”€â”€â”€ ANNOUNCEMENT BAR â”€â”€â”€ */
+    .announcement-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: var(--bar-h);
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transform: translateY(-100%);
+      transition: transform 0.5s var(--ease-expo);
+    }
+    .announcement-bar.visible { transform: translateY(0); }
+    .announcement-bar.hidden { transform: translateY(-100%); pointer-events: none; }
+    .announcement-bar p {
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--fg1);
+    }
+    .announcement-bar a { color: var(--fg1); text-decoration: underline; text-underline-offset: 2px; }
+    .bar-dismiss {
+      position: absolute; right: 20px;
+      min-width: 40px; min-height: 40px;
+      background: none; border: none; cursor: pointer;
+      color: var(--fg1); font-size: 18px; line-height: 1;
+      opacity: 0.72; transition: opacity 0.16s ease, transform 0.16s ease;
+    }
+    .bar-dismiss:hover { opacity: 1; }
+    .bar-dismiss:active { transform: scale(0.96); }
+
+    /* â”€â”€â”€ NAVBAR â”€â”€â”€ */
+    .navbar {
+      position: fixed; left: 0; right: 0; z-index: 99;
+      top: var(--bar-h);
+      opacity: 0;
+      padding-block: 16px 22px;
+      background: rgba(250, 250, 248, 0.94);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      box-shadow: 0 1px 0 rgba(26,23,20,0.06), 0 4px 24px rgba(26,23,20,0.04);
+      transition-property: top, opacity, padding, transform;
+      transition-duration: 0.3s, 0.5s, 0.45s, 0.35s;
+      transition-timing-function: var(--ease-quart), ease, var(--ease-quart), var(--ease-quart);
+    }
+    .navbar.nav-hidden { transform: translateY(-200%); }
+    .navbar.visible { opacity: 1; }
+    .navbar.bar-gone { top: 0; }
+
+    .nav-inner {
+      position: relative;
+      max-width: var(--content-width);
+      margin-inline: auto;
+      display: flex; flex-direction: column; align-items: stretch;
+      gap: 18px; padding: 0 var(--gutter);
+      transition: gap 0.4s var(--ease-quart);
+    }
+
+    /* Utility row */
+    .nav-utility {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 22px;
+      transition: opacity 0.35s ease, height 0.4s var(--ease-quart), margin 0.4s var(--ease-quart);
+    }
+    .nav-util-link, .nav-util-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      min-height: 40px;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+      color: var(--fg1);
+      text-decoration: none; background: none; border: none;
+      padding: 4px 2px; cursor: pointer; position: relative;
+      transition: color 0.2s ease, transform 0.2s var(--ease-expo);
+    }
+    .nav-util-link:hover, .nav-util-btn:hover { color: var(--brown); }
+    .nav-util-btn:active { transform: scale(0.96); }
+    .nav-util-right { display: flex; align-items: center; gap: 26px; }
+    .nav-util-link svg, .nav-util-btn svg { width: 16px; height: 16px; stroke-width: 1.5; }
+
+    /* Wordmark */
+    .nav-logo { display: flex; justify-content: center; align-items: center; text-decoration: none; }
+    .nav-logo img {
+      height: 62px; width: auto; max-width: 76vw; object-fit: contain;
+      transition: height 0.45s var(--ease-quart);
+    }
+
+    /* Category links row */
+    .nav-links-row { display: flex; align-items: center; justify-content: center; gap: 0; }
+    .nav-links { display: flex; align-items: center; gap: 40px; list-style: none; }
+    .nav-link {
+      position: relative;
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none;
+      color: var(--fg1); padding: 8px 0; transition: color 0.2s ease;
+    }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: 0; left: 0; width: 100%;
+      height: 1px; background: var(--brown);
+      transform: scaleX(0); transform-origin: left center;
+      transition: transform 0.28s var(--ease-expo);
+    }
+    .nav-link:hover { color: var(--brown); }
+    .nav-link:hover::after { transform: scaleX(1); }
+    .nav-search {
+      margin-left: 36px; min-width: 40px; min-height: 40px;
+      background: none; border: none; cursor: pointer;
+      color: var(--fg1);
+      display: inline-flex; align-items: center; justify-content: center; padding: 6px;
+      transition: color 0.2s ease, transform 0.2s var(--ease-expo);
+    }
+    .nav-search:hover { color: var(--brown); transform: scale(1.08); }
+    .nav-search:active { transform: scale(0.96); }
+    .nav-search svg { width: 18px; height: 18px; stroke-width: 1.5; }
+
+    /* Cart badge */
+    .cart-count {
+      position: absolute; top: -2px; right: -8px;
+      background: var(--gold); color: var(--brown-dark);
+      width: 16px; height: 16px; border-radius: 50%;
+      font-size: 9px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Mobile nav */
+    @media (max-width: 720px) {
+      .navbar { padding-block: 12px 14px; }
+      .nav-inner { gap: 12px; padding-inline: 16px; }
+      .nav-utility { display: none; }
+      .nav-logo img { height: 40px; }
+      .nav-link { font-size: 11px; }
+      .nav-search { margin-left: 16px; }
+    }
+    @media (max-width: 920px) {
+      .nav-links { gap: 24px; overflow-x: auto; scrollbar-width: none; }
+      .nav-links::-webkit-scrollbar { display: none; }
+      .nav-links-row { justify-content: flex-start; overflow: hidden; }
+    }
+
+    /* â”€â”€ Progress â”€â”€ */
+    .progress {
+      display: flex; align-items: center; justify-content: center;
+      gap: var(--sp-5); padding: 14px var(--gutter);
+      background: var(--bg); border-bottom: 1px solid var(--border);
+    }
+    .prog-step {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3);
+    }
+    .prog-step.active { color: var(--fg1); }
+    .prog-sep { width: 28px; height: 1px; background: var(--border-strong); }
+
+    /* â”€â”€ Two-column layout â”€â”€ */
+    .cart-wrap {
+      max-width: 1180px; margin: 0 auto;
+      padding: var(--sp-9) var(--sp-7);
+      display: grid; grid-template-columns: 1fr 360px;
+      gap: var(--sp-11); align-items: start;
+    }
+
+    /* â”€â”€ Left column â”€â”€ */
+    .cart-col {}
+    .cart-heading {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 3vw, 42px);
+      font-weight: 300; line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--fg1); margin-bottom: var(--sp-7);
+    }
+    .cart-heading-count {
+      font-family: var(--font-mono); font-size: 15px;
+      color: var(--fg3); font-weight: 400;
+      margin-left: var(--sp-3);
+    }
+
+    /* Line items list */
+    .items-list { list-style: none; }
+    .line-item {
+      display: grid; grid-template-columns: 116px 1fr 160px;
+      gap: var(--sp-6); padding: var(--sp-6) 0;
+      border-bottom: 1px solid var(--border);
+      transition: opacity 250ms var(--ease-quart),
+                  transform 250ms var(--ease-quart);
+    }
+    .line-item.removing { opacity: 0; transform: translateX(14px); }
+    .li-img {
+      width: 116px; height: 145px;
+      background: var(--surface-warm);
+      border: 1px solid var(--border); overflow: hidden;
+    }
+    .li-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 420ms var(--ease-quart);
+    }
+    .li-img:hover img { transform: scale(1.04); }
+    .li-info {
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 2px 0;
+    }
+    .li-top {}
+    .li-coll {
+      font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--fg3); margin-bottom: var(--sp-2);
+    }
+    .li-name {
+      font-family: var(--font-display); font-size: 26px;
+      font-weight: 400; line-height: 1.18; color: var(--fg1);
+      margin-bottom: var(--sp-2);
+    }
+    .li-meta {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.06em; color: var(--fg2); text-transform: uppercase;
+    }
+    .li-note {
+      margin-top: var(--sp-3);
+      display: flex; align-items: center; gap: var(--sp-2);
+      font-family: var(--font-sans); font-size: 12px;
+      color: var(--fg3); line-height: 1.5;
+    }
+    .li-note-dot {
+      width: 4px; height: 4px; background: var(--brown-light);
+      border-radius: 50%; flex-shrink: 0;
+    }
+    .li-remove {
+      background: none; border: none; cursor: pointer;
+      font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--fg2); padding: 0;
+      text-decoration: underline; text-underline-offset: 2px;
+      align-self: flex-end;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .li-remove:hover { color: var(--error); }
+    .li-right {
+      display: flex; flex-direction: column;
+      align-items: flex-end; justify-content: space-between;
+      padding: 2px 0;
+    }
+    .li-price {
+      font-family: var(--font-mono); font-size: 18px; color: var(--fg1);
+    }
+    .qty-ctl {
+      display: inline-flex; align-items: stretch;
+      border: 1px solid var(--border);
+    }
+    .qb {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer;
+      font-size: 17px; font-weight: 300; line-height: 1;
+      color: var(--fg2);
+      transition: all var(--dur-fast) var(--ease-out);
+    }
+    .qb:hover { background: var(--surface-warm); color: var(--fg1); }
+    .qb:disabled { opacity: 0.28; cursor: not-allowed; }
+    .qb:disabled:hover { background: none; color: var(--fg2); }
+    .qn {
+      width: 38px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 13px; color: var(--fg1);
+      border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+      user-select: none;
+    }
+
+    /* Empty state */
+    .cart-empty {
+      display: none; flex-direction: column;
+      align-items: flex-start; padding: var(--sp-9) 0 0;
+    }
+    .cart-empty.show { display: flex; }
+    .empty-h {
+      font-family: var(--font-display); font-size: 36px;
+      font-weight: 300; letter-spacing: -0.01em; color: var(--fg1);
+      margin-bottom: var(--sp-4);
+    }
+    .empty-copy {
+      font-family: var(--font-sans); font-size: 14px;
+      line-height: var(--lh-relaxed); color: var(--fg2);
+      max-width: 38ch; margin-bottom: var(--sp-7);
+    }
+    .empty-featured {
+      width: 100%; margin-top: var(--sp-10);
+      padding-top: var(--sp-8); border-top: 1px solid var(--border);
+    }
+    .ef-eyebrow {
+      font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3);
+      margin-bottom: var(--sp-6);
+    }
+    .ef-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6);
+    }
+    .ef-card { text-decoration: none; display: block; }
+    .ef-img {
+      width: 100%; aspect-ratio: 3 / 4; overflow: hidden;
+      background: var(--surface-warm); border: 1px solid var(--border);
+      margin-bottom: var(--sp-4);
+    }
+    .ef-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 420ms var(--ease-quart);
+    }
+    .ef-card:hover .ef-img img { transform: scale(1.04); }
+    .ef-coll {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--fg3); margin-bottom: var(--sp-2);
+    }
+    .ef-name {
+      font-family: var(--font-display); font-size: 22px; font-weight: 400;
+      line-height: 1.2; color: var(--fg1); margin-bottom: var(--sp-1);
+    }
+    .ef-price {
+      font-family: var(--font-mono); font-size: 13px; color: var(--fg2);
+    }
+    @media (max-width: 600px) {
+      .ef-grid { grid-template-columns: repeat(2, 1fr); gap: var(--sp-5); }
+    }
+    .btn-ghost {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: var(--sp-3); padding: 0 var(--sp-7); height: 50px;
+      background: transparent; color: var(--fg1);
+      border: 1px solid var(--fg1);
+      font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      cursor: pointer; text-decoration: none; border-radius: 0;
+      transition: all var(--dur-base) var(--ease-out);
+    }
+    .btn-ghost:hover { background: var(--fg1); color: var(--fg-inverse); }
+
+    /* Back to shop */
+    .back-link {
+      display: inline-flex; align-items: center; gap: var(--sp-2);
+      font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--fg2); text-decoration: none; margin-top: var(--sp-7);
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .back-link:hover { color: var(--fg1); }
+    .back-arrow { transition: transform var(--dur-fast) var(--ease-expo); }
+    .back-link:hover .back-arrow { transform: translateX(-3px); }
+
+    /* â”€â”€ Order summary (right sticky column) â”€â”€ */
+    .order-summary {
+      position: sticky; top: calc(64px + var(--sp-6));
+      background: var(--surface-warm); padding: var(--sp-7);
+    }
+    .os-title {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.24em; text-transform: uppercase; color: var(--fg1);
+      padding-bottom: var(--sp-5); border-bottom: 1px solid var(--border);
+      margin-bottom: var(--sp-5);
+    }
+    .os-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: var(--sp-4);
+    }
+    .os-row-label { font-family: var(--font-sans); font-size: 13px; color: var(--fg2); }
+    .os-row-value { font-family: var(--font-mono); font-size: 14px; color: var(--fg1); }
+    .os-ship-note { font-family: var(--font-sans); font-size: 12px; color: var(--fg3); font-style: italic; }
+    .os-divider { height: 1px; background: var(--border-strong); margin: var(--sp-5) 0; }
+    .os-total-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: var(--sp-6);
+    }
+    .os-total-label {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg1);
+    }
+    .os-total-val { font-family: var(--font-mono); font-size: 24px; color: var(--fg1); }
+    .os-checkout {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; height: 54px;
+      background: var(--gold); color: var(--fg1); border: none;
+      font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer; border-radius: 0;
+      transition: background var(--dur-fast) var(--ease-out),
+                  transform var(--dur-fast) var(--ease-out);
+      margin-bottom: var(--sp-4);
+    }
+    .os-checkout:hover { background: var(--gold-hover); transform: translateY(-1px); }
+    .os-checkout:active { transform: scale(0.99); }
+    .os-secure {
+      display: flex; align-items: center; justify-content: center; gap: var(--sp-2);
+      font-family: var(--font-sans); font-size: 11px; color: var(--fg3);
+    }
+    .os-notes {
+      margin-top: var(--sp-5); padding-top: var(--sp-5);
+      border-top: 1px solid var(--border);
+    }
+    .os-note-item {
+      display: flex; align-items: flex-start; gap: var(--sp-3);
+      font-family: var(--font-sans); font-size: 12px;
+      color: var(--fg3); line-height: 1.5; margin-bottom: var(--sp-3);
+    }
+    .os-note-item:last-child { margin-bottom: 0; }
+    .os-note-dot {
+      width: 4px; height: 4px; background: var(--brown-light);
+      border-radius: 50%; flex-shrink: 0; margin-top: 6px;
+    }
+
+    /* â”€â”€ Mobile â”€â”€ */
+    @media (max-width: 920px) {
+      .cart-wrap {
+        grid-template-columns: 1fr; gap: var(--sp-8); padding: var(--sp-7) var(--sp-5);
+      }
+      .order-summary { position: static; }
+    }
+    @media (max-width: 600px) {
+      .line-item { grid-template-columns: 88px 1fr; grid-template-rows: auto auto; }
+      .li-img { width: 88px; height: 110px; }
+      .li-right {
+        grid-column: 2; flex-direction: row;
+        align-items: center; justify-content: space-between;
+      }
+      .cart-wrap { padding: var(--sp-6) var(--sp-5); }
+      .order-summary { padding: var(--sp-6); }
+    }
+
+    /* â”€â”€â”€ SITE FOOTER â”€â”€â”€ */
+    .site-footer {
+      background: var(--surface-warm, #F5F1EA);
+      color: var(--fg1, #1A1714);
+      border-top: 1px solid var(--border-default, #E8E3DA);
+      padding: 76px var(--gutter) 28px;
+    }
+    .footer-inner { max-width: var(--content-width); margin-inline: auto; }
+    .footer-main {
+      display: grid;
+      grid-template-columns: minmax(280px, 1.25fr) repeat(4, minmax(132px, 0.5fr));
+      gap: clamp(34px, 4vw, 72px);
+      align-items: start; padding-bottom: 56px;
+    }
+    .footer-brand { max-width: 390px; }
+    .footer-logo { display: inline-flex; align-items: center; margin-bottom: 28px; }
+    .footer-logo img { width: 220px; height: auto; display: block; }
+    .footer-statement {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 3vw, 46px);
+      font-weight: 300; line-height: 1.06; letter-spacing: -0.02em;
+      color: var(--fg1, #1A1714); margin-bottom: 24px;
+    }
+    .footer-statement em { font-style: italic; color: var(--brown, #7A5C38); }
+    .footer-copy {
+      max-width: 330px; font-family: var(--font-sans);
+      font-size: 14px; line-height: 1.75;
+      color: var(--fg2, #6B5E57); margin-bottom: 30px;
+    }
+    .footer-contact {
+      display: grid; gap: 9px;
+      font-family: var(--font-sans); font-size: 13px;
+      line-height: 1.55; color: var(--fg2, #6B5E57);
+    }
+    .footer-contact a { color: inherit; text-decoration: none; transition: color 0.2s ease; }
+    .footer-contact a:hover { color: var(--fg1, #1A1714); }
+    .footer-heading {
+      font-family: var(--font-sans); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.18em; line-height: 1.4; text-transform: uppercase;
+      color: var(--fg1, #1A1714); margin-bottom: 18px;
+    }
+    .footer-heading::after {
+      content: ''; display: block; width: 24px; height: 1px;
+      background: var(--gold, #FFCF36); margin-top: 8px;
+    }
+    .footer-list { list-style: none; display: grid; gap: 12px; }
+    .footer-link {
+      position: relative; display: inline-flex; width: fit-content;
+      color: var(--fg2, #6B5E57); font-family: var(--font-sans);
+      font-size: 13px; line-height: 1.35; text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s var(--ease-expo);
+    }
+    .footer-link::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: -4px;
+      height: 1px; background: var(--brown, #7A5C38);
+      transform: scaleX(0); transform-origin: left center;
+      transition: transform 0.32s var(--ease-expo);
+    }
+    .footer-link:hover { color: var(--fg1, #1A1714); transform: translateX(2px); }
+    .footer-link:hover::after { transform: scaleX(1); }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 28px; border-top: 1px solid rgba(255,207,54,0.32); padding-top: 24px;
+    }
+    .footer-legal {
+      display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+      font-family: var(--font-sans); font-size: 12px;
+      line-height: 1.4; color: var(--fg2, #6B5E57);
+    }
+    .footer-legal a { color: inherit; text-decoration: none; transition: color 0.2s ease; }
+    .footer-legal a:hover { color: var(--fg1, #1A1714); }
+    .footer-social {
+      display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+    }
+    .social-link {
+      width: 38px; height: 38px; display: grid; place-items: center;
+      border: 1px solid var(--border-strong, #C8BFB4);
+      border-radius: var(--radius-sm, 4px);
+      color: var(--fg1, #1A1714); text-decoration: none;
+      transition:
+        background-color 0.2s ease, border-color 0.2s ease,
+        color 0.2s ease, transform 0.24s var(--ease-expo);
+    }
+    .social-link:hover {
+      background: var(--gold, #FFCF36); border-color: var(--gold, #FFCF36);
+      color: var(--brown-dark, #5A4228); transform: translateY(-2px);
+    }
+    .social-link:focus-visible,
+    .footer-link:focus-visible,
+    .footer-contact a:focus-visible,
+    .footer-legal a:focus-visible {
+      outline: 2px solid var(--gold, #FFCF36); outline-offset: 4px;
+    }
+    .social-link svg {
+      width: 17px; height: 17px; fill: none;
+      stroke: currentColor; stroke-width: 1.7;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+    .social-link .icon-fill { fill: currentColor; stroke: none; }
+    @media (max-width: 1080px) {
+      .footer-main {
+        grid-template-columns: minmax(260px, 1fr) repeat(2, minmax(160px, 0.55fr));
+      }
+    }
+    @media (max-width: 760px) {
+      .site-footer { padding: 62px 24px 26px; }
+      .footer-main { grid-template-columns: 1fr 1fr; gap: 36px 28px; }
+      .footer-brand { grid-column: 1 / -1; }
+      .footer-bottom { align-items: flex-start; flex-direction: column-reverse; }
+      .footer-social { justify-content: flex-start; }
+    }
+    @media (max-width: 500px) {
+      .footer-main { grid-template-columns: 1fr; padding-bottom: 42px; }
+      .footer-statement { font-size: 34px; }
+      .footer-legal { gap: 12px 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-logo img, .nav-utility, .nav-inner, .navbar { transition: none !important; }
+      .footer-link, .social-link, .footer-contact a { transition: none; }
+      .footer-link:hover, .social-link:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Announcement Bar -->
+<div class="announcement-bar" id="announcementBar" role="banner">
+  <p>New Summer Arrivals. <a href="#">Shop Now</a></p>
+  <button class="bar-dismiss" id="barDismiss" aria-label="Dismiss announcement">Ã—</button>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar" aria-label="Main navigation">
+  <div class="nav-inner">
+    <div class="nav-utility">
+      <a href="#stores" class="nav-util-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Stores</span>
+      </a>
+      <div class="nav-util-right">
+        <a href="#login" class="nav-util-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Login</span>
+        </a>
+        <button class="nav-util-btn" aria-label="Wishlist (0 items)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <button class="nav-util-btn" aria-label="Cart (2 items)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-count" data-cart-count aria-hidden="true">2</span>
+        </button>
+      </div>
+    </div>
+
+    <a href="hero-v1-dark.html" class="nav-logo" aria-label="Gaura Style home">
+      <img src="logo.webp" alt="Gaura Style" width="724" height="132">
+    </a>
+
+    <div class="nav-links-row">
+      <ul class="nav-links" role="list">
+        <li><a href="#" class="nav-link">New In</a></li>
+        <li><a href="#" class="nav-link">Rings</a></li>
+        <li><a href="#" class="nav-link">Earrings</a></li>
+        <li><a href="#" class="nav-link">Bracelets</a></li>
+        <li><a href="#" class="nav-link">Pendants</a></li>
+        <li><a href="#" class="nav-link">Brooches</a></li>
+        <li><a href="#" class="nav-link">World of Gaura</a></li>
+      </ul>
+      <button class="nav-search" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Progress indicator -->
+<div class="progress" role="navigation" aria-label="Checkout steps" style="margin-top: calc(var(--bar-h) + var(--nav-h) + 36px);">
+  <span class="prog-step active">Cart</span>
+  <div class="prog-sep"></div>
+  <span class="prog-step">Checkout</span>
+  <div class="prog-sep"></div>
+  <span class="prog-step">Complete</span>
+</div>
+
+<!-- Main -->
+<main>
+  <div class="cart-wrap">
+
+    <!-- Left: Items -->
+    <div class="cart-col">
+      <h1 class="cart-heading">
+        Your Cart
+        <span class="cart-heading-count" id="itemCount">(2)</span>
+      </h1>
+
+      <ul class="items-list" id="itemsList">
+
+        <!-- Item 1 â€” Soleil Ring -->
+        <li class="line-item" data-id="i1" data-base="485">
+          <div class="li-img">
+            <img src="./prototype-assets/Rings/ChatGPT%20Image%20May%2027%2C%202026%2C%2002_47_31%20PM.png"
+                 alt="Soleil Ring in 18K gold, delicate tapered band with sun motif"
+                 loading="eager">
+          </div>
+          <div class="li-info">
+            <div class="li-top">
+              <p class="li-coll">Gold Collection</p>
+              <h2 class="li-name">Soleil Ring</h2>
+              <p class="li-meta">18K Gold Â· Size 5Â½</p>
+              <p class="li-note">
+                <span class="li-note-dot"></span>
+                Crafted to order Â· Ships in 3â€“5 weeks
+              </p>
+            </div>
+            <button class="li-remove" onclick="removeItem('i1')">Remove</button>
+          </div>
+          <div class="li-right">
+            <span class="li-price" id="price-i1">$485</span>
+            <div class="qty-ctl">
+              <button class="qb" id="minus-i1" onclick="changeQty('i1',-1)" disabled>âˆ’</button>
+              <span class="qn" id="qty-i1">1</span>
+              <button class="qb" onclick="changeQty('i1',1)">+</button>
+            </div>
+          </div>
+        </li>
+
+        <!-- Item 2 â€” Crescent Studs -->
+        <li class="line-item" data-id="i2" data-base="295">
+          <div class="li-img">
+            <img src="./prototype-assets/Rings/ChatGPT%20Image%20May%2027%2C%202026%2C%2002_47_34%20PM.png"
+                 alt="Crescent Stud Earrings in 18K gold, minimal half-moon silhouette"
+                 loading="lazy">
+          </div>
+          <div class="li-info">
+            <div class="li-top">
+              <p class="li-coll">Gold Collection</p>
+              <h2 class="li-name">Crescent Studs</h2>
+              <p class="li-meta">18K Gold Â· Pair</p>
+              <p class="li-note">
+                <span class="li-note-dot"></span>
+                Crafted to order Â· Ships in 2â€“4 weeks
+              </p>
+            </div>
+            <button class="li-remove" onclick="removeItem('i2')">Remove</button>
+          </div>
+          <div class="li-right">
+            <span class="li-price" id="price-i2">$295</span>
+            <div class="qty-ctl">
+              <button class="qb" id="minus-i2" onclick="changeQty('i2',-1)" disabled>âˆ’</button>
+              <span class="qn" id="qty-i2">1</span>
+              <button class="qb" onclick="changeQty('i2',1)">+</button>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+
+      <!-- Empty state -->
+      <div class="cart-empty" id="emptyState">
+        <h2 class="empty-h">Your cart is empty.</h2>
+        <p class="empty-copy">
+          Nothing here yet. Begin with one of these, or browse the full collection.
+        </p>
+        <a href="shop-v1-dark.html" class="btn-ghost">Browse the Collection</a>
+
+        <div class="empty-featured">
+          <p class="ef-eyebrow">Pieces to begin with</p>
+          <div class="ef-grid">
+            <a href="product-v1.html" class="ef-card">
+              <div class="ef-img">
+                <img src="./prototype-assets/Rings/ChatGPT%20Image%20May%2027%2C%202026%2C%2002_47_25%20PM.png"
+                     alt="Aurora Band in 18K gold" loading="lazy">
+              </div>
+              <p class="ef-coll">Gold Collection</p>
+              <h3 class="ef-name">Aurora Band</h3>
+              <span class="ef-price">$520</span>
+            </a>
+            <a href="product-v1.html" class="ef-card">
+              <div class="ef-img">
+                <img src="./prototype-assets/Rings/ChatGPT%20Image%20May%2027%2C%202026%2C%2002_47_27%20PM.png"
+                     alt="LumiÃ¨re Ring in 18K gold" loading="lazy">
+              </div>
+              <p class="ef-coll">Gold Collection</p>
+              <h3 class="ef-name">LumiÃ¨re Ring</h3>
+              <span class="ef-price">$380</span>
+            </a>
+            <a href="product-v1.html" class="ef-card">
+              <div class="ef-img">
+                <img src="./prototype-assets/Rings/ChatGPT%20Image%20May%2027%2C%202026%2C%2002_47_39%20PM.png"
+                     alt="Halo Solitaire in 18K gold" loading="lazy">
+              </div>
+              <p class="ef-coll">Gold Collection</p>
+              <h3 class="ef-name">Halo Solitaire</h3>
+              <span class="ef-price">$640</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <a href="cart-drawer.html" class="back-link">
+        <svg class="back-arrow" width="14" height="10" viewBox="0 0 14 10"
+             fill="none" stroke="currentColor" stroke-width="1.25">
+          <path d="M5 1L1 5l4 4M1 5h12"/>
+        </svg>
+        Continue Shopping
+      </a>
+    </div>
+
+    <!-- Right: Order summary -->
+    <aside class="order-summary" aria-label="Order summary">
+      <p class="os-title">Order Summary</p>
+
+      <div class="os-row">
+        <span class="os-row-label">Subtotal</span>
+        <span class="os-row-value" id="osSubtotal">$780</span>
+      </div>
+      <div class="os-row">
+        <span class="os-row-label">Shipping</span>
+        <span class="os-ship-note">Calculated at checkout</span>
+      </div>
+      <div class="os-row">
+        <span class="os-row-label">Duties &amp; taxes</span>
+        <span class="os-ship-note">Calculated at checkout</span>
+      </div>
+
+      <div class="os-divider"></div>
+
+      <div class="os-total-row">
+        <span class="os-total-label">Estimated Total</span>
+        <span class="os-total-val" id="osTotal">$780</span>
+      </div>
+
+      <a class="os-checkout" href="checkout.html">Proceed to Checkout</a>
+
+      <div class="os-secure">
+        <svg width="11" height="13" viewBox="0 0 11 13" fill="none"
+             stroke="currentColor" stroke-width="1.1">
+          <path d="M5.5 1L1 3.2V6.8c0 2.8 2.1 4.6 4.5 5.4 2.4-.8 4.5-2.6 4.5-5.4V3.2L5.5 1z"/>
+        </svg>
+        SSL-encrypted Â· Secure payment
+      </div>
+
+      <div class="os-notes">
+        <div class="os-note-item">
+          <span class="os-note-dot"></span>
+          Each piece is crafted to order. Production begins upon payment.
+        </div>
+        <div class="os-note-item">
+          <span class="os-note-dot"></span>
+          Free returns within 14 days of delivery.
+        </div>
+        <div class="os-note-item">
+          <span class="os-note-dot"></span>
+          All prices in USD. International duties may apply.
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<!-- Site Footer -->
+<footer class="site-footer" id="site-footer" aria-labelledby="footerTitle">
+  <div class="footer-inner">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <a class="footer-logo" href="hero-v1-dark.html" aria-label="Gaura Style home">
+          <img src="logo.webp" alt="Gaura Style" width="138" height="60" loading="lazy">
+        </a>
+        <p class="footer-copy">Designed for women who choose their own signatures. Explore rings, gems, and gifts shaped with warmth, confidence, and craft.</p>
+        <address class="footer-contact">
+          <span>Gaura Style Studio, Kathmandu, Nepal</span>
+          <a href="mailto:care@gaurastyle.com">care@gaurastyle.com</a>
+          <a href="tel:+9779800000000">+977 980 000 0000</a>
+        </address>
+      </div>
+
+      <nav class="footer-col" aria-label="Shop">
+        <h3 class="footer-heading">Shop</h3>
+        <ul class="footer-list">
+          <li><a class="footer-link" href="#rings">Rings</a></li>
+          <li><a class="footer-link" href="#necklaces">Necklaces</a></li>
+          <li><a class="footer-link" href="#earrings">Earrings</a></li>
+          <li><a class="footer-link" href="#bracelets">Bracelets</a></li>
+          <li><a class="footer-link" href="#new-arrivals">New Arrivals</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-label="Collections">
+        <h3 class="footer-heading">Collections</h3>
+        <ul class="footer-list">
+          <li><a class="footer-link" href="#statement-rings">Statement Rings</a></li>
+          <li><a class="footer-link" href="#gemstone-edit">Gemstone Edit</a></li>
+          <li><a class="footer-link" href="#gift-guide">Gift Guide</a></li>
+          <li><a class="footer-link" href="#wedding">Wedding</a></li>
+          <li><a class="footer-link" href="#bestsellers">Bestsellers</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-label="Support">
+        <h3 class="footer-heading">Support</h3>
+        <ul class="footer-list">
+          <li><a class="footer-link" href="#contact">Contact Us</a></li>
+          <li><a class="footer-link" href="#shipping">Shipping</a></li>
+          <li><a class="footer-link" href="#returns">Returns</a></li>
+          <li><a class="footer-link" href="#size-guide">Ring Size Guide</a></li>
+          <li><a class="footer-link" href="#care">Jewelry Care</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-label="Company">
+        <h3 class="footer-heading">Company</h3>
+        <ul class="footer-list">
+          <li><a class="footer-link" href="#about">About Gaura</a></li>
+          <li><a class="footer-link" href="#craft">Our Craft</a></li>
+          <li><a class="footer-link" href="#stores">Stores</a></li>
+          <li><a class="footer-link" href="#journal">Journal</a></li>
+          <li><a class="footer-link" href="#wholesale">Wholesale</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        <span>&copy; 2026 Gaura Style.</span>
+        <a href="#privacy">Privacy Policy</a>
+        <a href="#terms">Terms of Use</a>
+        <a href="#accessibility">Accessibility</a>
+        <a href="#us">US</a>
+        <a href="#jp">Japan</a>
+        <a href="#in">India</a>
+        <a href="#ru">Russia</a>
+      </div>
+
+      <div class="footer-social" aria-label="Social media">
+        <a class="social-link" href="https://www.instagram.com/" aria-label="Gaura Style on Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4.5" y="4.5" width="15" height="15" rx="4"></rect>
+            <circle cx="12" cy="12" r="3.6"></circle>
+            <circle class="icon-fill" cx="16.9" cy="7.1" r="1"></circle>
+          </svg>
+        </a>
+        <a class="social-link" href="https://www.facebook.com/" aria-label="Gaura Style on Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14.5 8H16V5.4C15.3 5.3 14.7 5.2 13.8 5.2C11.8 5.2 10.5 6.4 10.5 8.7V11H8.3V14H10.5V20H13.6V14H15.9L16.3 11H13.6V9C13.6 8.3 13.8 8 14.5 8Z"></path>
+          </svg>
+        </a>
+        <a class="social-link" href="https://www.pinterest.com/" aria-label="Gaura Style on Pinterest">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M11.7 14.2C11.2 16.4 10.6 18.5 9.2 19.7C8.7 16.8 9.9 14.6 10.4 12.2C9.5 10.7 10.5 7.7 12.5 8.5C15 9.5 10.4 14.6 13.5 15.2C16.7 15.8 18 9.6 16 7.6C13.2 4.8 7.9 7.5 8.6 11.5C8.8 12.5 9.8 12.8 9.1 14.2C7.1 13.7 6.5 12.1 6.6 10.1C6.8 6.8 9.6 4.5 12.5 4.2C16.2 3.8 19.7 5.6 20.2 9.1C20.8 13 18.5 17.2 14.4 16.9C13.3 16.8 12.8 16.3 11.7 14.2Z"></path>
+          </svg>
+        </a>
+        <a class="social-link" href="https://www.tiktok.com/" aria-label="Gaura Style on TikTok">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15.4 4.5C15.8 7.1 17.3 8.7 19.5 8.9V12C18 12 16.6 11.5 15.4 10.7V15.8C15.4 18.4 13.3 20.5 10.7 20.5C8.1 20.5 6 18.5 6 15.9C6 13.2 8.2 11.2 10.9 11.2C11.3 11.2 11.7 11.2 12.1 11.4V14.6C11.7 14.3 11.3 14.2 10.8 14.2C9.8 14.2 9 14.9 9 15.9C9 16.9 9.8 17.6 10.8 17.6C11.8 17.6 12.5 16.8 12.5 15.8V4.5H15.4Z"></path>
+          </svg>
+        </a>
+        <a class="social-link" href="https://www.youtube.com/" aria-label="Gaura Style on YouTube">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12C21 9.8 20.8 8.4 20.4 7.8C20 7.2 19.4 7 18.4 6.9C16.7 6.8 14.6 6.8 12 6.8C9.4 6.8 7.3 6.8 5.6 6.9C4.6 7 4 7.2 3.6 7.8C3.2 8.4 3 9.8 3 12C3 14.2 3.2 15.6 3.6 16.2C4 16.8 4.6 17 5.6 17.1C7.3 17.2 9.4 17.2 12 17.2C14.6 17.2 16.7 17.2 18.4 17.1C19.4 17 20 16.8 20.4 16.2C20.8 15.6 21 14.2 21 12Z"></path>
+            <path class="icon-fill" d="M10.5 9.5V14.5L14.8 12L10.5 9.5Z"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // â”€â”€ Navbar + announcement bar â”€â”€
+  const bar = document.getElementById('announcementBar');
+  const nav = document.getElementById('navbar');
+  const dismiss = document.getElementById('barDismiss');
+  let lastScrollY = 0;
+
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      bar.classList.add('visible');
+      nav.classList.add('visible');
+      lastScrollY = window.scrollY;
+    }, 80);
+  });
+
+  dismiss.addEventListener('click', () => {
+    bar.classList.add('hidden');
+    nav.classList.add('bar-gone');
+  });
+
+  let rafPending = false;
+  window.addEventListener('scroll', () => {
+    if (rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(() => {
+      const currentY = window.scrollY;
+      if (currentY <= 80) {
+        nav.classList.remove('nav-hidden');
+      } else if (currentY > lastScrollY) {
+        nav.classList.add('nav-hidden');
+      } else {
+        nav.classList.remove('nav-hidden');
+      }
+      lastScrollY = currentY;
+      rafPending = false;
+    });
+  }, { passive: true });
+
+  // â”€â”€ Cart logic â”€â”€
+  const state = {
+    i1: { base: 485, qty: 1 },
+    i2: { base: 295, qty: 1 }
+  };
+
+  function recalc() {
+    const total = Object.values(state).reduce((s, v) => s + v.base * v.qty, 0);
+    const fmt = n => '$' + n.toLocaleString();
+    document.getElementById('osSubtotal').textContent = fmt(total);
+    document.getElementById('osTotal').textContent = fmt(total);
+    const count = Object.keys(state).length;
+    document.getElementById('itemCount').textContent = '(' + count + ')';
+  }
+
+  function changeQty(id, delta) {
+    const item = state[id];
+    const next = item.qty + delta;
+    if (next < 1) return;
+    item.qty = next;
+    document.getElementById('qty-' + id).textContent = next;
+    document.getElementById('minus-' + id).disabled = next <= 1;
+    document.getElementById('price-' + id).textContent =
+      '$' + (item.base * next).toLocaleString();
+    recalc();
+  }
+
+  function removeItem(id) {
+    const el = document.querySelector(`[data-id="${id}"]`);
+    if (!el) return;
+    el.classList.add('removing');
+    setTimeout(() => {
+      el.remove();
+      delete state[id];
+      recalc();
+      if (Object.keys(state).length === 0) showEmpty();
+    }, 270);
+  }
+
+  function showEmpty() {
+    document.getElementById('itemsList').style.display = 'none';
+    document.getElementById('emptyState').classList.add('show');
+    document.getElementById('itemCount').textContent = '(0)';
+    document.querySelector('.cart-heading').style.display = 'none';
+    document.querySelector('.order-summary').style.display = 'none';
+    document.querySelector('.back-link').style.display = 'none';
+    document.querySelector('.cart-wrap').style.gridTemplateColumns = '1fr';
+  }
+</script>
+
+<!-- ─── PROTOTYPE NAV ─── -->
+<style>
+  .proto-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+    display: flex; align-items: center; gap: 0;
+    background: #1A1714; border-top: 1px solid #2E2925;
+    font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .proto-nav__label {
+    padding: 0 14px; color: #5A4228; white-space: nowrap; border-right: 1px solid #2E2925;
+    font-size: 9px; letter-spacing: 0.12em; line-height: 40px;
+  }
+  .proto-nav a {
+    display: block; padding: 0 16px; line-height: 40px; color: #A8988E;
+    text-decoration: none; border-right: 1px solid #2E2925; transition: color 0.15s;
+    white-space: nowrap;
+  }
+  .proto-nav a:hover { color: #FAFAF8; }
+  .proto-nav a[aria-current="page"] { color: #FFCF36; }
+</style>
+<nav class="proto-nav" aria-label="Prototype navigation">
+  <span class="proto-nav__label">Prototype</span>
+  <a href="./hero-v1-dark.html">Home</a>
+  <a href="./shop-v1-dark.html">Shop</a>
+  <a href="./product-v1.html">Product</a>
+  <a href="./cart-page.html" aria-current="page">Cart</a>
+  <a href="./checkout.html">Checkout</a>
+  <a href="./thank-you.html">Thank You</a>
+</nav>
+</body>
+</html>

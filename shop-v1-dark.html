@@ -1,0 +1,2619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gaura Style - Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="./Gaura Style Design System/colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --content-width: 1440px;
+      --gutter: 40px;
+      --nav-h: 92px;
+      --bar-h: 44px;
+      --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg1);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: inherit; }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .announcement-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: var(--bar-h);
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transform: translateY(-100%);
+      transition: transform 0.5s var(--ease-expo);
+    }
+
+    .announcement-bar.visible { transform: translateY(0); }
+
+    .announcement-bar.hidden {
+      transform: translateY(-100%);
+      pointer-events: none;
+    }
+
+    .announcement-bar p {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg1);
+    }
+
+    .announcement-bar a {
+      color: var(--fg1);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .bar-dismiss {
+      position: absolute;
+      right: 20px;
+      min-width: 40px;
+      min-height: 40px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--fg1);
+      font-size: 18px;
+      line-height: 1;
+      opacity: 0.72;
+      transition-property: opacity, transform;
+      transition-duration: 0.16s;
+      transition-timing-function: ease;
+    }
+
+    .bar-dismiss:hover { opacity: 1; }
+    .bar-dismiss:active { transform: scale(0.96); }
+
+    .navbar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      top: var(--bar-h);
+      opacity: 0;
+      padding-block: 16px 22px;
+      transition-property: top, background, backdrop-filter, box-shadow, opacity, padding;
+      transition-duration: 0.3s, 0.4s, 0.4s, 0.4s, 0.5s, 0.45s;
+      transition-timing-function: var(--ease-quart), ease, ease, ease, ease, var(--ease-quart);
+    }
+
+    .navbar.visible { opacity: 1; }
+    .navbar.bar-gone { top: 0; }
+
+    .nav-inner {
+      position: relative;
+      max-width: var(--content-width);
+      margin-inline: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 18px;
+      padding: 0 var(--gutter);
+      transition-property: gap;
+      transition-duration: 0.4s;
+      transition-timing-function: var(--ease-quart);
+    }
+
+    .nav-utility {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 22px;
+      transition-property: opacity, height, margin;
+      transition-duration: 0.35s, 0.4s, 0.4s;
+      transition-timing-function: ease, var(--ease-quart), var(--ease-quart);
+    }
+
+    .nav-util-link,
+    .nav-util-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 40px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: rgba(250, 250, 248, 0.92);
+      text-decoration: none;
+      background: none;
+      border: none;
+      padding: 4px 2px;
+      cursor: pointer;
+      position: relative;
+      transition-property: color, transform;
+      transition-duration: 0.2s;
+      transition-timing-function: ease, var(--ease-expo);
+    }
+
+    .nav-util-link:hover,
+    .nav-util-btn:hover { color: var(--gold); }
+
+    .nav-util-btn:active,
+    .nav-search:active { transform: scale(0.96); }
+
+    .nav-util-right {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .nav-util-link svg,
+    .nav-util-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 1.5;
+    }
+
+    .nav-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 132px;
+      width: auto;
+      max-width: 76vw;
+      object-fit: contain;
+      filter:
+        brightness(0) invert(1)
+        drop-shadow(0 6px 30px rgba(26, 23, 20, 0.55))
+        drop-shadow(0 0 40px rgba(255, 207, 54, 0.14));
+      transition-property: filter, height;
+      transition-duration: 0.45s;
+      transition-timing-function: ease, var(--ease-quart);
+    }
+
+    .nav-links-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-link {
+      position: relative;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: rgba(250, 250, 248, 0.90);
+      padding: 8px 0;
+      transition-property: color;
+      transition-duration: 0.2s;
+      transition-timing-function: ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition-property: transform;
+      transition-duration: 0.28s;
+      transition-timing-function: var(--ease-expo);
+    }
+
+    .nav-link:hover { color: var(--fg-inverse); }
+    .nav-link:hover::after { transform: scaleX(1); }
+
+    .nav-search {
+      margin-left: 36px;
+      min-width: 40px;
+      min-height: 40px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: rgba(250, 250, 248, 0.90);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      transition-property: color, transform;
+      transition-duration: 0.2s;
+      transition-timing-function: ease, var(--ease-expo);
+    }
+
+    .nav-search:hover {
+      color: var(--gold);
+      transform: scale(1.08);
+    }
+
+    .nav-search svg { width: 18px; height: 18px; stroke-width: 1.5; }
+
+    .cart-count {
+      position: absolute;
+      top: -2px;
+      right: -8px;
+      background: var(--gold);
+      color: var(--brown-dark);
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      font-size: 9px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .navbar.scrolled {
+      background: rgba(250, 250, 248, 0.94);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      box-shadow: 0 1px 0 rgba(26, 23, 20, 0.06), 0 4px 24px rgba(26, 23, 20, 0.04);
+      padding-block: 12px 14px;
+    }
+
+    .navbar.scrolled .nav-inner { gap: 8px; }
+
+    .navbar.scrolled .nav-utility {
+      opacity: 0;
+      height: 0;
+      margin: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .navbar.scrolled .nav-logo img {
+      height: 46px;
+      filter: none;
+    }
+
+    .navbar.scrolled .nav-link,
+    .navbar.scrolled .nav-search,
+    .navbar.scrolled .nav-util-link,
+    .navbar.scrolled .nav-util-btn { color: var(--fg1); }
+
+    .navbar.scrolled .nav-link:hover,
+    .navbar.scrolled .nav-search:hover,
+    .navbar.scrolled .nav-util-link:hover,
+    .navbar.scrolled .nav-util-btn:hover { color: var(--brown); }
+
+    .navbar.scrolled .nav-link::after { background: var(--brown); }
+
+    .shop-hero {
+      position: relative;
+      min-height: clamp(620px, 76vh, 780px);
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      background: var(--surface-dark);
+      color: var(--fg-inverse);
+      isolation: isolate;
+    }
+
+    .shop-hero-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -3;
+    }
+
+    .shop-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(to right, rgba(26, 23, 20, 0.72), rgba(26, 23, 20, 0.34) 48%, rgba(26, 23, 20, 0.12)),
+        linear-gradient(to bottom, rgba(26, 23, 20, 0.30), transparent 42%, rgba(26, 23, 20, 0.76));
+    }
+
+    .shop-hero-inner {
+      width: min(var(--content-width), 100%);
+      margin-inline: auto;
+      padding: 0 var(--gutter) clamp(64px, 8vw, 104px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .shop-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      color: rgba(250, 250, 248, 0.74);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .shop-breadcrumb a {
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .shop-breadcrumb a:hover { color: var(--gold); }
+
+    .shop-breadcrumb span { color: rgba(250, 250, 248, 0.42); }
+
+    .shop-kicker {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .shop-kicker {
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    .shop-title {
+      max-width: 880px;
+      font-family: var(--font-display);
+      font-size: clamp(58px, 9vw, 126px);
+      font-weight: 300;
+      line-height: 0.94;
+      letter-spacing: -0.02em;
+      color: var(--fg-inverse);
+      text-wrap: balance;
+    }
+
+    .shop-refine-bar {
+      position: sticky;
+      top: var(--nav-h);
+      z-index: 90;
+    }
+
+    .shop-refine {
+      max-width: var(--content-width);
+      margin-inline: auto;
+      padding: 14px var(--gutter);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .shop-refine-label {
+      margin-right: 2px;
+      color: var(--fg2);
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .refine-pill {
+      position: relative;
+      display: inline-flex;
+    }
+
+    .refine-pill-btn,
+    .refine-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 0 18px;
+      background: transparent;
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      color: var(--fg1);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      cursor: pointer;
+      transition-property: background-color, border-color, color, transform;
+      transition-duration: 0.2s, 0.2s, 0.2s, 0.18s;
+      transition-timing-function: ease, ease, ease, var(--ease-expo);
+    }
+
+    .refine-pill-btn:hover,
+    .refine-toggle:hover { border-color: var(--brown); color: var(--brown); }
+
+    .refine-pill-btn:active,
+    .refine-toggle:active { transform: scale(0.97); }
+
+    .refine-pill-btn svg {
+      width: 12px;
+      height: 12px;
+      stroke-width: 2.2;
+      flex-shrink: 0;
+      transition: transform 0.24s var(--ease-expo);
+    }
+
+    .refine-pill:hover .refine-pill-btn svg,
+    .refine-pill:focus-within .refine-pill-btn svg { transform: rotate(180deg); }
+
+    .refine-pill.is-selected .refine-pill-btn {
+      background: rgba(255, 207, 54, 0.22);
+      color: var(--brown-dark);
+    }
+
+    .refine-pill-value { text-transform: none; letter-spacing: 0.02em; }
+
+    .refine-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 5;
+      min-width: 188px;
+      margin-top: 9px;
+      padding: 6px;
+      background: var(--surface-white, #FFFFFF);
+      border: 1px solid var(--border-default, #E8E3DA);
+      border-radius: var(--radius-md, 8px);
+      box-shadow: 0 12px 40px rgba(26, 23, 20, 0.12);
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 2px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      transition-property: opacity, transform, visibility;
+      transition-duration: 0.22s;
+      transition-timing-function: var(--ease-expo);
+    }
+
+    /* invisible bridge so the gap between pill and menu keeps hover alive */
+    .refine-menu::before {
+      content: '';
+      position: absolute;
+      top: -9px;
+      left: 0;
+      right: 0;
+      height: 9px;
+    }
+
+    .refine-menu--right { left: auto; right: 0; }
+
+    .refine-pill:hover .refine-menu,
+    .refine-pill:focus-within .refine-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .refine-menu-item {
+      text-align: left;
+      padding: 9px 14px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm, 4px);
+      color: var(--fg2);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      cursor: pointer;
+      transition-property: background-color, color, transform;
+      transition-duration: 0.18s, 0.18s, 0.16s;
+      transition-timing-function: ease, ease, var(--ease-expo);
+    }
+
+    .refine-menu-item:hover {
+      background: rgba(122, 92, 56, 0.12);
+    }
+
+    .refine-menu-item:active { transform: scale(0.96); }
+
+    .refine-menu-item.is-active {
+      background: rgba(255, 207, 54, 0.22);
+      color: var(--brown-dark);
+      font-weight: 600;
+    }
+
+    .refine-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--border-strong);
+      transition-property: background-color, box-shadow;
+      transition-duration: 0.2s;
+      transition-timing-function: ease;
+    }
+
+    .refine-toggle.is-on { border-color: var(--brown); color: var(--brown); }
+
+    .refine-toggle.is-on .refine-dot {
+      background: #2FAE5E;
+      box-shadow: 0 0 0 3px rgba(47, 174, 94, 0.18);
+    }
+
+    .shop-refine-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      margin-left: 4px;
+    }
+
+    .shop-refine-count {
+      color: var(--fg2);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .refine-reset {
+      background: none;
+      border: none;
+      padding: 6px 2px;
+      color: var(--fg1);
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+      transition-property: color, transform;
+      transition-duration: 0.2s;
+      transition-timing-function: ease, var(--ease-expo);
+    }
+
+    .refine-reset:hover { color: var(--brown); }
+    .refine-reset:active { transform: scale(0.96); }
+    .refine-reset[hidden] { display: none; }
+
+    .shop-refine-sort { margin-left: auto; }
+
+    .shop-refine-empty {
+      grid-column: 1 / -1;
+      padding: clamp(48px, 7vw, 88px) var(--gutter);
+      text-align: center;
+      color: var(--fg2);
+      font-size: 15px;
+      line-height: 1.7;
+      text-wrap: pretty;
+    }
+
+    .shop-refine-empty[hidden] { display: none; }
+
+    .refine-reset-inline {
+      background: none;
+      border: none;
+      padding: 4px 2px;
+      color: var(--brown);
+      font: inherit;
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .refine-reset-inline:hover { color: var(--brown-dark); }
+
+    .shop-main {
+      background: var(--bg);
+      padding: clamp(44px, 5vw, 76px) 0 clamp(82px, 8vw, 132px);
+    }
+
+    .shop-shell {
+      max-width: var(--content-width);
+      margin-inline: auto;
+    }
+
+    .shop-products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(24px, 3vw, 40px) clamp(12px, 1.6vw, 20px);
+      align-items: start;
+    }
+
+    .atelier-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
+      color: var(--fg1);
+    }
+
+    .shop-product[hidden] { display: none; }
+
+    .atelier-media {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      border-radius: var(--radius-sm);
+      background: var(--surface-warm);
+      outline: 1px solid rgba(0, 0, 0, 0.08);
+      isolation: isolate;
+    }
+
+    .shop-product-media-link {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: block;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shop-product-media-link:focus-visible,
+    .shop-product-copy:focus-visible,
+    .atelier-quick-add-btn:focus-visible,
+    .refine-pill-btn:focus-visible,
+    .refine-toggle:focus-visible,
+    .refine-menu-item:focus-visible,
+    .refine-reset:focus-visible,
+    .refine-reset-inline:focus-visible,
+    .nav-link:focus-visible,
+    .nav-util-link:focus-visible,
+    .nav-util-btn:focus-visible,
+    .nav-search:focus-visible,
+    .bar-dismiss:focus-visible,
+    .footer-link:focus-visible,
+    .footer-contact a:focus-visible,
+    .footer-legal a:focus-visible,
+    .social-link:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    .atelier-card-img,
+    .atelier-hover-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition-property: transform, opacity;
+      transition-duration: 0.62s;
+      transition-timing-function: var(--ease-expo);
+    }
+
+    .atelier-card-img { z-index: 0; }
+
+    .atelier-hover-img {
+      z-index: 1;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .atelier-card:hover .atelier-card-img,
+    .atelier-card:focus-within .atelier-card-img {
+      transform: scale(1.035);
+    }
+
+    .atelier-card:hover .atelier-hover-img,
+    .atelier-card:focus-within .atelier-hover-img {
+      opacity: 1;
+    }
+
+    .atelier-badge,
+    .atelier-icon-badge {
+      position: absolute;
+      z-index: 2;
+    }
+
+    .atelier-badge {
+      top: 14px;
+      left: 14px;
+      padding: 7px 10px;
+      border-radius: var(--radius-xs);
+      background: rgba(250, 250, 248, 0.90);
+      color: var(--fg1);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .atelier-badge--sale {
+      background: var(--brown-dark);
+      color: var(--fg-inverse);
+    }
+
+    .atelier-icon-badge {
+      top: 12px;
+      right: 12px;
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(250, 250, 248, 0.88);
+      color: var(--brown-dark);
+      transform: translateY(-4px);
+      opacity: 0;
+      transition-property: opacity, transform, background-color, color;
+      transition-duration: 0.28s;
+      transition-timing-function: var(--ease-expo);
+    }
+
+    .atelier-card:hover .atelier-icon-badge,
+    .atelier-card:focus-within .atelier-icon-badge {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .atelier-icon-badge svg {
+      width: 17px;
+      height: 17px;
+      stroke-width: 1.7;
+    }
+
+    .atelier-quick-add {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 3;
+      padding: 12px 14px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition-property: opacity, transform;
+      transition-duration: 0.3s;
+      transition-timing-function: var(--ease-expo);
+      transition-delay: 0.06s;
+      pointer-events: none;
+    }
+
+    .atelier-card:hover .atelier-quick-add,
+    .atelier-card:focus-within .atelier-quick-add {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .atelier-quick-add-btn {
+      width: 100%;
+      min-height: 44px;
+      background: rgba(26, 23, 20, 0.84);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: var(--fg-inverse);
+      border: 1px solid rgba(250, 250, 248, 0.18);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      transition-property: background-color, border-color, color, transform;
+      transition-duration: 0.22s, 0.22s, 0.22s, 0.2s;
+      transition-timing-function: ease, ease, ease, var(--ease-expo);
+    }
+
+    .atelier-quick-add-btn:hover,
+    .atelier-quick-add-btn.is-added {
+      background: var(--gold);
+      color: var(--brown-dark);
+      border-color: var(--gold);
+    }
+
+    .atelier-quick-add-btn:active { transform: scale(0.96); }
+
+    .atelier-quick-add-btn svg {
+      width: 13px;
+      height: 13px;
+      stroke-width: 1.8;
+      flex-shrink: 0;
+    }
+
+    .shop-product-copy {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .atelier-name {
+      margin-bottom: 5px;
+      font-family: var(--font-display);
+      font-size: clamp(25px, 1.72vw, 29px);
+      font-weight: 300;
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+      font-kerning: normal;
+      font-feature-settings: "liga" 1, "clig" 1;
+      color: var(--fg1);
+      text-wrap: balance;
+    }
+
+    .atelier-material {
+      margin-bottom: 6px;
+      color: var(--fg2);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .atelier-price,
+    .atelier-price-group {
+      color: var(--fg1);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .atelier-price-group {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .atelier-price--was {
+      color: var(--fg3);
+      text-decoration: line-through;
+      text-decoration-color: var(--fg3);
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    .atelier-price--now { color: var(--brown); }
+
+    .site-footer {
+      background: var(--surface-warm, #F5F1EA);
+      color: var(--fg1, #1A1714);
+      border-top: 1px solid var(--border-default, #E8E3DA);
+      padding: 76px var(--gutter) 28px;
+    }
+
+    .footer-inner {
+      max-width: var(--content-width);
+      margin-inline: auto;
+    }
+
+    .footer-main {
+      display: grid;
+      grid-template-columns: minmax(280px, 1.25fr) repeat(4, minmax(132px, 0.5fr));
+      gap: clamp(34px, 4vw, 72px);
+      align-items: start;
+      padding-bottom: 56px;
+    }
+
+    .footer-brand {
+      max-width: 390px;
+    }
+
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .footer-logo img {
+      width: 220px;
+      height: auto;
+      display: block;
+    }
+
+    .footer-statement {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 3vw, 46px);
+      font-weight: 300;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      color: var(--fg1, #1A1714);
+      margin-bottom: 24px;
+    }
+
+    .footer-statement em {
+      font-style: italic;
+      color: var(--brown, #7A5C38);
+    }
+
+    .footer-copy {
+      max-width: 330px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--fg2, #6B5E57);
+      margin-bottom: 30px;
+    }
+
+    .footer-contact {
+      display: grid;
+      gap: 9px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--fg2, #6B5E57);
+    }
+
+    .footer-contact a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-contact a:hover {
+      color: var(--fg1, #1A1714);
+    }
+
+    .footer-heading {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      line-height: 1.4;
+      text-transform: uppercase;
+      color: var(--fg1, #1A1714);
+      margin-bottom: 18px;
+    }
+
+    .footer-heading::after {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--gold, #FFCF36);
+      margin-top: 8px;
+    }
+
+    .footer-list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .footer-link {
+      position: relative;
+      display: inline-flex;
+      width: fit-content;
+      color: var(--fg2, #6B5E57);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.35;
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s var(--ease-expo);
+    }
+
+    .footer-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1px;
+      background: var(--brown, #7A5C38);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.32s var(--ease-expo);
+    }
+
+    .footer-link:hover {
+      color: var(--fg1, #1A1714);
+      transform: translateX(2px);
+    }
+
+    .footer-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      border-top: 1px solid rgba(255, 207, 54, 0.32);
+      padding-top: 24px;
+    }
+
+    .footer-legal {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--fg2, #6B5E57);
+    }
+
+    .footer-legal a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-legal a:hover {
+      color: var(--fg1, #1A1714);
+    }
+
+    .footer-social {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .social-link {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border-strong, #C8BFB4);
+      border-radius: var(--radius-sm, 4px);
+      color: var(--fg1, #1A1714);
+      text-decoration: none;
+      transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.24s var(--ease-expo);
+    }
+
+    .social-link:hover {
+      background: var(--gold, #FFCF36);
+      border-color: var(--gold, #FFCF36);
+      color: var(--brown-dark, #5A4228);
+      transform: translateY(-2px);
+    }
+
+    .social-link:focus-visible,
+    .footer-link:focus-visible,
+    .footer-contact a:focus-visible,
+    .footer-legal a:focus-visible {
+      outline: 2px solid var(--gold, #FFCF36);
+      outline-offset: 4px;
+    }
+
+    .social-link svg {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .social-link .icon-fill {
+      fill: currentColor;
+      stroke: none;
+    }
+
+    @media (max-width: 1180px) {
+      .shop-products-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .footer-main {
+        grid-template-columns: minmax(260px, 1fr) repeat(2, minmax(160px, 0.55fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .shop-products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .nav-links {
+        gap: 24px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .nav-links::-webkit-scrollbar { display: none; }
+
+      .nav-links-row {
+        justify-content: flex-start;
+        overflow: hidden;
+      }
+
+      .nav-logo img { height: 92px; }
+    }
+
+    @media (max-width: 760px) {
+      :root { --bar-h: 42px; }
+
+      .announcement-bar {
+        justify-content: flex-start;
+        padding-inline: 16px 54px;
+      }
+
+      .announcement-bar p {
+        font-size: 10px;
+        line-height: 1.4;
+      }
+
+      .bar-dismiss { right: 10px; }
+
+      .navbar {
+        padding-block: 10px 14px;
+      }
+
+      .nav-inner {
+        gap: 10px;
+        padding-inline: 16px;
+      }
+
+      .nav-utility {
+        display: none;
+      }
+
+      .nav-logo img {
+        height: 62px;
+        max-width: 70vw;
+      }
+
+      .navbar.scrolled .nav-logo img { height: 36px; }
+
+      .nav-links {
+        gap: 18px;
+        padding-bottom: 4px;
+      }
+
+      .nav-link { font-size: 10px; }
+
+      .nav-search { margin-left: 14px; }
+
+      .shop-hero {
+        min-height: 600px;
+      }
+
+      .shop-hero-inner {
+        padding-inline: 18px;
+        padding-bottom: 44px;
+      }
+
+      .shop-title {
+        font-size: clamp(54px, 15vw, 78px);
+      }
+
+      .shop-refine {
+        gap: 8px;
+        padding-inline: 18px;
+      }
+
+      .shop-refine-label {
+        width: 100%;
+        margin-bottom: 2px;
+      }
+
+      .refine-pill-btn,
+      .refine-toggle { padding-inline: 14px; }
+
+      .shop-refine-sort { margin-left: auto; }
+
+      .shop-shell {
+        padding-inline: 18px;
+      }
+
+      .shop-products-grid {
+        grid-template-columns: 1fr;
+        gap: 44px;
+      }
+
+      .atelier-card {
+        max-width: 440px;
+        margin-inline: auto;
+      }
+
+      .atelier-quick-add {
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
+      }
+
+      .site-footer {
+        padding: 62px 24px 26px;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr 1fr;
+        gap: 36px 28px;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+
+      .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column-reverse;
+      }
+
+      .footer-social {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .shop-products-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .footer-main {
+        grid-template-columns: 1fr;
+        padding-bottom: 42px;
+      }
+
+      .footer-statement {
+        font-size: 34px;
+      }
+
+      .footer-legal {
+        gap: 12px 16px;
+      }
+    }
+
+    /* ── Cart Drawer ── */
+    /* ── Scrim ── */
+    .scrim {
+      position: fixed; inset: 0;
+      background: rgba(26, 23, 20, 0.44);
+      opacity: 0; pointer-events: none;
+      transition: opacity 340ms var(--ease-quart); z-index: 200;
+    }
+    .scrim.open { opacity: 1; pointer-events: all; }
+
+    /* ── Cart Drawer (ported from shop-v1-dark.html) ── */
+    .cart-drawer {
+      position: fixed; inset: 0 0 0 auto;
+      width: 460px; max-width: 100vw;
+      background: var(--surface); box-shadow: var(--shadow-xl);
+      z-index: 201; display: flex; flex-direction: column;
+      transform: translateX(calc(100% + 48px));
+      transition: transform 360ms var(--ease-expo);
+      will-change: transform;
+    }
+    .cart-drawer.open { transform: translateX(0); }
+
+    .d-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 var(--sp-6); height: 60px;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .d-hdr-left { display: flex; align-items: baseline; gap: var(--sp-2); }
+    .d-title {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.24em; text-transform: uppercase; color: var(--fg1);
+    }
+    .d-count {
+      font-family: var(--font-mono); font-size: 11px; color: var(--fg3);
+      font-variant-numeric: tabular-nums;
+    }
+    .d-close {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer;
+      color: var(--fg2); margin-right: -10px;
+      transition: color var(--dur-fast) var(--ease-out),
+                  transform var(--dur-fast) var(--ease-expo);
+    }
+    .d-close:hover { color: var(--fg1); }
+    .d-close:active { transform: scale(0.92); }
+
+    .d-progress {
+      flex-shrink: 0;
+      padding: var(--sp-4) var(--sp-6) var(--sp-5);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    /* Single brand-voice status line carries the "away" message. */
+    .d-prog-status {
+      font-family: var(--font-sans); font-size: 11px;
+      letter-spacing: 0.03em; line-height: 1.4; color: var(--fg2);
+      margin-bottom: 13px;
+      transition: color 300ms var(--ease-out);
+    }
+    .d-prog-status strong {
+      color: var(--brown); font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    .d-prog-status.complete { color: var(--fg1); }
+
+    .progress-track {
+      position: relative; height: 3px; border-radius: 100px;
+      background: var(--border); margin-bottom: 14px;
+    }
+    .progress-fill {
+      position: absolute; left: 0; top: 0; height: 100%; width: 100%;
+      border-radius: 100px; transform-origin: left center;
+      transform: scaleX(0);
+      /* Warm fill with a vertical sheen — survives horizontal scaleX undistorted. */
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 60%),
+        var(--brown-light);
+      transition: transform 760ms var(--ease-quart) 120ms;
+    }
+    /* Live gold leading edge — the rare, earned gold moment that rides the fill. */
+    .prog-head {
+      position: absolute; top: 50%; left: 0;
+      width: 16px; height: 16px; transform: translate(-50%, -50%) scale(0.4);
+      border-radius: 50%; pointer-events: none; opacity: 0;
+      background: radial-gradient(circle, var(--gold) 0%, rgba(255, 207, 54, 0.45) 32%, transparent 70%);
+      transition: left 760ms var(--ease-quart) 120ms,
+                  opacity 320ms var(--ease-out),
+                  transform 320ms var(--ease-out);
+    }
+    .prog-head.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    .prog-head::after {
+      content: ''; position: absolute; inset: 6px;
+      border-radius: 50%; background: var(--gold);
+    }
+
+    .prog-dot {
+      position: absolute; top: 50%;
+      width: 9px; height: 9px; border-radius: 50%;
+      transform: translate(-50%, -50%);
+      border: 1.5px solid var(--border-strong); background: var(--surface);
+      transition: background 420ms var(--ease-out), border-color 420ms var(--ease-out),
+                  box-shadow 420ms var(--ease-out);
+    }
+    .prog-dot.reached {
+      background: var(--gold); border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(255, 207, 54, 0.16);
+    }
+
+    .progress-labels { display: flex; justify-content: space-between; align-items: center; }
+    .prog-label {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--font-sans); font-size: 9px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--fg3);
+      transition: color 420ms var(--ease-out);
+    }
+    .prog-label.reached { color: var(--fg1); }
+    .prog-label .check {
+      display: inline-flex; width: 13px; height: 13px; border-radius: 50%;
+      align-items: center; justify-content: center;
+      background: transparent; border: 1px solid var(--border-strong);
+      color: var(--fg3);
+      transition: background 420ms var(--ease-out), border-color 420ms var(--ease-out),
+                  color 420ms var(--ease-out);
+    }
+    .prog-label .check svg { display: block; opacity: 0; transition: opacity 300ms var(--ease-out); }
+    .prog-label.reached .check {
+      background: var(--gold); border-color: var(--gold); color: var(--fg1);
+    }
+    .prog-label.reached .check svg { opacity: 1; }
+
+    .d-body { flex: 1; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
+    .d-body::-webkit-scrollbar { width: 3px; }
+    .d-body::-webkit-scrollbar-track { background: transparent; }
+    .d-body::-webkit-scrollbar-thumb { background: var(--border); }
+
+    .d-items { padding: var(--sp-6); display: flex; flex-direction: column; gap: var(--sp-5); }
+    .cart-item {
+      display: grid; grid-template-columns: 104px 1fr; gap: var(--sp-5);
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 300ms var(--ease-quart),
+                  transform 300ms var(--ease-quart);
+    }
+    .cart-item.in { opacity: 1; transform: translateY(0); }
+    .ci-img {
+      width: 104px; height: 130px;
+      background: var(--surface-warm); overflow: hidden;
+      outline: 1px solid rgba(0, 0, 0, 0.08); outline-offset: -1px;
+    }
+    .ci-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 420ms var(--ease-quart);
+    }
+    .ci-img:hover img { transform: scale(1.05); }
+    .ci-info { display: flex; flex-direction: column; }
+    .ci-name {
+      font-family: var(--font-display); font-size: 22px;
+      font-weight: 400; line-height: 1.2; color: var(--fg1); margin-bottom: 4px;
+      text-wrap: balance;
+    }
+    .ci-meta {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.08em; color: var(--fg3); text-transform: uppercase;
+    }
+    .ci-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: auto;
+    }
+    .d-qty { display: inline-flex; align-items: stretch; border: 1px solid var(--border); }
+    .d-qb {
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer;
+      font-size: 17px; font-weight: 300; line-height: 1; color: var(--fg2);
+      transition: background var(--dur-fast) var(--ease-out),
+                  color var(--dur-fast) var(--ease-out),
+                  transform var(--dur-fast) var(--ease-expo);
+    }
+    .d-qb:hover { background: var(--surface-warm); color: var(--fg1); }
+    .d-qb:active:not(:disabled) { transform: scale(0.9); }
+    .d-qb:disabled { opacity: 0.28; cursor: not-allowed; }
+    .d-qb:disabled:hover { background: none; color: var(--fg2); }
+    .d-qn {
+      width: 36px; display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 13px; color: var(--fg1);
+      border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+      user-select: none; font-variant-numeric: tabular-nums;
+    }
+    .ci-price {
+      font-family: var(--font-mono); font-size: 17px; color: var(--fg1);
+      font-variant-numeric: tabular-nums;
+    }
+    .ci-remove {
+      background: none; border: none; cursor: pointer;
+      font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--fg3); padding: 0; margin-top: var(--sp-2);
+      text-decoration: underline; text-underline-offset: 2px; display: block;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .ci-remove:hover { color: var(--error); }
+
+    .d-upsell {
+      padding: var(--sp-5) 0 var(--sp-6);
+      background: var(--surface-warm);
+      border-top: 1px solid var(--border);
+    }
+    .upsell-hdr {
+      display: flex; align-items: baseline; justify-content: space-between;
+      padding: 0 var(--sp-6); margin-bottom: var(--sp-4);
+    }
+    .upsell-lbl {
+      font-family: var(--font-sans); font-size: 9px; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase; color: var(--fg3);
+    }
+    .upsell-scroll {
+      display: flex; gap: var(--sp-3);
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      /* Keep snap from eating the inline padding, so the first/last card never sits flush. */
+      scroll-padding-inline: var(--sp-6);
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+      padding: 0 var(--sp-6) var(--sp-1);
+    }
+    .upsell-scroll::-webkit-scrollbar { display: none; }
+    .upsell-card {
+      flex: 0 0 128px; scroll-snap-align: start;
+      display: flex; flex-direction: column; gap: var(--sp-2);
+    }
+    .upsell-card-img {
+      width: 128px; height: 160px;
+      background: var(--surface); overflow: hidden; flex-shrink: 0;
+      outline: 1px solid rgba(0, 0, 0, 0.08); outline-offset: -1px;
+    }
+    .upsell-card-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 380ms var(--ease-quart);
+    }
+    .upsell-card:hover .upsell-card-img img { transform: scale(1.04); }
+    .upsell-card-name {
+      font-family: var(--font-display); font-size: 15px;
+      font-weight: 400; line-height: 1.2; color: var(--fg1);
+    }
+    .upsell-card-price {
+      font-family: var(--font-mono); font-size: 11px; color: var(--fg2);
+      font-variant-numeric: tabular-nums;
+    }
+    .btn-uadd {
+      width: 100%; height: 30px;
+      background: transparent; color: var(--fg1);
+      border: 1px solid var(--border-strong);
+      font-family: var(--font-sans); font-size: 9px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      cursor: pointer; border-radius: 0;
+      transition: background var(--dur-fast) var(--ease-out),
+                  color var(--dur-fast) var(--ease-out),
+                  border-color var(--dur-fast) var(--ease-out),
+                  transform var(--dur-fast) var(--ease-expo);
+      margin-top: auto;
+    }
+    .btn-uadd:hover { background: var(--fg1); color: var(--fg-inverse); border-color: var(--fg1); }
+    .btn-uadd:active { transform: scale(0.96); }
+    .btn-uadd.added { background: var(--fg1); color: var(--fg-inverse); border-color: var(--fg1); pointer-events: none; }
+
+    .d-footer {
+      flex-shrink: 0; border-top: 1px solid var(--border);
+      padding: var(--sp-5) var(--sp-6) var(--sp-6);
+      background: var(--surface); display: flex; flex-direction: column; gap: var(--sp-3);
+    }
+    .subtotal-row { display: flex; align-items: baseline; justify-content: space-between; }
+    .sub-lbl {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase; color: var(--fg2);
+    }
+    .sub-amt {
+      font-family: var(--font-mono); font-size: 24px; color: var(--fg1);
+      transition: color 220ms var(--ease-out);
+      font-variant-numeric: tabular-nums;
+    }
+    .sub-amt.flash { color: var(--brown); }
+    .ship-note { font-family: var(--font-sans); font-size: 11px; color: var(--fg3); text-align: center; letter-spacing: 0.02em; }
+    .btn-checkout {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; height: 52px;
+      background: var(--gold); color: var(--fg1); border: none;
+      font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      cursor: pointer; border-radius: 0;
+      transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-expo);
+    }
+    .btn-checkout:hover { background: var(--gold-hover); transform: translateY(-1px); }
+    .btn-checkout:active { transform: scale(0.96); }
+    .view-cart {
+      display: block; text-align: center;
+      font-family: var(--font-sans); font-size: 12px; color: var(--fg2);
+      text-decoration: underline; text-underline-offset: 3px;
+      text-decoration-color: var(--border-strong);
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .view-cart:hover { color: var(--fg1); }
+
+    @media (max-width: 540px) {
+      .cart-drawer {
+        width: 100vw; top: auto;
+        border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md);
+        max-height: 91dvh;
+        transform: translateY(calc(100% + 48px));
+        transition: transform 340ms var(--ease-expo);
+      }
+      .cart-drawer.open { transform: translateY(0); }
+      .d-hdr { padding: 0 var(--sp-5); }
+      .d-items { padding: var(--sp-5); }
+      .d-progress { padding: var(--sp-4) var(--sp-5); }
+      .upsell-hdr { padding: 0 var(--sp-5); }
+      .upsell-scroll { padding-left: var(--sp-5); padding-right: var(--sp-5); }
+      .d-footer { padding: var(--sp-4) var(--sp-5) var(--sp-5); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+
+      .cart-item { opacity: 1 !important; transform: none !important; }
+
+      .announcement-bar,
+      .navbar,
+      .nav-inner,
+      .nav-logo img,
+      .nav-link::after,
+      .nav-search,
+      .atelier-card-img,
+      .atelier-hover-img,
+      .atelier-icon-badge,
+      .atelier-quick-add,
+      .atelier-quick-add-btn,
+      .refine-pill-btn,
+      .refine-toggle,
+      .refine-pill-btn svg,
+      .refine-menu,
+      .refine-menu-item,
+      .refine-dot,
+      .refine-reset,
+      .footer-link::after,
+      .social-link {
+        transition: none;
+      }
+
+      .atelier-card:hover .atelier-card-img,
+      .atelier-card:focus-within .atelier-card-img,
+      .atelier-card:hover .atelier-icon-badge,
+      .atelier-card:focus-within .atelier-icon-badge {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar" id="announcementBar" role="banner">
+    <p>New Summer Arrivals. <a href="#shop-products">Shop Now</a></p>
+    <button class="bar-dismiss" id="barDismiss" aria-label="Dismiss announcement">&times;</button>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar" aria-label="Main navigation">
+    <div class="nav-inner">
+
+      <!-- Utility row -->
+      <div class="nav-utility">
+        <a href="#stores" class="nav-util-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Stores</span>
+        </a>
+        <div class="nav-util-right">
+          <a href="#login" class="nav-util-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Login</span>
+          </a>
+          <button class="nav-util-btn" aria-label="Wishlist (0 items)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span class="cart-count" aria-hidden="true">0</span>
+          </button>
+          <button class="nav-util-btn" aria-label="Cart (0 items)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span class="cart-count" data-cart-count aria-hidden="true">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hero-scale logo -->
+      <a href="/" class="nav-logo" aria-label="Gaura Style home">
+        <img src="logo.webp" alt="Gaura Style" width="724" height="132">
+      </a>
+
+      <!-- Category links -->
+      <div class="nav-links-row">
+        <ul class="nav-links" role="list">
+          <li><a href="#new-arrivals" class="nav-link">New In</a></li>
+          <li><a href="#rings" class="nav-link">Rings</a></li>
+          <li><a href="#earrings" class="nav-link">Earrings</a></li>
+          <li><a href="#bracelets" class="nav-link">Bracelets</a></li>
+          <li><a href="#pendants" class="nav-link">Pendants</a></li>
+          <li><a href="#brooches" class="nav-link">Brooches</a></li>
+          <li><a href="#world" class="nav-link">World of Gaura</a></li>
+        </ul>
+        <button class="nav-search" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="shop-hero" aria-labelledby="shopTitle">
+      <img class="shop-hero-image" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=2200&q=86" alt="" aria-hidden="true">
+
+      <div class="shop-hero-inner">
+        <nav class="shop-breadcrumb" aria-label="Breadcrumb">
+          <a href="./index.html">Home</a>
+          <span aria-hidden="true">/</span>
+          <span>Shop</span>
+        </nav>
+        <h1 class="shop-title" id="shopTitle">Shop Gaura Style</h1>
+      </div>
+    </section>
+
+    <div class="shop-refine-bar" aria-label="Filter products">
+      <div class="shop-refine">
+        <span class="shop-refine-label">Filter by:</span>
+
+        <div class="refine-pill" data-pill="category">
+          <button class="refine-pill-btn" type="button" aria-haspopup="true" aria-expanded="false">
+            <span class="refine-pill-text" data-facet-label="category">Category</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="refine-menu" role="menu">
+            <button class="refine-menu-item is-active" type="button" role="menuitemradio" aria-checked="true" data-facet="category" data-value="all" data-label="Category">All Pieces</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="category" data-value="rings" data-label="Rings">Rings</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="category" data-value="earrings" data-label="Earrings">Earrings</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="category" data-value="bracelets" data-label="Bracelets">Bracelets</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="category" data-value="pendants" data-label="Pendants">Pendants</button>
+          </div>
+        </div>
+
+        <div class="refine-pill" data-pill="metal">
+          <button class="refine-pill-btn" type="button" aria-haspopup="true" aria-expanded="false">
+            <span class="refine-pill-text" data-facet-label="metal">Metal</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="refine-menu" role="menu">
+            <button class="refine-menu-item is-active" type="button" role="menuitemradio" aria-checked="true" data-facet="metal" data-value="all" data-label="Metal">All Metals</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="metal" data-value="gold" data-label="Yellow Gold">Yellow Gold</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="metal" data-value="rose-gold" data-label="Rose Gold">Rose Gold</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="metal" data-value="silver" data-label="Silver">Silver</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="metal" data-value="platinum" data-label="Platinum">Platinum</button>
+          </div>
+        </div>
+
+        <div class="refine-pill" data-pill="stone">
+          <button class="refine-pill-btn" type="button" aria-haspopup="true" aria-expanded="false">
+            <span class="refine-pill-text" data-facet-label="stone">Stone</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="refine-menu" role="menu">
+            <button class="refine-menu-item is-active" type="button" role="menuitemradio" aria-checked="true" data-facet="stone" data-value="all" data-label="Stone">All Stones</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="stone" data-value="diamond" data-label="Diamond">Diamond</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="stone" data-value="sapphire" data-label="Sapphire">Sapphire</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="stone" data-value="pearl" data-label="Pearl">Pearl</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="stone" data-value="none" data-label="No Stone">No Stone</button>
+          </div>
+        </div>
+
+        <div class="refine-pill" data-pill="price">
+          <button class="refine-pill-btn" type="button" aria-haspopup="true" aria-expanded="false">
+            <span class="refine-pill-text" data-facet-label="price">Price</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="refine-menu" role="menu">
+            <button class="refine-menu-item is-active" type="button" role="menuitemradio" aria-checked="true" data-facet="price" data-value="all" data-label="Price">Any Price</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="price" data-value="under-1500" data-label="Under $1.5K">Under $1,500</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="price" data-value="1500-3000" data-label="$1.5K–$3K">$1,500 – $3,000</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-facet="price" data-value="over-3000" data-label="Over $3K">Over $3,000</button>
+          </div>
+        </div>
+
+        <button class="refine-toggle" type="button" data-facet="availability" aria-pressed="false">
+          <span class="refine-pill-text">In Stock</span>
+          <span class="refine-dot" aria-hidden="true"></span>
+        </button>
+
+        <div class="shop-refine-meta">
+          <span class="shop-refine-count" data-refine-count aria-live="polite">Results: 10</span>
+          <button class="refine-reset" type="button" hidden>Reset</button>
+        </div>
+
+        <div class="refine-pill refine-pill--sort shop-refine-sort" data-pill="sort">
+          <button class="refine-pill-btn" type="button" aria-haspopup="true" aria-expanded="false">
+            <span class="refine-pill-text" data-sort-label>Featured</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="refine-menu refine-menu--right" role="menu">
+            <button class="refine-menu-item is-active" type="button" role="menuitemradio" aria-checked="true" data-sort="featured" data-label="Featured">Featured</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-sort="price-asc" data-label="Price: Low to High">Price: Low to High</button>
+            <button class="refine-menu-item" type="button" role="menuitemradio" aria-checked="false" data-sort="price-desc" data-label="Price: High to Low">Price: High to Low</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="shop-main" id="shop-products" aria-label="Shop products">
+      <div class="shop-shell">
+        <div class="shop-products-grid" aria-live="polite">
+          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="sapphire diamond" data-price="2650" data-availability="ready" id="luna-pear-ring">
+            <div class="atelier-media">
+              <a class="shop-product-media-link" href="#luna-pear-ring" aria-label="Shop Luna Pear Ring, new, $2,650">
+                <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_27 PM.png" alt="Luna pear-cut sapphire ring in yellow gold on warm carved stone" loading="lazy">
+                <img class="atelier-hover-img" src="./prototype-assets/hand-photo.webp" alt="" aria-hidden="true" loading="lazy">
+                <span class="atelier-badge">New</span>
+                <span class="atelier-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
+                </span>
+              </a>
+              <div class="atelier-quick-add">
+                <button class="atelier-quick-add-btn" type="button" aria-label="Add Luna Pear Ring to bag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  <span class="quick-add-label">Add to Bag</span>
+                </button>
+              </div>
+            </div>
+            <a class="shop-product-copy" href="#luna-pear-ring">
+              <h3 class="atelier-name">Luna Pear Ring</h3>
+              <p class="atelier-material">18K yellow gold, sapphire, diamond</p>
+              <p class="atelier-price">$2,650</p>
+            </a>
+          </article>
+
+          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="sapphire" data-price="1450" data-availability="ready" id="mira-blue-ring">
+            <div class="atelier-media">
+              <a class="shop-product-media-link" href="#mira-blue-ring" aria-label="Shop Mira Blue Ring, was $1,810 now $1,450">
+                <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_25 PM.png" alt="Deep blue emerald-cut gold ring resting on warm stone" loading="lazy">
+                <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
+                <span class="atelier-badge atelier-badge--sale">20% Off</span>
+                <span class="atelier-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
+                </span>
+              </a>
+              <div class="atelier-quick-add">
+                <button class="atelier-quick-add-btn" type="button" aria-label="Add Mira Blue Ring to bag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  <span class="quick-add-label">Add to Bag</span>
+                </button>
+              </div>
+            </div>
+            <a class="shop-product-copy" href="#mira-blue-ring">
+              <h3 class="atelier-name">Mira Blue Ring</h3>
+              <p class="atelier-material">18K yellow gold, sapphire</p>
+              <p class="atelier-price-group">
+                <span class="atelier-price--was">$1,810</span>
+                <span class="atelier-price--now">$1,450</span>
+              </p>
+            </a>
+          </article>
+
+          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="diamond" data-price="3900" data-availability="made-to-order" id="elan-solitaire-ring">
+            <div class="atelier-media">
+              <a class="shop-product-media-link" href="#elan-solitaire-ring" aria-label="Shop Elan Solitaire Ring, best seller, $3,900">
+                <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_39 PM.png" alt="Oval-cut diamond solitaire ring in yellow gold on warm stone" loading="lazy">
+                <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
+                <span class="atelier-badge">Best Seller</span>
+                <span class="atelier-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
+                </span>
+              </a>
+              <div class="atelier-quick-add">
+                <button class="atelier-quick-add-btn" type="button" aria-label="Add Elan Solitaire Ring to bag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  <span class="quick-add-label">Add to Bag</span>
+                </button>
+              </div>
+            </div>
+            <a class="shop-product-copy" href="#elan-solitaire-ring">
+              <h3 class="atelier-name">Elan Solitaire Ring</h3>
+              <p class="atelier-material">18K yellow gold, diamond</p>
+              <p class="atelier-price">$3,900</p>
+            </a>
+          </article>
+
+          <article class="atelier-card shop-product" data-category="rings" data-metal="silver" data-stone="diamond" data-price="1850" data-availability="ready" id="aurea-twist-ring">
+            <div class="atelier-media">
+              <a class="shop-product-media-link" href="#aurea-twist-ring" aria-label="Shop Aurea Twist Ring, $1,850">
+                <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_34 PM.png" alt="Aurea twist diamond ring in silver-toned metal on warm stone" loading="lazy">
+                <img class="atelier-hover-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_31 PM.png" alt="" aria-hidden="true" loading="lazy">
+                <span class="atelier-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
+                </span>
+              </a>
+              <div class="atelier-quick-add">
+                <button class="atelier-quick-add-btn" type="button" aria-label="Add Aurea Twist Ring to bag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  <span class="quick-add-label">Add to Bag</span>
+                </button>
+              </div>
+            </div>
+            <a class="shop-product-copy" href="#aurea-twist-ring">
+              <h3 class="atelier-name">Aurea Twist Ring</h3>
+              <p class="atelier-material">Silver-toned finish, diamond</p>
+              <p class="atelier-price">$1,850</p>
+            </a>
+          </article>
+
+          <article class="atelier-card shop-product" data-category="rings" data-metal="platinum" data-stone="diamond" data-price="4200" data-availability="made-to-order" id="signature-solitaire-ring">
+            <div class="atelier-media">
+              <a class="shop-product-media-link" href="#signature-solitaire-ring" aria-label="Shop Signature Solitaire Ring, $4,200">
+                <img class="atelier-card-img" src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=80" alt="Diamond solitaire ring in a refined studio setting" loading="lazy">
+                <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
+                <span class="atelier-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
+                </span>
+              </a>
+              <div class="atelier-quick-add">
+                <button class="atelier-quick-add-btn" type="button" aria-label="Add Signature Solitaire Ring to bag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  <span class="quick-add-label">Add to Bag</span>
+                </button>
+              </div>
+            </div>
+            <a class="shop-product-copy" href="#signature-solitaire-ring">
+              <h3 class="atelier-name">Signature Solitaire</h3>
+              <p class="atelier-material">Platinum, diamond</p>
+              <p class="atelier-price">$4,200</p>
+            </a>
+          </article>
+
+          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="none" data-price="850" data-availability="ready" id="classic-band-ring">
+            <div class="atelier-media">
+              <a class="shop-product-media-link" href="#classic-band-ring" aria-label="Shop Classic Band Ring, $850">
+                <img class="atelier-card-img" src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=900&q=80" alt="Classic gold band with a polished finish" loading="lazy">
+                <img class="atelier-hover-img" src="./prototype-assets/Second Section Image/rings.webp" alt="" aria-hidden="true" loading="lazy">
+                <span class="atelier-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
+                </span>
+              </a>
+              <div class="atelier-quick-add">
+                <button class="atelier-quick-add-btn" type="button" aria-label="Add Classic Band Ring to bag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  <span class="quick-add-label">Add to Bag</span>
+                </button>
+              </div>
+            </div>
+            <a class="shop-product-copy" href="#classic-band-ring">
+              <h3 class="atelier-name">Classic Band</h3>
+              <p class="atelier-material">18K yellow gold</p>
+              <p class="atelier-price">$850</p>
+            </a>
+          </article>
+
+          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="diamond" data-price="5800" data-availability="made-to-order" id="textured-eternity-ring">
+            <div class="atelier-media">
+              <a class="shop-product-media-link" href="#textured-eternity-ring" aria-label="Shop Textured Eternity Ring, $5,800">
+                <img class="atelier-card-img" src="https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=900&q=80" alt="Textured eternity ring with diamond detail" loading="lazy">
+                <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
+                <span class="atelier-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
+                </span>
+              </a>
+              <div class="atelier-quick-add">
+                <button class="atelier-quick-add-btn" type="button" aria-label="Add Textured Eternity Ring to bag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  <span class="quick-add-label">Add to Bag</span>
+                </button>
+              </div>
+            </div>
+            <a class="shop-product-copy" href="#textured-eternity-ring">
+              <h3 class="atelier-name">Textured Eternity</h3>
+              <p class="atelier-material">18K yellow gold, diamond</p>
+              <p class="atelier-price">$5,800</p>
+            </a>
+          </article>
+
+          <article class="atelier-card shop-product" data-category="earrings" data-metal="gold" data-stone="pearl" data-price="1250" data-availability="ready" id="sora-pearl-drops">
+            <div class="atelier-media">
+              <a class="shop-product-media-link" href="#sora-pearl-drops" aria-label="Shop Sora Pearl Drops, $1,250">
+                <img class="atelier-card-img" src="./prototype-assets/Second Section Image/KALLICLOSEUPLIFESTYLE4170_4x5-477x600-0c84d7d.webp" alt="Pearl drop earrings in warm lifestyle light" loading="lazy">
+                <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1611085583191-a3b181a88401?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
+                <span class="atelier-badge">New</span>
+                <span class="atelier-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
+                </span>
+              </a>
+              <div class="atelier-quick-add">
+                <button class="atelier-quick-add-btn" type="button" aria-label="Add Sora Pearl Drops to bag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  <span class="quick-add-label">Add to Bag</span>
+                </button>
+              </div>
+            </div>
+            <a class="shop-product-copy" href="#sora-pearl-drops">
+              <h3 class="atelier-name">Sora Pearl Drops</h3>
+              <p class="atelier-material">18K yellow gold, pearl</p>
+              <p class="atelier-price">$1,250</p>
+            </a>
+          </article>
+
+          <article class="atelier-card shop-product" data-category="bracelets" data-metal="silver" data-stone="diamond" data-price="2350" data-availability="made-to-order" id="linea-cuff-bracelet">
+            <div class="atelier-media">
+              <a class="shop-product-media-link" href="#linea-cuff-bracelet" aria-label="Shop Linea Cuff Bracelet, $2,350">
+                <img class="atelier-card-img" src="./prototype-assets/Second Section Image/0L6A9415_cropped_3f30682f-8dfb-4b57-b9a6-9b3c608729ad.webp" alt="Sculptural bracelet detail against warm skin" loading="lazy">
+                <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
+                <span class="atelier-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
+                </span>
+              </a>
+              <div class="atelier-quick-add">
+                <button class="atelier-quick-add-btn" type="button" aria-label="Add Linea Cuff Bracelet to bag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  <span class="quick-add-label">Add to Bag</span>
+                </button>
+              </div>
+            </div>
+            <a class="shop-product-copy" href="#linea-cuff-bracelet">
+              <h3 class="atelier-name">Linea Cuff Bracelet</h3>
+              <p class="atelier-material">Silver-toned finish, diamond</p>
+              <p class="atelier-price">$2,350</p>
+            </a>
+          </article>
+
+          <article class="atelier-card shop-product" data-category="pendants" data-metal="rose-gold" data-stone="diamond" data-price="1650" data-availability="ready" id="rose-arc-pendant">
+            <div class="atelier-media">
+              <a class="shop-product-media-link" href="#rose-arc-pendant" aria-label="Shop Rose Arc Pendant, $1,650">
+                <img class="atelier-card-img" src="./prototype-assets/Second Section Image/WPJANU134026_a5ee8be8-2ba0-4651-8a49-476e00fb76ef.webp" alt="Rose-toned pendant photographed in warm light" loading="lazy">
+                <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1734019523113-501bfba06c5c?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
+                <span class="atelier-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
+                </span>
+              </a>
+              <div class="atelier-quick-add">
+                <button class="atelier-quick-add-btn" type="button" aria-label="Add Rose Arc Pendant to bag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  <span class="quick-add-label">Add to Bag</span>
+                </button>
+              </div>
+            </div>
+            <a class="shop-product-copy" href="#rose-arc-pendant">
+              <h3 class="atelier-name">Rose Arc Pendant</h3>
+              <p class="atelier-material">Rose gold, diamond</p>
+              <p class="atelier-price">$1,650</p>
+            </a>
+          </article>
+
+        </div>
+
+        <p class="shop-refine-empty" id="noResults" hidden>
+          No pieces match these filters.
+          <button type="button" class="refine-reset-inline">Clear filters</button>
+        </p>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer" id="site-footer" aria-labelledby="footerTitle">
+    <div class="footer-inner">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <a class="footer-logo" href="#" aria-label="Gaura Style home">
+            <img src="logo.webp" alt="Gaura Style" width="138" height="60" loading="lazy">
+          </a>
+<p class="footer-copy">Designed for women who choose their own signatures. Explore rings, gems, and gifts shaped with warmth, confidence, and craft.</p>
+          <address class="footer-contact">
+            <span>Gaura Style Studio, Kathmandu, Nepal</span>
+            <a href="mailto:care@gaurastyle.com">care@gaurastyle.com</a>
+            <a href="tel:+9779800000000">+977 980 000 0000</a>
+          </address>
+        </div>
+
+        <nav class="footer-col" aria-label="Shop">
+          <h3 class="footer-heading">Shop</h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#rings">Rings</a></li>
+            <li><a class="footer-link" href="#necklaces">Necklaces</a></li>
+            <li><a class="footer-link" href="#earrings">Earrings</a></li>
+            <li><a class="footer-link" href="#bracelets">Bracelets</a></li>
+            <li><a class="footer-link" href="#new-arrivals">New Arrivals</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col" aria-label="Collections">
+          <h3 class="footer-heading">Collections</h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#statement-rings">Statement Rings</a></li>
+            <li><a class="footer-link" href="#gemstone-edit">Gemstone Edit</a></li>
+            <li><a class="footer-link" href="#gift-guide">Gift Guide</a></li>
+            <li><a class="footer-link" href="#wedding">Wedding</a></li>
+            <li><a class="footer-link" href="#bestsellers">Bestsellers</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col" aria-label="Support">
+          <h3 class="footer-heading">Support</h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#contact">Contact Us</a></li>
+            <li><a class="footer-link" href="#shipping">Shipping</a></li>
+            <li><a class="footer-link" href="#returns">Returns</a></li>
+            <li><a class="footer-link" href="#size-guide">Ring Size Guide</a></li>
+            <li><a class="footer-link" href="#care">Jewelry Care</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col" aria-label="Company">
+          <h3 class="footer-heading">Company</h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#about">About Gaura</a></li>
+            <li><a class="footer-link" href="#craft">Our Craft</a></li>
+            <li><a class="footer-link" href="#stores">Stores</a></li>
+            <li><a class="footer-link" href="#journal">Journal</a></li>
+            <li><a class="footer-link" href="#wholesale">Wholesale</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-legal">
+          <span>&copy; 2026 Gaura Style.</span>
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Use</a>
+          <a href="#accessibility">Accessibility</a>
+          <a href="#us">US</a>
+          <a href="#jp">Japan</a>
+          <a href="#in">India</a>
+          <a href="#ru">Russia</a>
+        </div>
+
+        <div class="footer-social" aria-label="Social media">
+          <a class="social-link" href="https://www.instagram.com/" aria-label="Gaura Style on Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="4.5" y="4.5" width="15" height="15" rx="4"></rect>
+              <circle cx="12" cy="12" r="3.6"></circle>
+              <circle class="icon-fill" cx="16.9" cy="7.1" r="1"></circle>
+            </svg>
+          </a>
+          <a class="social-link" href="https://www.facebook.com/" aria-label="Gaura Style on Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14.5 8H16V5.4C15.3 5.3 14.7 5.2 13.8 5.2C11.8 5.2 10.5 6.4 10.5 8.7V11H8.3V14H10.5V20H13.6V14H15.9L16.3 11H13.6V9C13.6 8.3 13.8 8 14.5 8Z"></path>
+            </svg>
+          </a>
+          <a class="social-link" href="https://www.pinterest.com/" aria-label="Gaura Style on Pinterest">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M11.7 14.2C11.2 16.4 10.6 18.5 9.2 19.7C8.7 16.8 9.9 14.6 10.4 12.2C9.5 10.7 10.5 7.7 12.5 8.5C15 9.5 10.4 14.6 13.5 15.2C16.7 15.8 18 9.6 16 7.6C13.2 4.8 7.9 7.5 8.6 11.5C8.8 12.5 9.8 12.8 9.1 14.2C7.1 13.7 6.5 12.1 6.6 10.1C6.8 6.8 9.6 4.5 12.5 4.2C16.2 3.8 19.7 5.6 20.2 9.1C20.8 13 18.5 17.2 14.4 16.9C13.3 16.8 12.8 16.3 11.7 14.2Z"></path>
+            </svg>
+          </a>
+          <a class="social-link" href="https://www.tiktok.com/" aria-label="Gaura Style on TikTok">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15.4 4.5C15.8 7.1 17.3 8.7 19.5 8.9V12C18 12 16.6 11.5 15.4 10.7V15.8C15.4 18.4 13.3 20.5 10.7 20.5C8.1 20.5 6 18.5 6 15.9C6 13.2 8.2 11.2 10.9 11.2C11.3 11.2 11.7 11.2 12.1 11.4V14.6C11.7 14.3 11.3 14.2 10.8 14.2C9.8 14.2 9 14.9 9 15.9C9 16.9 9.8 17.6 10.8 17.6C11.8 17.6 12.5 16.8 12.5 15.8V4.5H15.4Z"></path>
+            </svg>
+          </a>
+          <a class="social-link" href="https://www.youtube.com/" aria-label="Gaura Style on YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 12C21 9.8 20.8 8.4 20.4 7.8C20 7.2 19.4 7 18.4 6.9C16.7 6.8 14.6 6.8 12 6.8C9.4 6.8 7.3 6.8 5.6 6.9C4.6 7 4 7.2 3.6 7.8C3.2 8.4 3 9.8 3 12C3 14.2 3.2 15.6 3.6 16.2C4 16.8 4.6 17 5.6 17.1C7.3 17.2 9.4 17.2 12 17.2C14.6 17.2 16.7 17.2 18.4 17.1C19.4 17 20 16.8 20.4 16.2C20.8 15.6 21 14.2 21 12Z"></path>
+              <path class="icon-fill" d="M10.5 9.5V14.5L14.8 12L10.5 9.5Z"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scrim -->
+  <div class="scrim" id="cartScrim"></div>
+
+  <!-- Cart Drawer -->
+  <aside class="cart-drawer" id="cartDrawer"
+         role="dialog" aria-modal="true" aria-label="Shopping cart">
+
+    <div class="d-hdr">
+      <div class="d-hdr-left">
+        <span class="d-title">Your Selection</span>
+        <span class="d-count" id="dCount">(0)</span>
+      </div>
+      <button class="d-close" id="drawerClose" aria-label="Close cart">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M2 2L14 14M14 2L2 14"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="d-progress">
+      <p class="d-prog-status" id="dProgStatus"><strong>$200</strong> from complimentary shipping</p>
+      <div class="progress-track">
+        <div class="progress-fill" id="dProgressFill"></div>
+        <div class="prog-head" id="dProgHead"></div>
+        <div class="prog-dot" id="dShipDot" style="left: 40%"></div>
+        <div class="prog-dot" id="dGiftDot" style="left: 100%"></div>
+      </div>
+      <div class="progress-labels">
+        <div class="prog-label" id="dShipLabel">
+          <span class="check">
+            <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
+              <path d="M1 3l2 2 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          Free shipping
+        </div>
+        <div class="prog-label" id="dGiftLabel">
+          <span class="check">
+            <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
+              <path d="M1 3l2 2 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          Gift box
+        </div>
+      </div>
+    </div>
+
+    <div class="d-body">
+      <div class="d-items" id="dItems"></div>
+      <div class="d-upsell">
+        <div class="upsell-hdr">
+          <p class="upsell-lbl">You might also want</p>
+        </div>
+        <div class="upsell-scroll" id="dUpsellScroll"></div>
+      </div>
+    </div>
+
+    <div class="d-footer">
+      <div class="subtotal-row">
+        <span class="sub-lbl">Subtotal</span>
+        <span class="sub-amt" id="dSubAmt">$0</span>
+      </div>
+      <p class="ship-note">Free shipping on all orders</p>
+      <button class="btn-checkout" id="dCheckoutBtn">Proceed to Checkout</button>
+      <a href="cart-page.html" class="view-cart">View cart</a>
+    </div>
+
+  </aside>
+
+  <script>
+    const bar = document.getElementById('announcementBar');
+    const nav = document.getElementById('navbar');
+    const dismiss = document.getElementById('barDismiss');
+
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        bar.classList.add('visible');
+        nav.classList.add('visible');
+      }, 80);
+    });
+
+    dismiss.addEventListener('click', () => {
+      bar.classList.add('hidden');
+      nav.classList.add('bar-gone');
+    });
+
+    let rafPending = false;
+    window.addEventListener('scroll', () => {
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(() => {
+        nav.classList.toggle('scrolled', window.scrollY > 40);
+        rafPending = false;
+      });
+    }, { passive: true });
+
+    // ── Cart Drawer ──────────────────────────────────────────
+    const drawerEl      = document.getElementById('cartDrawer');
+    const scrimEl       = document.getElementById('cartScrim');
+    const drawerClose   = document.getElementById('drawerClose');
+    const dItems        = document.getElementById('dItems');
+    const dSubAmt       = document.getElementById('dSubAmt');
+    const dCount        = document.getElementById('dCount');
+    const dUpsellScroll = document.getElementById('dUpsellScroll');
+    const dProgressFill = document.getElementById('dProgressFill');
+    const dProgHead     = document.getElementById('dProgHead');
+    const dShipDot      = document.getElementById('dShipDot');
+    const dShipLabel    = document.getElementById('dShipLabel');
+    const dGiftDot      = document.getElementById('dGiftDot');
+    const dGiftLabel    = document.getElementById('dGiftLabel');
+    const dProgStatus   = document.getElementById('dProgStatus');
+    const dCheckoutBtn  = document.getElementById('dCheckoutBtn');
+
+    const FREE_SHIP = 200;
+    const GIFT_WRAP = 500;
+    let cartItems = [];
+    let nextId = 1;
+
+    const UPSELL_POOL = [
+      { name: 'Luna Pear Ring',      price: 2650, img: './prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_27 PM.png', meta: '18K Gold · Sapphire' },
+      { name: 'Mira Blue Ring',      price: 1450, img: './prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_25 PM.png', meta: '18K Gold · Sapphire' },
+      { name: 'Elan Solitaire Ring', price: 3900, img: './prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_39 PM.png', meta: '18K Gold · Diamond' },
+      { name: 'Aurea Twist Ring',    price: 1850, img: './prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_34 PM.png', meta: 'Silver · Diamond' },
+      { name: 'Sora Pearl Drops',    price: 1250, img: './prototype-assets/Second Section Image/KALLICLOSEUPLIFESTYLE4170_4x5-477x600-0c84d7d.webp', meta: '18K Gold · Pearl' },
+    ];
+
+    const fmt = n => '$' + n.toLocaleString();
+    const cartTotal = () => cartItems.reduce((s, v) => s + v.price * v.qty, 0);
+
+    function updateBadges() {
+      const total = cartItems.reduce((s, v) => s + v.qty, 0);
+      document.querySelectorAll('[data-cart-count]').forEach(el => { el.textContent = String(total); });
+    }
+
+    function updateProgress(total) {
+      const pct = Math.min((total / GIFT_WRAP) * 100, 100);
+      dProgressFill.style.transform = `scaleX(${pct / 100})`;
+
+      // Live gold edge rides the fill; hidden at the empty start and once full.
+      if (pct > 0 && pct < 100) {
+        dProgHead.style.left = pct + '%';
+        dProgHead.classList.add('show');
+      } else {
+        dProgHead.classList.remove('show');
+      }
+
+      const shipReached = total >= FREE_SHIP;
+      dShipDot.classList.toggle('reached', shipReached);
+      dShipLabel.classList.toggle('reached', shipReached);
+
+      const giftReached = total >= GIFT_WRAP;
+      dGiftDot.classList.toggle('reached', giftReached);
+      dGiftLabel.classList.toggle('reached', giftReached);
+
+      // One confident voice for the threshold message.
+      if (giftReached) {
+        dProgStatus.innerHTML = 'Complimentary shipping and gift box, unlocked';
+        dProgStatus.classList.add('complete');
+      } else if (shipReached) {
+        dProgStatus.innerHTML = `<strong>${fmt(GIFT_WRAP - total)}</strong> from a complimentary gift box`;
+        dProgStatus.classList.remove('complete');
+      } else {
+        dProgStatus.innerHTML = `<strong>${fmt(FREE_SHIP - total)}</strong> from complimentary shipping`;
+        dProgStatus.classList.remove('complete');
+      }
+    }
+
+    function renderItems() {
+      dItems.innerHTML = '';
+      if (cartItems.length === 0) {
+        dItems.innerHTML = '<p style="font-family:var(--font-sans);font-size:13px;color:var(--fg3);padding:var(--sp-4) 0">Your cart is empty.</p>';
+        return;
+      }
+      cartItems.forEach((item, i) => {
+        const el = document.createElement('article');
+        el.className = 'cart-item';
+        el.innerHTML = `
+          <div class="ci-img"><img src="${item.img}" alt="${item.name}" loading="lazy"></div>
+          <div class="ci-info">
+            <h2 class="ci-name">${item.name}</h2>
+            <p class="ci-meta">${item.meta}</p>
+            <div class="ci-foot">
+              <div class="d-qty">
+                <button class="d-qb d-minus" ${item.qty <= 1 ? 'disabled' : ''} aria-label="Decrease">−</button>
+                <span class="d-qn">${item.qty}</span>
+                <button class="d-qb d-plus" aria-label="Increase">+</button>
+              </div>
+              <span class="ci-price">${fmt(item.price * item.qty)}</span>
+            </div>
+            <button class="ci-remove">Remove</button>
+          </div>`;
+        el.querySelector('.d-minus').addEventListener('click', () => { item.qty = Math.max(1, item.qty - 1); renderAll(); });
+        el.querySelector('.d-plus').addEventListener('click', () => { item.qty += 1; renderAll(); });
+        el.querySelector('.ci-remove').addEventListener('click', () => { cartItems = cartItems.filter(x => x.id !== item.id); renderAll(); });
+        dItems.appendChild(el);
+        // Staggered enter — each item eases in shortly after the one above it.
+        requestAnimationFrame(() => setTimeout(() => el.classList.add('in'), 40 + i * 80));
+      });
+    }
+
+    function renderUpsell() {
+      const inCart = new Set(cartItems.map(i => i.name));
+      dUpsellScroll.innerHTML = '';
+      UPSELL_POOL.filter(u => !inCart.has(u.name)).forEach(u => {
+        const card = document.createElement('div');
+        card.className = 'upsell-card';
+        card.innerHTML = `
+          <div class="upsell-card-img"><img src="${u.img}" alt="${u.name}" loading="lazy"></div>
+          <p class="upsell-card-name">${u.name}</p>
+          <p class="upsell-card-price">${fmt(u.price)}</p>
+          <button class="btn-uadd">Add</button>`;
+        card.querySelector('.btn-uadd').addEventListener('click', function () {
+          addToCart(u);
+          this.textContent = 'Added';
+          this.classList.add('added');
+        });
+        dUpsellScroll.appendChild(card);
+      });
+    }
+
+    function renderAll() {
+      const total = cartTotal();
+      renderItems();
+      renderUpsell();
+      dSubAmt.textContent = fmt(total);
+      dCount.textContent = '(' + cartItems.reduce((s, v) => s + v.qty, 0) + ')';
+      updateProgress(total);
+      updateBadges();
+      dSubAmt.classList.add('flash');
+      setTimeout(() => dSubAmt.classList.remove('flash'), 280);
+    }
+
+    function addToCart({ name, price, img, meta }) {
+      const existing = cartItems.find(i => i.name === name);
+      if (existing) { existing.qty += 1; } else { cartItems.push({ id: nextId++, name, price, img, meta, qty: 1 }); }
+      renderAll();
+    }
+
+    function openDrawer() {
+      drawerEl.classList.add('open');
+      scrimEl.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      drawerClose.focus();
+    }
+
+    function closeDrawer() {
+      drawerEl.classList.remove('open');
+      scrimEl.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    drawerClose.addEventListener('click', closeDrawer);
+    scrimEl.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+    dCheckoutBtn.addEventListener('click', () => { dCheckoutBtn.textContent = 'Redirecting...'; });
+
+    // Nav cart button opens drawer
+    document.querySelectorAll('.nav-util-btn').forEach(btn => {
+      if ((btn.getAttribute('aria-label') || '').toLowerCase().includes('cart')) {
+        btn.addEventListener('click', openDrawer);
+      }
+    });
+
+    // Quick-add buttons
+    document.querySelectorAll('.atelier-quick-add-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const card = button.closest('.atelier-card');
+        if (!card) return;
+        const name  = card.querySelector('.atelier-name')?.textContent?.trim() || 'Ring';
+        const price = Number(card.dataset.price) || 0;
+        const img   = card.querySelector('.atelier-card-img')?.src || '';
+        const meta  = card.querySelector('.atelier-material')?.textContent?.trim() || '';
+
+        const label = button.querySelector('.quick-add-label');
+        const originalLabel = button.getAttribute('aria-label') || '';
+        button.classList.add('is-added');
+        button.setAttribute('aria-label', originalLabel.replace('Add ', 'Added '));
+        if (label) label.textContent = 'Added';
+        setTimeout(() => {
+          button.classList.remove('is-added');
+          button.setAttribute('aria-label', originalLabel);
+          if (label) label.textContent = 'Add to Bag';
+        }, 1400);
+
+        addToCart({ name, price, img, meta });
+        openDrawer();
+      });
+    });
+
+    // Initialise upsell on load
+    renderUpsell();
+
+    // --- Shop refine (filter) bar ---
+    const refineBar = document.querySelector('.shop-refine-bar');
+    if (refineBar) {
+      const grid = document.querySelector('.shop-products-grid');
+      const products = Array.from(document.querySelectorAll('.shop-product'));
+      const originalOrder = products.slice();
+      const menuItems = Array.from(refineBar.querySelectorAll('.refine-menu-item[data-facet]'));
+      const stockToggle = refineBar.querySelector('.refine-toggle');
+      const sortItems = Array.from(refineBar.querySelectorAll('.refine-menu-item[data-sort]'));
+      const sortLabel = refineBar.querySelector('[data-sort-label]');
+      const countEl = refineBar.querySelector('[data-refine-count]');
+      const resetBtn = refineBar.querySelector('.refine-reset');
+      const emptyEl = document.getElementById('noResults');
+      const inlineReset = emptyEl ? emptyEl.querySelector('.refine-reset-inline') : null;
+
+      const defaults = { category: 'all', metal: 'all', stone: 'all', price: 'all', availability: 'all' };
+      const state = { ...defaults };
+      let sortMode = 'featured';
+
+      const priceInRange = (price, range) => {
+        if (range === 'under-1500') return price < 1500;
+        if (range === '1500-3000') return price >= 1500 && price <= 3000;
+        if (range === 'over-3000') return price > 3000;
+        return true;
+      };
+
+      // Reflect a facet's current value on its pill: label text + selected styling.
+      function syncPill(facet) {
+        const pill = refineBar.querySelector(`.refine-pill[data-pill="${facet}"]`);
+        if (!pill) return;
+        const active = pill.querySelector(`.refine-menu-item[data-value="${state[facet]}"]`);
+        const labelEl = pill.querySelector('[data-facet-label]');
+        if (labelEl && active) labelEl.textContent = active.dataset.label;
+        pill.classList.toggle('is-selected', state[facet] !== 'all');
+        pill.querySelectorAll('.refine-menu-item').forEach(item => {
+          const on = item.dataset.value === state[facet];
+          item.classList.toggle('is-active', on);
+          item.setAttribute('aria-checked', String(on));
+        });
+      }
+
+      function applySort() {
+        if (!grid) return;
+        if (sortMode === 'featured') {
+          originalOrder.forEach(card => grid.appendChild(card));
+          return;
+        }
+        const dir = sortMode === 'price-asc' ? 1 : -1;
+        originalOrder
+          .slice()
+          .sort((a, b) => (Number(a.dataset.price) - Number(b.dataset.price)) * dir)
+          .forEach(card => grid.appendChild(card));
+      }
+
+      function refineGrid() {
+        let visible = 0;
+        products.forEach(card => {
+          const { category, metal, stone, availability } = card.dataset;
+          const stones = (stone || '').split(' ');
+          const isMatch =
+            (state.category === 'all' || category === state.category) &&
+            (state.metal === 'all' || metal === state.metal) &&
+            (state.stone === 'all' || stones.includes(state.stone)) &&
+            (state.availability === 'all' || availability === state.availability) &&
+            priceInRange(Number(card.dataset.price), state.price);
+          card.toggleAttribute('hidden', !isMatch);
+          if (isMatch) visible += 1;
+        });
+
+        if (countEl) countEl.textContent = `Results: ${visible}`;
+        if (emptyEl) emptyEl.toggleAttribute('hidden', visible !== 0);
+
+        const isFiltered = Object.keys(defaults).some(key => state[key] !== defaults[key]);
+        if (resetBtn) resetBtn.toggleAttribute('hidden', !isFiltered);
+      }
+
+      // Facet dropdown selection (category / metal / stone / price)
+      menuItems.forEach(item => {
+        item.addEventListener('click', () => {
+          state[item.dataset.facet] = item.dataset.value;
+          syncPill(item.dataset.facet);
+          // Close the hover/focus dropdown after a keyboard or click selection.
+          const trigger = item.closest('.refine-pill')?.querySelector('.refine-pill-btn');
+          if (trigger) trigger.blur();
+          refineGrid();
+        });
+      });
+
+      // In Stock toggle (availability)
+      if (stockToggle) {
+        stockToggle.addEventListener('click', () => {
+          state.availability = state.availability === 'ready' ? 'all' : 'ready';
+          const on = state.availability === 'ready';
+          stockToggle.classList.toggle('is-on', on);
+          stockToggle.setAttribute('aria-pressed', String(on));
+          refineGrid();
+        });
+      }
+
+      // Sort dropdown (reorders the grid; not a filter)
+      sortItems.forEach(item => {
+        item.addEventListener('click', () => {
+          sortMode = item.dataset.sort;
+          if (sortLabel) sortLabel.textContent = item.dataset.label;
+          sortItems.forEach(s => {
+            const on = s === item;
+            s.classList.toggle('is-active', on);
+            s.setAttribute('aria-checked', String(on));
+          });
+          const trigger = item.closest('.refine-pill')?.querySelector('.refine-pill-btn');
+          if (trigger) trigger.blur();
+          applySort();
+        });
+      });
+
+      function resetFilters() {
+        Object.assign(state, defaults);
+        ['category', 'metal', 'stone', 'price'].forEach(syncPill);
+        if (stockToggle) {
+          stockToggle.classList.remove('is-on');
+          stockToggle.setAttribute('aria-pressed', 'false');
+        }
+        refineGrid();
+      }
+
+      if (resetBtn) resetBtn.addEventListener('click', resetFilters);
+      if (inlineReset) inlineReset.addEventListener('click', resetFilters);
+
+      refineGrid();
+    }
+  </script>
+
+  <!-- ─── PROTOTYPE NAV ─── -->
+  <style>
+    .proto-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+      display: flex; align-items: center; gap: 0;
+      background: #1A1714; border-top: 1px solid #2E2925;
+      font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .proto-nav__label {
+      padding: 0 14px; color: #5A4228; white-space: nowrap; border-right: 1px solid #2E2925;
+      font-size: 9px; letter-spacing: 0.12em; line-height: 40px;
+    }
+    .proto-nav a {
+      display: block; padding: 0 16px; line-height: 40px; color: #A8988E;
+      text-decoration: none; border-right: 1px solid #2E2925; transition: color 0.15s;
+      white-space: nowrap;
+    }
+    .proto-nav a:hover { color: #FAFAF8; }
+    .proto-nav a[aria-current="page"] { color: #FFCF36; }
+  </style>
+  <nav class="proto-nav" aria-label="Prototype navigation">
+    <span class="proto-nav__label">Prototype</span>
+    <a href="./hero-v1-dark.html">Home</a>
+    <a href="./shop-v1-dark.html" aria-current="page">Shop</a>
+    <a href="./product-v1.html">Product</a>
+    <a href="./cart-page.html">Cart</a>
+    <a href="./checkout.html">Checkout</a>
+    <a href="./thank-you.html">Thank You</a>
+  </nav>
+</body>
+</html>

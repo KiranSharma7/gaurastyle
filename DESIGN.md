@@ -133,13 +133,13 @@ A two-pole palette: warm earth neutrals as the ground, a single saturated gold a
 
 ### Secondary
 - **Brand Brown** (#7A5C38): Logo color. Secondary accents, text links, decorative borders where color is needed. Grounds the gold without competing.
-- **Brand Brown Dark** (#5A4228): Headings on light surfaces where the near-black primary is too stark. Occasionally used as a button variant for editorial sections.
-- **Brand Brown Light** (#C4A882): Decorative and tertiary moments only. Horizontal rules in editorial sections, category label accents. Never structural.
+- **Brand Brown Dark** (#5A4228): Headings on light surfaces where the near-black primary is too stark. Occasionally used as a button variant for atelier sections.
+- **Brand Brown Light** (#C4A882): Decorative and tertiary moments only. Horizontal rules in atelier sections, category label accents. Never structural.
 
 ### Neutral
 - **Page Ground** (#FAFAF8): The page background. Warm off-white; not paper, not cream. Product photography breathes on it.
 - **Surface White** (#FFFFFF): Cards, modals, product image backgrounds. Pure white for maximum photo contrast.
-- **Surface Warm** (#F5F1EA): Editorial sections, featured content, alternating rhythm. 2–4 sections per page use this as background.
+- **Surface Warm** (#F5F1EA): Atelier sections, featured content, alternating rhythm. 2–4 sections per page use this as background.
 - **Surface Dark** (#1A1714): Inverted sections: footer, campaign overlays, full-bleed dark heroes. The near-black is warm, not neutral.
 - **Text Primary** (#1A1714): All body copy and primary labels. Same warm near-black as Surface Dark.
 - **Text Secondary** (#6B5E57): Captions, metadata, supporting copy. Not muted: intentional secondary voice.
@@ -162,10 +162,10 @@ A two-pole palette: warm earth neutrals as the ground, a single saturated gold a
 
 ### Hierarchy
 - **Display** (300 weight, 72–96px, line-height 1.1, tracking −0.02em): Hero headlines only. Used at light weight; the fragility of the stroke IS the luxury signal. Never bold at display size.
-- **Headline** (300 weight, 56px, line-height 1.1): Section headers on desktop. Major editorial moments.
+- **Headline** (300 weight, 56px, line-height 1.1): Section headers on desktop. Major atelier moments.
 - **Title** (400 weight, 40px, line-height 1.25): Sub-section headers, product category titles, feature callouts.
 - **Body** (400 weight, 16px, line-height 1.65): All running prose. Max line length: 65–75ch. Never compress line height below 1.5 for reading copy.
-- **Label** (500 weight, 14px, letter-spacing 0.12em, ALL CAPS): Navigation, CTA button text, UI affordances, category tags. The ALL CAPS + generous tracking is the brand's UI signature; it distinguishes interface from editorial.
+- **Label** (500 weight, 14px, letter-spacing 0.12em, ALL CAPS): Navigation, CTA button text, UI affordances, category tags. The ALL CAPS + generous tracking is the brand's UI signature; it distinguishes interface from brand storytelling.
 
 ### Named Rules
 **The Light Weight Rule.** Cormorant Garamond displays at 300 (Light). Bold display headings are prohibited. Size and letterform carry authority; weight addition destroys it.
@@ -200,10 +200,10 @@ Sharp-edged, confident, recessive. Every component's job is to deliver its funct
 
 ### Cards / Containers
 - **Corner Style:** 4px radius (near-sharp).
-- **Background:** Surface White (#FFFFFF) for product cards. Surface Warm (#F5F1EA) for editorial feature cards.
+- **Background:** Surface White (#FFFFFF) for product cards. Surface Warm (#F5F1EA) for atelier feature cards.
 - **Shadow Strategy:** No shadow at rest. `shadow-md` on hover. No exceptions.
 - **Border:** None by default. Let shadow define edges on hover.
-- **Internal Padding:** 24px for product cards (image flush to edges, copy padded inside). 32–40px for editorial/feature cards.
+- **Internal Padding:** 24px for product cards (image flush to edges, copy padded inside). 32–40px for atelier/feature cards.
 - **The No-Nest Rule.** Cards do not contain cards. A container within a container within a container is always a structural failure; flatten the hierarchy.
 
 ### Inputs / Fields

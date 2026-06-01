@@ -102,6 +102,18 @@ components:
     backgroundColor: "{colors.surface-white}"
     rounded: "{rounded.sm}"
     padding: "0px"
+motion:
+  ease-expo: "cubic-bezier(0.16, 1, 0.3, 1)"
+  ease-quart: "cubic-bezier(0.25, 1, 0.5, 1)"
+  dur-fast: "150ms"
+  dur-base: "280ms"
+  dur-slow: "400ms"
+layout:
+  content-width: "1440px"
+  gutter: "40px"
+  bar-h: "44px"
+  nav-h: "92px"
+  nav-height-compact: "72px"
 ---
 
 # Design System: Gaura Style
@@ -110,7 +122,7 @@ components:
 
 **Creative North Star: "The Declaration"**
 
-Gaura Style is a luxury jewelry system with a direct voice: warm surfaces, decisive serif type, disciplined gold, and product imagery that does the emotional work. The interface should feel like a curated gallery, not a warehouse. It earns trust through spacing, photography, material clarity, and restraint.
+Gaura Style is a luxury jewelry system with a direct voice: warm surfaces, decisive serif type, disciplined gold, and product imagery that does the emotional work. The interface should feel like an atelier gallery, not a warehouse. It earns trust through spacing, photography, material clarity, and restraint.
 
 The system rejects generic WooCommerce grids, discount-retailer clutter, dark-mode neon, heavy animation, cold sterile minimalism, and whispering neutrality. It should feel bold, confident, modern, and premium without becoming noisy.
 
@@ -144,7 +156,7 @@ The palette is a warm neutral foundation with one high-signal gold accent and a 
 
 - **Page Ground** (`#FAFAF8`): Default page background. Warm off-white, never cold white.
 - **Surface White** (`#FFFFFF`): Product cards, image backgrounds, and modal surfaces when maximum photo contrast is needed.
-- **Surface Warm** (`#F5F1EA`): Alternating editorial sections and feature areas.
+- **Surface Warm** (`#F5F1EA`): Alternating atelier sections and feature areas.
 - **Surface Dark** (`#1A1714`): Footer, inverted campaigns, and dark image overlays.
 - **Text Primary** (`#1A1714`): Primary text and dark buttons.
 - **Text Secondary** (`#6B5E57`): Captions, metadata, and supporting copy.
@@ -169,7 +181,7 @@ The palette is a warm neutral foundation with one high-signal gold accent and a 
 ### Hierarchy
 
 - **Display** (300, 72px, 1.1, `-0.02em`): Hero headlines and major brand moments only.
-- **Headline** (300, 56px, 1.25, `-0.02em`): Section headings and editorial campaign statements.
+- **Headline** (300, 56px, 1.25, `-0.02em`): Section headings and atelier campaign statements.
 - **Title** (400, 40px, 1.25): Product category titles, feature titles, and subsection leads.
 - **Body** (400, 16px, 1.65): Running copy. Keep line length around 65 to 75 characters.
 - **Label** (500, 14px, 1.2, `0.12em`): Navigation, CTAs, badges, and compact UI labels.
@@ -187,7 +199,7 @@ Gaura Style is flat by default. Depth is created through tonal layering, whitesp
 ### Shadow Vocabulary
 
 - **Ambient** (`0 1px 3px rgba(26, 23, 20, 0.08)`): Rare same-tone surface definition.
-- **Lifted** (`0 4px 16px rgba(26, 23, 20, 0.10)`): Hover state for product and editorial cards.
+- **Lifted** (`0 4px 16px rgba(26, 23, 20, 0.10)`): Hover state for product and atelier cards.
 - **Overlay** (`0 12px 40px rgba(26, 23, 20, 0.12)`): Modals, drawers, dropdowns, and elevated navigation layers.
 - **Deep** (`0 24px 64px rgba(26, 23, 20, 0.14)`): Highest-priority overlays only.
 
@@ -211,7 +223,7 @@ Components are sharp-edged, confident, and recessive. They help the shopper act 
 ### Cards / Containers
 
 - **Corner Style:** 4px radius.
-- **Background:** Surface White for product cards, Surface Warm for editorial features.
+- **Background:** Surface White for product cards, Surface Warm for atelier features.
 - **Shadow Strategy:** No shadow at rest where possible. Lifted shadow on hover.
 - **Border:** Avoid heavy borders. Use Border Default only when tonal separation is insufficient.
 - **Internal Padding:** Product image flush to edges, copy padded 24px. Editorial cards use 32px to 40px.
@@ -223,13 +235,25 @@ Components are sharp-edged, confident, and recessive. They help the shopper act 
 - **Error:** Error border and Error BG with short error copy below the field.
 - **Disabled:** Lower opacity. Do not invent a separate disabled color system.
 
+### Announcement Bar
+
+- **Height:** `--bar-h` = 44px. Fixed above the navbar.
+- **Background:** House Gold. Text in Jost Medium 12px, uppercase, `0.14em` tracking, Text Primary color.
+- **Dismiss:** Absolute-positioned `×` button on the right edge, 40×40px touch target. Animates `translateY(-100%)` out.
+- **Links:** Text Primary underline, `text-underline-offset: 2px`.
+- **JavaScript:** Show with `.visible` class on load. Hide with `.hidden` when dismissed; write a session-storage flag to suppress on return visit.
+
 ### Navigation
 
-- **Style:** Sticky or fixed navigation at 72px height.
-- **Typography:** Uppercase Jost Medium 14px with `0.18em` tracking.
-- **Default / Hover:** Text Primary by default, Brand Brown on hover.
-- **Scroll Treatment:** Transparent at page top when over imagery. After scroll, use a warm white surface with subtle backdrop blur.
-- **Mobile:** Collapse to icon-triggered drawer with large stacked links.
+- **Three-row structure:** utility row (Stores + account/wishlist/cart icons) → wordmark logo centered → category links.
+- **Full height:** `--nav-h` = 92px (all three rows). Compact scrolled height `--nav-height` = 72px (wordmark + links only).
+- **Typography:** Uppercase Jost Medium 12px, `0.18em` tracking for category links. Utility row links Jost Medium 12px, `0.04em` tracking.
+- **Dark variant (hero / shop pages):** Starts transparent-over-imagery with inverted white links. On scroll, morphs to warm white with `backdrop-filter: blur(18px) saturate(140%)`. The utility row collapses (`height → 0`, `opacity → 0`) and the wordmark shrinks from 96px → 46px.
+- **Light variant (product / editorial pages):** Always the scrolled light state from page load. Wordmark starts at 62px.
+- **Active link:** Underline `::after` drawn `scaleX(1)`. Color: House Gold in dark variant, Brand Brown in light variant.
+- **Scroll-hide behavior:** Hides on scroll-down via `translateY(-200%)`, reappears on scroll-up.
+- **Mobile:** Utility row collapses. Links row becomes horizontally scrollable without visible scrollbar. Wordmark reduces to 64px.
+- **Specimen:** `preview/nav-component.html` — all three variants.
 
 ### Product Card
 
@@ -237,6 +261,47 @@ Components are sharp-edged, confident, and recessive. They help the shopper act 
 - **Text:** Product name in Jost Medium 16px, price in Jost Regular 14px Text Secondary.
 - **Hover:** Image scales subtly with transform only. Quick-add appears at the lower image edge.
 - **Badges:** Use sparingly. Never stack discount, sale, and urgency badges.
+
+### Accordion / Disclosure
+
+- **Structure:** `.accordion` container with `border-top` separator, one `.acc-item` per entry with `border-bottom`.
+- **Trigger:** Full-width `<button>`, uppercase Jost Semibold 12px, `0.14em` tracking. `aria-expanded` + `aria-controls` required.
+- **Icon:** Pure-CSS `+` / `×` symbol using two `::before`/`::after` pseudo-elements on `.acc-icon`. The vertical bar animates `rotate(90deg) → rotate(0)` when open.
+- **Panel:** `grid-template-rows: 0fr → 1fr` pattern. No `max-height` hacks. Transition: `0.36s --ease-expo`.
+- **Body text:** Jost Regular 14px, `1.72` line-height, Text Secondary. Spec list uses two-column `key / value` layout.
+- **Surfaces:** Works on Page Ground, Surface Warm, and Surface White without style changes.
+- **Specimen:** `preview/accordion.html`.
+
+### Trust Bar
+
+- **Layout:** Horizontal flex row with centered alignment. Items separated by `1px` `--border-default` vertical divider. Last item no divider.
+- **Icon:** 44×44px SVG, stroke-based, Text Primary. Stroke-width `1.3` to match the brand's fine-line aesthetic.
+- **Label:** Jost Medium 11px, `0.14em` tracking, uppercase. Emphasis (`<em>`) in Brand Brown (or House Gold in dark variant).
+- **Variants:** White surface (homepage below hero), Warm surface (alternating sections), Dark surface (inverted sections — text and icons at reduced opacity, emphasis in House Gold).
+- **Mobile:** Flex-wrap with tighter padding. Each item wraps to its own row pair if needed.
+- **Specimen:** `preview/trust-bar.html`.
+
+### Newsletter CTA
+
+- **Layout:** Full-width section, centered column, max-width 860px. Generous padding: `116px` vertical default.
+- **Ambient decoration:** Two `radial-gradient` corner glows via `::before`/`::after` pseudo-elements. Removed in dark variant.
+- **Eyebrow:** DM Mono 11px, `0.24em` tracking, Brand Brown uppercase.
+- **Headline:** Cormorant Garamond 300 weight, display-size, with italic em in Brand Brown color.
+- **Body copy:** Jost Regular 15px, Text Secondary. Keep under 60 characters per line.
+- **Form:** Two-column `1fr 148px` grid. Input: 52px height, sharp (no radius), `1px border-strong`, white background. Submit: matching 52px height, Text Primary fill, Text Inverse label. On mobile: single column, both 54px.
+- **Variants:** Default (Page Ground), Dark (Brand Brown Dark background — links in gold, submit in gold).
+- **Success state:** Note text changes to success copy. No modal, no redirect.
+- **Specimen:** `preview/newsletter-cta.html`.
+
+### Filter / Refine Bar
+
+- **Use:** Shop and collection pages. Sticky below the navbar at `top: var(--nav-h)`.
+- **Pill with dropdown:** Round-cornered filter button (`border-radius: 999px`), Jost Semibold 11px uppercase, `0.14em` tracking. Chevron icon animates `rotate(180deg)` when open. Dropdown appears on hover/focus-within with `opacity + translateY` transition.
+- **Dropdown menu:** `border-radius: --radius-md`, `--shadow-lg`, 188px minimum width. Items are Jost 12px uppercase, 9px 14px padding. Active item has gold-tinted background and brown-dark text. An invisible hover bridge (`::before`) spans the gap between pill and menu to prevent accidental close.
+- **Selected state:** Active filter pill gets gold-tinted background (`rgba(255,207,54,0.22)`), `--brown-light` border, and appends the selected value as non-uppercase text.
+- **Toggle pill:** In-Stock toggle with a green dot indicator (`#2FAE5E` with green glow ring). No dropdown.
+- **Meta row:** Result count (right-aligned in refine inner, `margin-left: auto`) and "Clear all" underline button. Only show "Clear all" when at least one filter is active.
+- **Specimen:** `preview/filter-bar.html`.
 
 ## 6. Do's and Don'ts
 

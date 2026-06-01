@@ -12,13 +12,14 @@ assert.ok(newsletterIndex > trustBarIndex, 'newsletter appears after trust bar')
 assert.ok(promoIndex > newsletterIndex, 'newsletter appears before promo modal');
 
 assert.match(html, /<section class="newsletter-signup" aria-labelledby="newsletterTitle">/);
-assert.match(html, /<span class="newsletter-eyebrow">Private Preview<\/span>/);
-assert.match(html, /<h2 class="newsletter-title" id="newsletterTitle">Be first to see what arrives next<\/h2>/);
-assert.match(html, /Early access to new jewelry drops and limited designs\./);
+assert.match(html, /<h2 class="newsletter-title" id="newsletterTitle">Welcome to the Gaura World<\/h2>/);
+assert.match(html, /Sign up to receive email updates from Gaura Style about the latest jewelry drops and collection previews\./);
 assert.match(html, /<form class="newsletter-form" id="newsletterForm" novalidate>/);
-assert.match(html, /type="email"[\s\S]*placeholder="Email address"/);
-assert.match(html, /<button class="newsletter-submit" type="submit">Join<\/button>/);
-assert.match(html, /No clutter\. Only new releases and private previews\./);
+assert.match(html, /type="email"[\s\S]*placeholder="Enter your email"/);
+assert.match(html, /<button class="newsletter-submit" type="submit">Submit<\/button>/);
+assert.match(html, /Privacy Policy/);
+assert.match(html, /Terms of Use/);
+assert.doesNotMatch(html, /class="newsletter-visual"/);
 assert.match(html, /newsletterForm\.addEventListener\('submit'/);
 
 console.log('newsletter signup contract passed');

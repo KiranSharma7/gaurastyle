@@ -18,7 +18,7 @@ Use `DESIGN.md` when another tool or agent needs the formal design language. Use
 
 Gaura Style designs and sells fine jewelry, primarily rings, direct to consumers across the US, Japan, India, and Russia. Shoppers are often deciding without seeing the piece in person, so the interface must earn trust immediately.
 
-The brand is bold, confident, and modern. It should feel like a curated gallery, not a warehouse. The emotional target is desire and aspiration: every landing moment should make the visitor want to own the jewelry.
+The brand is bold, confident, and modern. It should feel like an atelier gallery, not a warehouse. The emotional target is desire and aspiration: every landing moment should make the visitor want to own the jewelry.
 
 Avoid generic WooCommerce grids, discount-retailer clutter, dark-mode neon, heavy animations, cold sterile minimalism, and whispering neutrality.
 
@@ -49,7 +49,7 @@ House Gold is an action signal. Keep it rare. Most screens should be carried by 
 
 | Role | Family | Notes |
 |---|---|---|
-| Display | Cormorant Garamond | Light 300 for heroes and editorial statements |
+| Display | Cormorant Garamond | Light 300 for heroes and atelier statements |
 | Body | Jost | Regular 400 for copy, Medium 500 for UI labels |
 | Mono | DM Mono | Product codes, rare data, and technical snippets |
 
@@ -91,7 +91,7 @@ Navigation is uppercase, tracked, and restrained. It may be transparent over a h
 - [preview/btn-components.html](preview/btn-components.html): Button variants.
 - [preview/form-components.html](preview/form-components.html): Input and select patterns.
 - [preview/card-product.html](preview/card-product.html): Product card pattern.
-- [preview/card-editorial.html](preview/card-editorial.html): Editorial card pattern.
+- [preview/card-atelier.html](preview/card-atelier.html): Atelier feature card pattern.
 - [preview/badge-components.html](preview/badge-components.html): Badges and labels.
 - [preview/nav-component.html](preview/nav-component.html): Navigation component.
 - [preview/logo-lockups.html](preview/logo-lockups.html): Logo usage.

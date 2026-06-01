@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart — Gaura Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Design-system focus ring */
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--gold); outline-offset: 3px;
+    }
+
+    /* ── Minimal checkout nav ── */
+    .checkout-nav {
+      position: sticky; top: 0; z-index: 20;
+      height: 64px; background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 var(--gutter);
+    }
+    .nav-logo {
+      font-family: var(--font-display); font-size: 20px; font-weight: 400;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--fg1); text-decoration: none;
+    }
+    .nav-secure {
+      display: flex; align-items: center; gap: var(--sp-2);
+      font-family: var(--font-sans); font-size: 11px;
+      letter-spacing: 0.06em; color: var(--fg3);
+    }
+
+    /* ── Progress ── */
+    .progress {
+      display: flex; align-items: center; justify-content: center;
+      gap: var(--sp-5); padding: 14px var(--gutter);
+      background: var(--bg); border-bottom: 1px solid var(--border);
+    }
+    .prog-step {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3);
+    }
+    .prog-step.active { color: var(--fg1); }
+    .prog-sep {
+      width: 28px; height: 1px; background: var(--border-strong);
+    }
+
+    /* ── Two-column layout ── */
+    .cart-wrap {
+      max-width: 1180px; margin: 0 auto;
+      padding: var(--sp-9) var(--sp-7);
+      display: grid; grid-template-columns: 1fr 360px;
+      gap: var(--sp-11); align-items: start;
+    }
+
+    /* ── Left column ── */
+    .cart-col {}
+    .cart-heading {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 3vw, 42px);
+      font-weight: 300; line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--fg1); margin-bottom: var(--sp-7);
+    }
+    .cart-heading-count {
+      font-family: var(--font-mono); font-size: 15px;
+      color: var(--fg3); font-weight: 400;
+      margin-left: var(--sp-3);
+    }
+
+    /* Line items list */
+    .items-list { list-style: none; }
+
+    .line-item {
+      display: grid; grid-template-columns: 116px 1fr 160px;
+      gap: var(--sp-6); padding: var(--sp-6) 0;
+      border-bottom: 1px solid var(--border);
+      transition: opacity 250ms var(--ease-quart),
+                  transform 250ms var(--ease-quart);
+    }
+    .line-item.removing { opacity: 0; transform: translateX(14px); }
+
+    .li-img {
+      width: 116px; height: 145px;
+      background: var(--surface-warm);
+      border: 1px solid var(--border); overflow: hidden;
+    }
+    .li-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 420ms var(--ease-quart);
+    }
+    .li-img:hover img { transform: scale(1.04); }
+
+    .li-info {
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 2px 0;
+    }
+    .li-top {}
+    .li-coll {
+      font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--fg3); margin-bottom: var(--sp-2);
+    }
+    .li-name {
+      font-family: var(--font-display); font-size: 26px;
+      font-weight: 400; line-height: 1.18; color: var(--fg1);
+      margin-bottom: var(--sp-2);
+    }
+    .li-meta {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.06em; color: var(--fg2); text-transform: uppercase;
+    }
+    .li-note {
+      margin-top: var(--sp-3);
+      display: flex; align-items: center; gap: var(--sp-2);
+      font-family: var(--font-sans); font-size: 12px;
+      color: var(--fg3); line-height: 1.5;
+    }
+    .li-note-dot {
+      width: 4px; height: 4px; background: var(--brown-light);
+      border-radius: 50%; flex-shrink: 0;
+    }
+    .li-remove {
+      background: none; border: none; cursor: pointer;
+      font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--fg2); padding: 0;
+      text-decoration: underline; text-underline-offset: 2px;
+      align-self: flex-end;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .li-remove:hover { color: var(--error); }
+
+    /* Right side of line item: price + qty */
+    .li-right {
+      display: flex; flex-direction: column;
+      align-items: flex-end; justify-content: space-between;
+      padding: 2px 0;
+    }
+    .li-price {
+      font-family: var(--font-mono); font-size: 18px; color: var(--fg1);
+    }
+    .qty-ctl {
+      display: inline-flex; align-items: stretch;
+      border: 1px solid var(--border);
+    }
+    .qb {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer;
+      font-size: 17px; font-weight: 300; line-height: 1;
+      color: var(--fg2);
+      transition: all var(--dur-fast) var(--ease-out);
+    }
+    .qb:hover { background: var(--surface-warm); color: var(--fg1); }
+    .qb:disabled { opacity: 0.28; cursor: not-allowed; }
+    .qb:disabled:hover { background: none; color: var(--fg2); }
+    .qn {
+      width: 38px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 13px; color: var(--fg1);
+      border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+      user-select: none;
+    }
+
+    /* Empty state */
+    .cart-empty {
+      display: none; flex-direction: column;
+      align-items: flex-start; padding: var(--sp-9) 0 0;
+    }
+    .cart-empty.show { display: flex; }
+    .empty-h {
+      font-family: var(--font-display); font-size: 36px;
+      font-weight: 300; letter-spacing: -0.01em; color: var(--fg1);
+      margin-bottom: var(--sp-4);
+    }
+    .empty-copy {
+      font-family: var(--font-sans); font-size: 14px;
+      line-height: var(--lh-relaxed); color: var(--fg2);
+      max-width: 38ch; margin-bottom: var(--sp-7);
+    }
+
+    /* Empty state — featured pieces ("show the work") */
+    .empty-featured {
+      width: 100%; margin-top: var(--sp-10);
+      padding-top: var(--sp-8); border-top: 1px solid var(--border);
+    }
+    .ef-eyebrow {
+      font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3);
+      margin-bottom: var(--sp-6);
+    }
+    .ef-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6);
+    }
+    .ef-card { text-decoration: none; display: block; }
+    .ef-img {
+      width: 100%; aspect-ratio: 3 / 4; overflow: hidden;
+      background: var(--surface-warm); border: 1px solid var(--border);
+      margin-bottom: var(--sp-4);
+    }
+    .ef-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 420ms var(--ease-quart);
+    }
+    .ef-card:hover .ef-img img { transform: scale(1.04); }
+    .ef-coll {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--fg3); margin-bottom: var(--sp-2);
+    }
+    .ef-name {
+      font-family: var(--font-display); font-size: 22px; font-weight: 400;
+      line-height: 1.2; color: var(--fg1); margin-bottom: var(--sp-1);
+    }
+    .ef-price {
+      font-family: var(--font-mono); font-size: 13px; color: var(--fg2);
+    }
+    @media (max-width: 600px) {
+      .ef-grid { grid-template-columns: repeat(2, 1fr); gap: var(--sp-5); }
+    }
+    .btn-ghost {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: var(--sp-3); padding: 0 var(--sp-7); height: 50px;
+      background: transparent; color: var(--fg1);
+      border: 1px solid var(--fg1);
+      font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      cursor: pointer; text-decoration: none; border-radius: 0;
+      transition: all var(--dur-base) var(--ease-out);
+    }
+    .btn-ghost:hover { background: var(--fg1); color: var(--fg-inverse); }
+
+    /* Back to shop */
+    .back-link {
+      display: inline-flex; align-items: center; gap: var(--sp-2);
+      font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--fg2); text-decoration: none; margin-top: var(--sp-7);
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .back-link:hover { color: var(--fg1); }
+    .back-arrow { transition: transform var(--dur-fast) var(--ease-expo); }
+    .back-link:hover .back-arrow { transform: translateX(-3px); }
+
+    /* ── Order summary (right sticky column) ── */
+    .order-summary {
+      position: sticky; top: calc(64px + var(--sp-6));
+      background: var(--surface-warm); padding: var(--sp-7);
+    }
+    .os-title {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.24em; text-transform: uppercase; color: var(--fg1);
+      padding-bottom: var(--sp-5); border-bottom: 1px solid var(--border);
+      margin-bottom: var(--sp-5);
+    }
+    .os-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: var(--sp-4);
+    }
+    .os-row-label {
+      font-family: var(--font-sans); font-size: 13px; color: var(--fg2);
+    }
+    .os-row-value {
+      font-family: var(--font-mono); font-size: 14px; color: var(--fg1);
+    }
+    .os-ship-note {
+      font-family: var(--font-sans); font-size: 12px;
+      color: var(--fg3); font-style: italic;
+    }
+    .os-divider {
+      height: 1px; background: var(--border-strong);
+      margin: var(--sp-5) 0;
+    }
+    .os-total-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: var(--sp-6);
+    }
+    .os-total-label {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg1);
+    }
+    .os-total-val {
+      font-family: var(--font-mono); font-size: 24px; color: var(--fg1);
+    }
+    .os-checkout {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; height: 54px;
+      background: var(--gold); color: var(--fg1); border: none;
+      font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      cursor: pointer; border-radius: 0;
+      transition: background var(--dur-fast) var(--ease-out),
+                  transform var(--dur-fast) var(--ease-out);
+      margin-bottom: var(--sp-4);
+    }
+    .os-checkout:hover { background: var(--gold-hover); transform: translateY(-1px); }
+    .os-checkout:active { transform: scale(0.99); }
+    .os-secure {
+      display: flex; align-items: center; justify-content: center; gap: var(--sp-2);
+      font-family: var(--font-sans); font-size: 11px; color: var(--fg3);
+    }
+    .os-notes {
+      margin-top: var(--sp-5); padding-top: var(--sp-5);
+      border-top: 1px solid var(--border);
+    }
+    .os-note-item {
+      display: flex; align-items: flex-start; gap: var(--sp-3);
+      font-family: var(--font-sans); font-size: 12px;
+      color: var(--fg3); line-height: 1.5; margin-bottom: var(--sp-3);
+    }
+    .os-note-item:last-child { margin-bottom: 0; }
+    .os-note-dot {
+      width: 4px; height: 4px; background: var(--brown-light);
+      border-radius: 50%; flex-shrink: 0; margin-top: 6px;
+    }
+
+    /* ── Demo controls ── */
+    .demo-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: var(--sp-4); padding: var(--sp-4) var(--gutter);
+      background: var(--surface-warm); border-top: 1px solid var(--border);
+    }
+    .demo-btn {
+      padding: 8px 18px; background: none;
+      border: 1px solid var(--border-strong);
+      font-family: var(--font-mono); font-size: 11px; color: var(--fg2);
+      cursor: pointer; border-radius: 0;
+      text-decoration: none; display: inline-flex; align-items: center;
+      transition: all var(--dur-fast) var(--ease-out);
+    }
+    .demo-btn:hover { background: var(--bg); color: var(--fg1); border-color: var(--fg1); }
+
+    /* ── Mobile ── */
+    @media (max-width: 920px) {
+      .cart-wrap {
+        grid-template-columns: 1fr; gap: var(--sp-8); padding: var(--sp-7) var(--sp-5);
+      }
+      .order-summary { position: static; }
+    }
+    @media (max-width: 600px) {
+      .line-item { grid-template-columns: 88px 1fr; grid-template-rows: auto auto; }
+      .li-img { width: 88px; height: 110px; }
+      .li-right {
+        grid-column: 2; flex-direction: row;
+        align-items: center; justify-content: space-between;
+      }
+      .checkout-nav { padding: 0 var(--sp-5); }
+      .cart-wrap { padding: var(--sp-6) var(--sp-5); }
+      .order-summary { padding: var(--sp-6); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Checkout nav -->
+<header class="checkout-nav">
+  <a href="#" class="nav-logo">Gaura Style</a>
+  <div class="nav-secure">
+    <svg width="11" height="13" viewBox="0 0 11 13" fill="none"
+         stroke="currentColor" stroke-width="1.15">
+      <path d="M5.5 1L1 3.2V6.8c0 2.8 2.1 4.6 4.5 5.4 2.4-.8 4.5-2.6 4.5-5.4V3.2L5.5 1z"/>
+    </svg>
+    Secure checkout
+  </div>
+</header>
+
+<!-- Progress indicator -->
+<div class="progress" role="navigation" aria-label="Checkout steps">
+  <span class="prog-step active">Cart</span>
+  <div class="prog-sep"></div>
+  <span class="prog-step">Checkout</span>
+  <div class="prog-sep"></div>
+  <span class="prog-step">Complete</span>
+</div>
+
+<!-- Main -->
+<main>
+  <div class="cart-wrap">
+
+    <!-- Left: Items -->
+    <div class="cart-col">
+      <h1 class="cart-heading">
+        Your Cart
+        <span class="cart-heading-count" id="itemCount">(2)</span>
+      </h1>
+
+      <ul class="items-list" id="itemsList">
+
+        <!-- Item 1 — Soleil Ring -->
+        <li class="line-item" data-id="i1" data-base="485">
+          <div class="li-img">
+            <img src="../../prototype-assets/Rings/ChatGPT%20Image%20May%2027%2C%202026%2C%2002_47_31%20PM.png"
+                 alt="Soleil Ring in 18K gold, delicate tapered band with sun motif"
+                 loading="eager">
+          </div>
+          <div class="li-info">
+            <div class="li-top">
+              <p class="li-coll">Gold Collection</p>
+              <h2 class="li-name">Soleil Ring</h2>
+              <p class="li-meta">18K Gold · Size 5½</p>
+              <p class="li-note">
+                <span class="li-note-dot"></span>
+                Crafted to order · Ships in 3–5 weeks
+              </p>
+            </div>
+            <button class="li-remove" onclick="removeItem('i1')">Remove</button>
+          </div>
+          <div class="li-right">
+            <span class="li-price" id="price-i1">$485</span>
+            <div class="qty-ctl">
+              <button class="qb" id="minus-i1" onclick="changeQty('i1',-1)" disabled>−</button>
+              <span class="qn" id="qty-i1">1</span>
+              <button class="qb" onclick="changeQty('i1',1)">+</button>
+            </div>
+          </div>
+        </li>
+
+        <!-- Item 2 — Crescent Studs -->
+        <li class="line-item" data-id="i2" data-base="295">
+          <div class="li-img">
+            <img src="../../prototype-assets/Rings/ChatGPT%20Image%20May%2027%2C%202026%2C%2002_47_34%20PM.png"
+                 alt="Crescent Stud Earrings in 18K gold, minimal half-moon silhouette"
+                 loading="lazy">
+          </div>
+          <div class="li-info">
+            <div class="li-top">
+              <p class="li-coll">Gold Collection</p>
+              <h2 class="li-name">Crescent Studs</h2>
+              <p class="li-meta">18K Gold · Pair</p>
+              <p class="li-note">
+                <span class="li-note-dot"></span>
+                Crafted to order · Ships in 2–4 weeks
+              </p>
+            </div>
+            <button class="li-remove" onclick="removeItem('i2')">Remove</button>
+          </div>
+          <div class="li-right">
+            <span class="li-price" id="price-i2">$295</span>
+            <div class="qty-ctl">
+              <button class="qb" id="minus-i2" onclick="changeQty('i2',-1)" disabled>−</button>
+              <span class="qn" id="qty-i2">1</span>
+              <button class="qb" onclick="changeQty('i2',1)">+</button>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+
+      <!-- Empty state -->
+      <div class="cart-empty" id="emptyState">
+        <h2 class="empty-h">Your cart is empty.</h2>
+        <p class="empty-copy">
+          Nothing here yet. Begin with one of these, or browse the full collection.
+        </p>
+        <a href="shop-v1-dark.html" class="btn-ghost">Browse the Collection</a>
+
+        <div class="empty-featured">
+          <p class="ef-eyebrow">Pieces to begin with</p>
+          <div class="ef-grid">
+            <a href="product-v1.html" class="ef-card">
+              <div class="ef-img">
+                <img src="../../prototype-assets/Rings/ChatGPT%20Image%20May%2027%2C%202026%2C%2002_47_25%20PM.png"
+                     alt="Aurora Band in 18K gold" loading="lazy">
+              </div>
+              <p class="ef-coll">Gold Collection</p>
+              <h3 class="ef-name">Aurora Band</h3>
+              <span class="ef-price">$520</span>
+            </a>
+            <a href="product-v1.html" class="ef-card">
+              <div class="ef-img">
+                <img src="../../prototype-assets/Rings/ChatGPT%20Image%20May%2027%2C%202026%2C%2002_47_27%20PM.png"
+                     alt="Lumière Ring in 18K gold" loading="lazy">
+              </div>
+              <p class="ef-coll">Gold Collection</p>
+              <h3 class="ef-name">Lumière Ring</h3>
+              <span class="ef-price">$380</span>
+            </a>
+            <a href="product-v1.html" class="ef-card">
+              <div class="ef-img">
+                <img src="../../prototype-assets/Rings/ChatGPT%20Image%20May%2027%2C%202026%2C%2002_47_39%20PM.png"
+                     alt="Halo Solitaire in 18K gold" loading="lazy">
+              </div>
+              <p class="ef-coll">Gold Collection</p>
+              <h3 class="ef-name">Halo Solitaire</h3>
+              <span class="ef-price">$640</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <a href="cart-drawer.html" class="back-link">
+        <svg class="back-arrow" width="14" height="10" viewBox="0 0 14 10"
+             fill="none" stroke="currentColor" stroke-width="1.25">
+          <path d="M5 1L1 5l4 4M1 5h12"/>
+        </svg>
+        Continue Shopping
+      </a>
+    </div>
+
+    <!-- Right: Order summary -->
+    <aside class="order-summary" aria-label="Order summary">
+      <p class="os-title">Order Summary</p>
+
+      <div class="os-row">
+        <span class="os-row-label">Subtotal</span>
+        <span class="os-row-value" id="osSubtotal">$780</span>
+      </div>
+      <div class="os-row">
+        <span class="os-row-label">Shipping</span>
+        <span class="os-ship-note">Calculated at checkout</span>
+      </div>
+      <div class="os-row">
+        <span class="os-row-label">Duties &amp; taxes</span>
+        <span class="os-ship-note">Calculated at checkout</span>
+      </div>
+
+      <div class="os-divider"></div>
+
+      <div class="os-total-row">
+        <span class="os-total-label">Estimated Total</span>
+        <span class="os-total-val" id="osTotal">$780</span>
+      </div>
+
+      <button class="os-checkout">Proceed to Checkout</button>
+
+      <div class="os-secure">
+        <svg width="11" height="13" viewBox="0 0 11 13" fill="none"
+             stroke="currentColor" stroke-width="1.1">
+          <path d="M5.5 1L1 3.2V6.8c0 2.8 2.1 4.6 4.5 5.4 2.4-.8 4.5-2.6 4.5-5.4V3.2L5.5 1z"/>
+        </svg>
+        SSL-encrypted · Secure payment
+      </div>
+
+      <div class="os-notes">
+        <div class="os-note-item">
+          <span class="os-note-dot"></span>
+          Each piece is crafted to order. Production begins upon payment.
+        </div>
+        <div class="os-note-item">
+          <span class="os-note-dot"></span>
+          Free returns within 14 days of delivery.
+        </div>
+        <div class="os-note-item">
+          <span class="os-note-dot"></span>
+          All prices in USD. International duties may apply.
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<!-- Demo controls -->
+<div class="demo-bar">
+  <button class="demo-btn" onclick="toggleEmpty()">Toggle empty state</button>
+  <a href="cart-drawer.html" class="demo-btn">← Drawer demo</a>
+</div>
+
+<script>
+  const state = {
+    i1: { base: 485, qty: 1 },
+    i2: { base: 295, qty: 1 }
+  };
+
+  function recalc() {
+    const total = Object.values(state).reduce((s, v) => s + v.base * v.qty, 0);
+    const fmt = n => '$' + n.toLocaleString();
+    document.getElementById('osSubtotal').textContent = fmt(total);
+    document.getElementById('osTotal').textContent = fmt(total);
+    const count = Object.keys(state).length;
+    document.getElementById('itemCount').textContent = '(' + count + ')';
+  }
+
+  function changeQty(id, delta) {
+    const item = state[id];
+    const next = item.qty + delta;
+    if (next < 1) return;
+    item.qty = next;
+    document.getElementById('qty-' + id).textContent = next;
+    document.getElementById('minus-' + id).disabled = next <= 1;
+    document.getElementById('price-' + id).textContent =
+      '$' + (item.base * next).toLocaleString();
+    recalc();
+  }
+
+  function removeItem(id) {
+    const el = document.querySelector(`[data-id="${id}"]`);
+    if (!el) return;
+    el.classList.add('removing');
+    setTimeout(() => {
+      el.remove();
+      delete state[id];
+      recalc();
+      if (Object.keys(state).length === 0) showEmpty();
+    }, 270);
+  }
+
+  function showEmpty() {
+    document.getElementById('itemsList').style.display = 'none';
+    document.getElementById('emptyState').classList.add('show');
+    document.getElementById('itemCount').textContent = '(0)';
+    // No checkout on an empty cart: drop the summary panel, heading count, and back-link
+    document.querySelector('.cart-heading').style.display = 'none';
+    document.querySelector('.order-summary').style.display = 'none';
+    document.querySelector('.back-link').style.display = 'none';
+    document.querySelector('.cart-wrap').style.gridTemplateColumns = '1fr';
+  }
+
+  function toggleEmpty() {
+    const isEmpty = document.getElementById('emptyState').classList.contains('show');
+    if (isEmpty) {
+      location.reload();
+    } else {
+      showEmpty();
+    }
+  }
+</script>
+</body>
+</html>

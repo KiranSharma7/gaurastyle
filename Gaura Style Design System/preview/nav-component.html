@@ -1,54 +1,399 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8">
-<link rel="stylesheet" href="../colors_and_type.css">
-<style>
-  body { margin: 0; background: var(--bg); font-family: var(--font-sans); }
-  nav { height: 72px; background: rgba(250,250,248,0.95); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; backdrop-filter: blur(12px); }
-  .nav-logo img { height: 28px; width: auto; }
-  .nav-links { display: flex; gap: 36px; }
-  .nav-links a { font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg1); text-decoration: none; transition: color var(--dur-fast); }
-  .nav-links a:hover { color: var(--brown); }
-  .nav-links a.active { color: var(--brown); border-bottom: 1px solid var(--brown); padding-bottom: 1px; }
-  .nav-icons { display: flex; gap: 20px; align-items: center; }
-  .nav-icon { color: var(--fg1); cursor: pointer; font-size: 16px; position: relative; }
-  .cart-count { position: absolute; top: -6px; right: -8px; background: var(--gold); color: var(--brown-dark); width: 16px; height: 16px; border-radius: 50%; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
-  /* Scrolled state */
-  nav.scrolled { background: var(--surface); box-shadow: var(--shadow-sm); }
-  .nav-dark { background: var(--surface-dark); border-bottom-color: rgba(255,255,255,0.1); margin-top: 8px; }
-  .nav-dark .nav-links a { color: var(--fg-inverse); opacity: 0.8; }
-  .nav-dark .nav-links a.active { color: var(--gold); border-bottom-color: var(--gold); opacity: 1; }
-  .nav-dark .nav-icon { color: var(--fg-inverse); }
-  .label { font-size: 10px; color: var(--fg3); font-family: var(--font-mono); padding: 6px 40px; letter-spacing: 0.06em; }
-</style>
-</head><body>
-<div class="label">Default (light)</div>
-<nav>
-  <div class="nav-logo"><img src="../assets/logo-brown.webp" alt="Gaura Style"></div>
-  <div class="nav-links">
-    <a href="#" class="active">Rings</a>
-    <a href="#">Collections</a>
-    <a href="#">Journal</a>
-    <a href="#">About</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nav Component — Gaura Style Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--surface-warm); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+    .specimen { margin-bottom: 48px; }
+    .specimen-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      padding: 14px 32px 10px;
+      background: var(--surface-warm);
+    }
+    .specimen-bg-dark .specimen-label { background: #2C2925; color: rgba(250,250,248,0.4); }
+
+    /* ── ANNOUNCEMENT BAR ── */
+    .announcement-bar {
+      height: var(--bar-h);
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      position: relative;
+    }
+    .announcement-bar p {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg1);
+    }
+    .announcement-bar a {
+      color: var(--fg1);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .bar-dismiss {
+      position: absolute;
+      right: 20px;
+      min-width: 40px;
+      min-height: 40px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--fg1);
+      font-size: 18px;
+      line-height: 1;
+      opacity: 0.72;
+      transition: opacity 0.16s ease, transform 0.16s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bar-dismiss:hover { opacity: 1; }
+
+    /* ── SHARED NAV STRUCTURE ── */
+    .navbar {
+      padding-block: 16px 22px;
+    }
+    .nav-inner {
+      max-width: var(--content-width);
+      margin-inline: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 18px;
+      padding: 0 var(--gutter);
+    }
+    .nav-utility {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 22px;
+    }
+    .nav-util-link,
+    .nav-util-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      background: none;
+      border: none;
+      padding: 4px 2px;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+    .nav-util-link svg, .nav-util-btn svg { width: 16px; height: 16px; stroke-width: 1.5; }
+    .nav-util-right { display: flex; align-items: center; gap: 26px; }
+
+    .nav-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+    }
+    .nav-logo img {
+      height: 96px;
+      width: auto;
+      max-width: 76vw;
+      object-fit: contain;
+      transition: height 0.45s var(--ease-quart);
+    }
+
+    .nav-links-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-link {
+      position: relative;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 6px 0;
+      transition: color 0.2s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 1px;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.28s var(--ease-expo);
+    }
+    .nav-link:hover::after, .nav-link.is-active::after { transform: scaleX(1); }
+
+    .nav-search {
+      margin-left: 36px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      padding: 6px;
+      transition: color 0.2s ease, transform 0.2s var(--ease-expo);
+    }
+    .nav-search:hover { transform: scale(1.08); }
+    .nav-search svg { width: 18px; height: 18px; stroke-width: 1.5; }
+
+    .cart-count {
+      position: absolute;
+      top: -4px; right: -6px;
+      background: var(--gold);
+      color: var(--brown-dark);
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      font-size: 9px;
+      font-weight: 700;
+      font-family: var(--font-sans);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    /* ── DARK VARIANT (hero / shop pages) ── */
+    .navbar--dark {
+      background: rgba(26, 23, 20, 0.72);
+      backdrop-filter: blur(8px) saturate(120%);
+    }
+    .navbar--dark .nav-util-link,
+    .navbar--dark .nav-util-btn { color: rgba(250, 250, 248, 0.92); }
+    .navbar--dark .nav-util-link:hover,
+    .navbar--dark .nav-util-btn:hover { color: var(--gold); }
+    .navbar--dark .nav-logo img {
+      filter:
+        brightness(0) invert(1)
+        drop-shadow(0 6px 30px rgba(26, 23, 20, 0.55))
+        drop-shadow(0 0 40px rgba(255, 207, 54, 0.14));
+    }
+    .navbar--dark .nav-link { color: rgba(250, 250, 248, 0.90); }
+    .navbar--dark .nav-link::after { background: var(--gold); }
+    .navbar--dark .nav-link:hover { color: var(--fg-inverse); }
+    .navbar--dark .nav-search { color: rgba(250, 250, 248, 0.90); }
+    .navbar--dark .nav-search:hover { color: var(--gold); }
+
+    /* ── LIGHT SCROLLED VARIANT ── */
+    .navbar--light {
+      background: rgba(250, 250, 248, 0.94);
+      backdrop-filter: blur(18px) saturate(140%);
+      box-shadow: 0 1px 0 rgba(26, 23, 20, 0.06), 0 4px 24px rgba(26, 23, 20, 0.04);
+      padding-block: 12px 14px;
+    }
+    .navbar--light .nav-inner { gap: 8px; }
+    .navbar--light .nav-utility {
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .navbar--light .nav-logo img { height: 46px; filter: none; }
+    .navbar--light .nav-util-link,
+    .navbar--light .nav-util-btn { color: var(--fg1); }
+    .navbar--light .nav-util-link:hover,
+    .navbar--light .nav-util-btn:hover { color: var(--brown); }
+    .navbar--light .nav-link { color: var(--fg1); }
+    .navbar--light .nav-link:hover { color: var(--brown); }
+    .navbar--light .nav-link::after { background: var(--brown); }
+    .navbar--light .nav-search { color: var(--fg1); }
+    .navbar--light .nav-search:hover { color: var(--brown); }
+
+    /* ── LIGHT PAGE-CONSTANT VARIANT (product / editorial pages) ── */
+    .navbar--page-light {
+      background: rgba(250, 250, 248, 0.94);
+      backdrop-filter: blur(18px) saturate(140%);
+      box-shadow: 0 1px 0 rgba(26, 23, 20, 0.06), 0 4px 24px rgba(26, 23, 20, 0.04);
+    }
+    .navbar--page-light .nav-util-link,
+    .navbar--page-light .nav-util-btn { color: var(--fg1); }
+    .navbar--page-light .nav-util-link:hover,
+    .navbar--page-light .nav-util-btn:hover { color: var(--brown); }
+    .navbar--page-light .nav-link { color: var(--fg1); }
+    .navbar--page-light .nav-link:hover { color: var(--brown); }
+    .navbar--page-light .nav-link::after { background: var(--brown); }
+    .navbar--page-light .nav-search { color: var(--fg1); }
+    .navbar--page-light .nav-search:hover { color: var(--brown); }
+    .navbar--page-light .nav-logo img { height: 62px; filter: none; }
+
+    /* bg staging */
+    .dark-bg {
+      background: linear-gradient(
+        135deg,
+        #2C1E0C 0%,
+        #4A2C10 40%,
+        #1A1714 100%
+      );
+      padding-bottom: 24px;
+    }
+    .light-bg { background: var(--bg); padding-bottom: 24px; }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Announcement bar (standalone) -->
+  <div class="specimen">
+    <div class="specimen-label">Announcement Bar</div>
+    <div class="announcement-bar">
+      <p>Complimentary engraving on every ring. <a href="#">Learn more</a></p>
+      <button class="bar-dismiss" aria-label="Dismiss announcement">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
   </div>
-  <div class="nav-icons">
-    <span class="nav-icon">⌕</span>
-    <span class="nav-icon" style="position:relative">🛍
-      <span class="cart-count">2</span>
-    </span>
-    <span class="nav-icon">◯</span>
+
+  <!-- 2. Dark nav variant (hero / shop pages — over imagery) -->
+  <div class="specimen specimen-bg-dark">
+    <div class="specimen-label">Nav — Dark (hero / shop, over full-bleed image)</div>
+    <div class="dark-bg">
+      <div class="announcement-bar">
+        <p>Free shipping on orders over ₹15,000. <a href="#">Details</a></p>
+        <button class="bar-dismiss" aria-label="Dismiss">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <nav class="navbar navbar--dark" aria-label="Main navigation">
+        <div class="nav-inner">
+          <div class="nav-utility">
+            <a href="#" class="nav-util-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Stores</span>
+            </a>
+            <div class="nav-util-right">
+              <a href="#" class="nav-util-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Login</span>
+              </a>
+              <button class="nav-util-btn" style="position:relative" aria-label="Cart (2 items)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span class="cart-count">2</span>
+              </button>
+            </div>
+          </div>
+          <a href="#" class="nav-logo" aria-label="Gaura Style home">
+            <img src="../../prototype-assets/Gaura_Style_Wordmark.webp" alt="Gaura Style" style="height:96px;filter:brightness(0) invert(1) drop-shadow(0 6px 30px rgba(26,23,20,0.55))">
+          </a>
+          <div class="nav-links-row">
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Rings</a></li>
+              <li><a href="#" class="nav-link is-active">Collections</a></li>
+              <li><a href="#" class="nav-link">Bridal</a></li>
+              <li><a href="#" class="nav-link">Journal</a></li>
+              <li><a href="#" class="nav-link">About</a></li>
+            </ul>
+            <button class="nav-search" aria-label="Search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="rgba(250,250,248,0.90)" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </div>
   </div>
-</nav>
-<div class="label" style="margin-top:8px">Dark (over hero image)</div>
-<nav class="nav-dark">
-  <div class="nav-logo"><img src="../assets/logo-brown.webp" alt="Gaura Style" style="filter:brightness(0) invert(1)"></div>
-  <div class="nav-links">
-    <a href="#">Rings</a>
-    <a href="#" class="active">Collections</a>
-    <a href="#">Journal</a>
-    <a href="#">About</a>
+
+  <!-- 3. Scrolled / compact light variant (any page after scroll) -->
+  <div class="specimen">
+    <div class="specimen-label">Nav — Light Scrolled (compact, bar collapsed, wordmark shrinks)</div>
+    <div class="light-bg">
+      <div style="height:var(--bar-h); background: rgba(255,207,54,0.15); display:flex;align-items:center;justify-content:center;">
+        <span style="font-size:10px;color:var(--fg3);letter-spacing:0.1em;font-family:var(--font-mono)">[announcement bar — hidden on scroll]</span>
+      </div>
+      <nav class="navbar navbar--light" aria-label="Main navigation">
+        <div class="nav-inner">
+          <div class="nav-utility"><!-- hidden via CSS --></div>
+          <a href="#" class="nav-logo" aria-label="Gaura Style home">
+            <img src="../../prototype-assets/Gaura_Style_Wordmark.webp" alt="Gaura Style" style="height:46px">
+          </a>
+          <div class="nav-links-row">
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link">Rings</a></li>
+              <li><a href="#" class="nav-link is-active">Collections</a></li>
+              <li><a href="#" class="nav-link">Bridal</a></li>
+              <li><a href="#" class="nav-link">Journal</a></li>
+              <li><a href="#" class="nav-link">About</a></li>
+            </ul>
+            <button class="nav-search" aria-label="Search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </div>
   </div>
-  <div class="nav-icons">
-    <span class="nav-icon">⌕</span>
-    <span class="nav-icon">◯</span>
+
+  <!-- 4. Page-constant light variant (product / editorial — always light) -->
+  <div class="specimen">
+    <div class="specimen-label">Nav — Page Light (product / editorial pages — light from load)</div>
+    <div class="light-bg">
+      <div class="announcement-bar">
+        <p>Complimentary engraving on every ring. <a href="#">Learn more</a></p>
+        <button class="bar-dismiss" aria-label="Dismiss">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <nav class="navbar navbar--page-light" aria-label="Main navigation">
+        <div class="nav-inner">
+          <div class="nav-utility">
+            <a href="#" class="nav-util-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Stores</span>
+            </a>
+            <div class="nav-util-right">
+              <a href="#" class="nav-util-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Login</span>
+              </a>
+              <button class="nav-util-btn" style="position:relative" aria-label="Cart (0 items)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span class="cart-count">0</span>
+              </button>
+            </div>
+          </div>
+          <a href="#" class="nav-logo" aria-label="Gaura Style home">
+            <img src="../../prototype-assets/Gaura_Style_Wordmark.webp" alt="Gaura Style" style="height:62px">
+          </a>
+          <div class="nav-links-row">
+            <ul class="nav-links">
+              <li><a href="#" class="nav-link is-active">Rings</a></li>
+              <li><a href="#" class="nav-link">Collections</a></li>
+              <li><a href="#" class="nav-link">Bridal</a></li>
+              <li><a href="#" class="nav-link">Journal</a></li>
+              <li><a href="#" class="nav-link">About</a></li>
+            </ul>
+            <button class="nav-search" aria-label="Search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </div>
   </div>
-</nav>
-</body></html>
+
+</body>
+</html>

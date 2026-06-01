@@ -1,0 +1,52 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--bg); font-family: var(--font-sans); }
+  .row { display: flex; gap: 14px; }
+  .atelier { width: 220px; background: var(--surface-warm); border-radius: var(--radius-sm); overflow: hidden; box-shadow: var(--shadow-sm); }
+  .edit-img { width: 100%; height: 120px; background: var(--surface-warm); display: flex; align-items: center; justify-content: center; position: relative; border-bottom: 1px solid var(--border); }
+  .edit-img .placeholder { font-family: var(--font-display); font-size: 13px; font-style: italic; color: var(--fg3); }
+  .edit-body { padding: 14px 16px 16px; }
+  .edit-tag { font-size: 9px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brown); margin-bottom: 6px; }
+  .edit-title { font-family: var(--font-display); font-size: 18px; font-weight: 300; line-height: 1.25; color: var(--fg1); margin-bottom: 6px; }
+  .edit-body-text { font-size: 12px; color: var(--fg2); line-height: 1.55; margin-bottom: 10px; }
+  .edit-link { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg1); border-bottom: 1px solid var(--fg1); display: inline-block; cursor: pointer; }
+  .featured { background: var(--fg1); }
+  .featured .edit-img { background: #2e2926; border-bottom-color: rgba(255,255,255,0.1); }
+  .featured .edit-img .placeholder { color: rgba(255,255,255,0.3); }
+  .featured .edit-tag { color: var(--gold); }
+  .featured .edit-title { color: var(--fg-inverse); }
+  .featured .edit-body-text { color: rgba(250,250,248,0.6); }
+  .featured .edit-link { color: var(--gold); border-bottom-color: var(--gold); }
+</style>
+</head><body>
+<div class="row">
+  <div class="atelier">
+    <div class="edit-img"><span class="placeholder">Atelier image</span></div>
+    <div class="edit-body">
+      <div class="edit-tag">Atelier</div>
+      <div class="edit-title">The Art of Gifting Fine Jewelry</div>
+      <div class="edit-body-text">A guide to choosing the ring that speaks without words.</div>
+      <span class="edit-link">Read More</span>
+    </div>
+  </div>
+  <div class="atelier featured">
+    <div class="edit-img"><span class="placeholder">Campaign image</span></div>
+    <div class="edit-body">
+      <div class="edit-tag">Campaign</div>
+      <div class="edit-title">Beauty for a Cause</div>
+      <div class="edit-body-text">Every purchase supports artisan communities worldwide.</div>
+      <span class="edit-link">Discover</span>
+    </div>
+  </div>
+  <div class="atelier" style="background:var(--gold-subtle)">
+    <div class="edit-img" style="background:var(--gold-light);border-bottom-color:var(--border)"><span class="placeholder">Product scene</span></div>
+    <div class="edit-body">
+      <div class="edit-tag" style="color:var(--brown-dark)">New Arrival</div>
+      <div class="edit-title">Summer 2026 Collection</div>
+      <div class="edit-body-text">Warm days, radiant nights. Our newest rings.</div>
+      <span class="edit-link">Shop Now</span>
+    </div>
+  </div>
+</div>
+</body></html>

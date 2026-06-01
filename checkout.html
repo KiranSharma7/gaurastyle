@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Gaura Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="Gaura Style Design System/colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --content-width: 1440px;
+      --gutter: 40px;
+      --bar-h: 44px;
+      --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* Design-system focus ring */
+    a:focus-visible, button:focus-visible,
+    input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--gold); outline-offset: 3px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg1);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── ANNOUNCEMENT BAR ─── */
+    .announcement-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: var(--bar-h);
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transform: translateY(-100%);
+      transition: transform 0.5s var(--ease-expo);
+    }
+    .announcement-bar.visible { transform: translateY(0); }
+    .announcement-bar.hidden { transform: translateY(-100%); pointer-events: none; }
+    .announcement-bar p {
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--fg1);
+    }
+    .announcement-bar a { color: var(--fg1); text-decoration: underline; text-underline-offset: 2px; }
+    .bar-dismiss {
+      position: absolute; right: 20px;
+      min-width: 40px; min-height: 40px;
+      background: none; border: none; cursor: pointer;
+      color: var(--fg1); font-size: 18px; line-height: 1;
+      opacity: 0.72; transition: opacity 0.16s ease, transform 0.16s ease;
+    }
+    .bar-dismiss:hover { opacity: 1; }
+    .bar-dismiss:active { transform: scale(0.96); }
+
+    /* ─── NAVBAR ─── */
+    .navbar {
+      position: fixed; left: 0; right: 0; z-index: 99;
+      top: var(--bar-h);
+      opacity: 0;
+      padding-block: 16px 22px;
+      background: rgba(250, 250, 248, 0.94);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      box-shadow: 0 1px 0 rgba(26,23,20,0.06), 0 4px 24px rgba(26,23,20,0.04);
+      transition-property: top, opacity, padding, transform;
+      transition-duration: 0.3s, 0.5s, 0.45s, 0.35s;
+      transition-timing-function: var(--ease-quart), ease, var(--ease-quart), var(--ease-quart);
+    }
+    .navbar.nav-hidden { transform: translateY(-200%); }
+    .navbar.visible { opacity: 1; }
+    .navbar.bar-gone { top: 0; }
+
+    .nav-inner {
+      position: relative;
+      max-width: var(--content-width);
+      margin-inline: auto;
+      display: flex; flex-direction: column; align-items: stretch;
+      gap: 18px; padding: 0 var(--gutter);
+      transition: gap 0.4s var(--ease-quart);
+    }
+
+    .nav-utility {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 22px;
+      transition: opacity 0.35s ease, height 0.4s var(--ease-quart), margin 0.4s var(--ease-quart);
+    }
+    .nav-util-link, .nav-util-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      min-height: 40px;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+      color: var(--fg1);
+      text-decoration: none; background: none; border: none;
+      padding: 4px 2px; cursor: pointer; position: relative;
+      transition: color 0.2s ease, transform 0.2s var(--ease-expo);
+    }
+    .nav-util-link:hover, .nav-util-btn:hover { color: var(--brown); }
+    .nav-util-btn:active { transform: scale(0.96); }
+    .nav-util-right { display: flex; align-items: center; gap: 26px; }
+    .nav-util-link svg, .nav-util-btn svg { width: 16px; height: 16px; stroke-width: 1.5; }
+
+    .nav-logo { display: flex; justify-content: center; align-items: center; text-decoration: none; }
+    .nav-logo img {
+      height: 62px; width: auto; max-width: 76vw; object-fit: contain;
+      transition: height 0.45s var(--ease-quart);
+    }
+
+    .nav-links-row { display: flex; align-items: center; justify-content: center; gap: 0; }
+    .nav-links { display: flex; align-items: center; gap: 40px; list-style: none; }
+    .nav-link {
+      position: relative;
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none;
+      color: var(--fg1); padding: 8px 0; transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: 0; left: 0; width: 100%;
+      height: 1px; background: var(--brown);
+      transform: scaleX(0); transform-origin: left center;
+      transition: transform 0.28s var(--ease-expo);
+    }
+    .nav-link:hover { color: var(--brown); }
+    .nav-link:hover::after { transform: scaleX(1); }
+    .nav-search {
+      margin-left: 36px; min-width: 40px; min-height: 40px;
+      background: none; border: none; cursor: pointer;
+      color: var(--fg1);
+      display: inline-flex; align-items: center; justify-content: center; padding: 6px;
+      transition: color 0.2s ease, transform 0.2s var(--ease-expo);
+    }
+    .nav-search:hover { color: var(--brown); transform: scale(1.08); }
+    .nav-search:active { transform: scale(0.96); }
+    .nav-search svg { width: 18px; height: 18px; stroke-width: 1.5; }
+
+    .cart-count {
+      position: absolute; top: -2px; right: -8px;
+      background: var(--gold); color: var(--brown-dark);
+      width: 16px; height: 16px; border-radius: 50%;
+      font-size: 9px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    @media (max-width: 720px) {
+      .navbar { padding-block: 12px 14px; }
+      .nav-inner { gap: 12px; padding-inline: 16px; }
+      .nav-utility { display: none; }
+      .nav-logo img { height: 40px; }
+      .nav-link { font-size: 11px; }
+      .nav-search { margin-left: 16px; }
+    }
+    @media (max-width: 920px) {
+      .nav-links { gap: 24px; overflow-x: auto; scrollbar-width: none; }
+      .nav-links::-webkit-scrollbar { display: none; }
+      .nav-links-row { justify-content: flex-start; overflow: hidden; }
+    }
+
+    /* ── Progress / step rail ── */
+    .progress {
+      display: flex; align-items: center; justify-content: center;
+      gap: var(--sp-5); padding: 16px var(--gutter);
+      background: var(--bg); border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .prog-step {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3);
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .prog-step.done { color: var(--fg2); }
+    .prog-step.active { color: var(--fg1); }
+    .prog-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--border-strong); flex-shrink: 0;
+    }
+    .prog-step.done .prog-dot { background: var(--brown-light); }
+    .prog-step.active .prog-dot { background: var(--gold); }
+    .prog-sep { width: 28px; height: 1px; background: var(--border-strong); }
+    @media (max-width: 600px) {
+      .progress { gap: var(--sp-3); padding: 14px var(--sp-5); }
+      .prog-sep { width: 14px; }
+      .prog-step span { display: none; }
+    }
+
+    /* ── Two-column layout ── */
+    .checkout-wrap {
+      max-width: 1180px; margin: 0 auto;
+      padding: var(--sp-9) var(--sp-7);
+      display: grid; grid-template-columns: 1fr 400px;
+      gap: var(--sp-11); align-items: start;
+    }
+
+    .co-heading {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 3vw, 42px);
+      font-weight: 300; line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--fg1); margin-bottom: var(--sp-2);
+    }
+    .co-sub {
+      font-size: 13px; color: var(--fg2); line-height: 1.6;
+      margin-bottom: var(--sp-7); max-width: 46ch;
+    }
+
+    /* ── Express payment row (unified warm-monochrome) ── */
+    .express-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-3); margin-bottom: var(--sp-6);
+    }
+    .express-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px; height: 52px;
+      background: var(--surface); border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm); cursor: pointer;
+      color: var(--fg1);
+      font-family: var(--font-sans); font-size: 13px; font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: border-color var(--dur-fast) var(--ease-out),
+                  background var(--dur-fast) var(--ease-out),
+                  transform var(--dur-fast) var(--ease-out);
+    }
+    .express-btn:hover { background: var(--surface-warm); border-color: var(--fg1); }
+    .express-btn:active { transform: scale(0.985); }
+    .express-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+    .express-btn .wm-light { font-weight: 400; }
+
+    .express-divider {
+      display: flex; align-items: center; gap: var(--sp-4);
+      margin-bottom: var(--sp-7);
+    }
+    .express-divider::before, .express-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .express-divider span {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--fg3);
+    }
+
+    /* ── Accordion steps ── */
+    .steps { display: flex; flex-direction: column; gap: var(--sp-5); }
+    .step { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); }
+    .step.active { border-color: var(--border-strong); box-shadow: var(--shadow-sm); }
+    .step.pending { background: transparent; border-style: dashed; border-color: var(--border); }
+
+    .step-head {
+      display: flex; align-items: center; gap: var(--sp-4);
+      padding: var(--sp-5) var(--sp-6);
+    }
+    .step.active .step-head { padding-bottom: var(--sp-2); }
+    .step-num {
+      width: 26px; height: 26px; flex-shrink: 0;
+      display: grid; place-items: center; border-radius: 50%;
+      font-family: var(--font-mono); font-size: 12px;
+      border: 1px solid var(--border-strong); color: var(--fg2);
+    }
+    .step.active .step-num { background: var(--gold); border-color: var(--gold); color: var(--fg1); font-weight: 500; }
+    .step.done .step-num { background: var(--fg1); border-color: var(--fg1); color: var(--fg-inverse); }
+    .step.done .step-num svg { width: 13px; height: 13px; }
+    .step.pending .step-num { color: var(--fg3); }
+
+    .step-titlewrap { flex: 1; min-width: 0; }
+    .step-kicker {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--fg3); margin-bottom: 2px;
+    }
+    .step-title {
+      font-family: var(--font-display); font-size: 23px;
+      font-weight: 400; line-height: 1.2; color: var(--fg1);
+    }
+    .step.pending .step-title { color: var(--fg3); }
+    .step-recap {
+      font-size: 13px; color: var(--fg2); line-height: 1.55;
+      margin-top: 3px;
+    }
+    .step-edit {
+      align-self: flex-start; background: none; border: none; cursor: pointer;
+      font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--fg2);
+      text-decoration: underline; text-underline-offset: 3px;
+      padding: 4px 0; transition: color var(--dur-fast) var(--ease-out);
+    }
+    .step-edit:hover { color: var(--fg1); }
+    .step-lock { color: var(--fg3); display: inline-flex; }
+    .step-lock svg { width: 15px; height: 15px; }
+
+    .step-body { padding: var(--sp-2) var(--sp-6) var(--sp-6); }
+
+    /* ── Form fields ── */
+    .field { position: relative; margin-bottom: var(--sp-4); }
+    .field-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4);
+      margin-bottom: var(--sp-4);
+    }
+    .field-row.triple { grid-template-columns: 1.4fr 1fr 1fr; }
+    .field-label {
+      display: block; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--fg2); margin-bottom: var(--sp-2);
+    }
+    .field-input, .field-select, .field-area {
+      width: 100%; font-family: var(--font-sans); font-size: 15px;
+      color: var(--fg1); background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 13px 15px;
+      transition: border-color var(--dur-fast) var(--ease-out),
+                  border-width var(--dur-fast) var(--ease-out);
+    }
+    .field-input::placeholder, .field-area::placeholder { color: var(--fg3); }
+    .field-input:focus, .field-select:focus, .field-area:focus {
+      outline: none; border-color: var(--fg1); border-width: 1.5px;
+      padding: 12.5px 14.5px;
+    }
+    .field-area { resize: vertical; min-height: 88px; line-height: 1.55; }
+    .field-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%236B5E57' stroke-width='1.5'%3E%3Cpath d='M1 1.5L6 6.5l5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 15px center;
+      padding-right: 40px; cursor: pointer;
+    }
+    .field-hint { font-size: 11px; color: var(--fg3); margin-top: 6px; }
+
+    /* Focus spec (statically applied) */
+    .field.is-focused .field-input {
+      border-color: var(--fg1); border-width: 1.5px;
+      outline: 2px solid var(--gold); outline-offset: 2px;
+    }
+    /* Error spec (statically applied) */
+    .field.is-error .field-input {
+      border-color: var(--error); background: var(--error-bg);
+    }
+    .field-msg {
+      display: none; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--error); margin-top: 7px;
+    }
+    .field.is-error .field-msg { display: flex; }
+    .field-msg svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    /* ── Shipping method radios ── */
+    .ship-legend {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--fg2); margin: var(--sp-5) 0 var(--sp-3);
+    }
+    .ship-opt {
+      display: flex; align-items: center; gap: var(--sp-4);
+      padding: 16px 18px; margin-bottom: var(--sp-3);
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      cursor: pointer; background: var(--surface);
+      transition: border-color var(--dur-fast) var(--ease-out),
+                  background var(--dur-fast) var(--ease-out);
+    }
+    .ship-opt:hover { border-color: var(--border-strong); }
+    .ship-native {
+      position: absolute; opacity: 0; width: 1px; height: 1px;
+      pointer-events: none;
+    }
+    .ship-opt.selected, .ship-opt:has(.ship-native:checked) {
+      border-color: var(--fg1); background: var(--surface-warm);
+    }
+    .ship-radio {
+      width: 18px; height: 18px; flex-shrink: 0; border-radius: 50%;
+      border: 1.5px solid var(--border-strong); position: relative;
+      transition: border-color var(--dur-fast) var(--ease-out);
+    }
+    .ship-opt.selected .ship-radio, .ship-opt:has(.ship-native:checked) .ship-radio { border-color: var(--fg1); }
+    .ship-opt.selected .ship-radio::after, .ship-opt:has(.ship-native:checked) .ship-radio::after {
+      content: ''; position: absolute; inset: 3px;
+      border-radius: 50%; background: var(--gold);
+    }
+    .ship-opt-main { flex: 1; min-width: 0; }
+    .ship-opt-name { font-size: 14px; font-weight: 500; color: var(--fg1); }
+    .ship-opt-desc { font-size: 12px; color: var(--fg2); margin-top: 2px; }
+    .ship-opt-price {
+      font-family: var(--font-mono); font-size: 14px; color: var(--fg1);
+      letter-spacing: 0.02em;
+    }
+    .ship-opt-price.free { color: var(--brown); }
+
+    .gift-note { margin-top: var(--sp-5); }
+
+    .payment-note {
+      display: flex; align-items: center; gap: 9px;
+      padding: 12px 14px; margin-bottom: var(--sp-5);
+      background: var(--surface-warm); border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 12px; color: var(--fg2); line-height: 1.45;
+    }
+    .payment-note svg { width: 15px; height: 15px; color: var(--brown); flex-shrink: 0; }
+    .card-input { font-family: var(--font-mono); letter-spacing: 0.04em; }
+    .billing-check {
+      display: flex; align-items: center; gap: 10px;
+      margin: var(--sp-2) 0 var(--sp-5);
+      font-size: 13px; color: var(--fg2); cursor: pointer;
+    }
+    .billing-check input {
+      width: 16px; height: 16px; accent-color: var(--gold);
+      flex-shrink: 0;
+    }
+    .payment-microcopy {
+      margin-top: var(--sp-3);
+      font-size: 12px; line-height: 1.55; color: var(--fg3);
+      text-align: center;
+    }
+
+    /* ── Buttons ── */
+    .btn-dark {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: var(--sp-3); width: 100%; height: 54px; margin-top: var(--sp-6);
+      background: var(--fg1); color: var(--fg-inverse); border: none;
+      border-radius: var(--radius-sm); cursor: pointer;
+      font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      transition: background var(--dur-fast) var(--ease-out),
+                  transform var(--dur-fast) var(--ease-out);
+    }
+    .btn-dark:hover { background: var(--brown-dark); transform: translateY(-1px); }
+    .btn-dark:active { transform: scale(0.99); }
+    .btn-dark svg { width: 15px; height: 15px; }
+
+    .return-link {
+      display: inline-flex; align-items: center; gap: var(--sp-2);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--fg2);
+      text-decoration: none; margin-top: var(--sp-7);
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .return-link:hover { color: var(--fg1); }
+    .return-arrow { transition: transform var(--dur-fast) var(--ease-expo); }
+    .return-link:hover .return-arrow { transform: translateX(-3px); }
+
+    /* ── Order summary (right sticky column) ── */
+    .summary-toggle { display: none; }
+    .order-summary {
+      position: sticky; top: calc(64px + var(--sp-6));
+      background: var(--surface-warm); padding: var(--sp-7); border-radius: var(--radius-sm);
+    }
+    .os-title {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.24em; text-transform: uppercase; color: var(--fg1);
+      padding-bottom: var(--sp-5); border-bottom: 1px solid var(--border);
+      margin-bottom: var(--sp-5);
+    }
+
+    /* line items */
+    .os-items { list-style: none; display: flex; flex-direction: column; gap: var(--sp-5); margin-bottom: var(--sp-6); }
+    .os-li { display: grid; grid-template-columns: 56px 1fr auto; gap: var(--sp-4); align-items: center; }
+    .os-li-thumb {
+      position: relative; width: 56px; height: 64px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-xs); overflow: hidden;
+    }
+    .os-li-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .os-li-qty {
+      position: absolute; top: 4px; right: 4px;
+      min-width: 20px; height: 20px; padding: 0 5px;
+      background: var(--fg1); color: var(--fg-inverse);
+      border-radius: var(--radius-pill);
+      font-family: var(--font-mono); font-size: 11px;
+      display: grid; place-items: center; line-height: 1;
+    }
+    .os-li-name { font-family: var(--font-display); font-size: 18px; line-height: 1.2; color: var(--fg1); }
+    .os-li-meta { font-size: 11px; letter-spacing: 0.04em; color: var(--fg2); margin-top: 2px; }
+    .os-li-price { font-family: var(--font-mono); font-size: 14px; color: var(--fg1); }
+
+    /* promo */
+    .promo { display: flex; gap: var(--sp-3); margin-bottom: var(--sp-6); }
+    .promo .field { flex: 1; margin: 0; }
+    .promo-input {
+      width: 100%; font-family: var(--font-sans); font-size: 13px;
+      color: var(--fg1); background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      transition: border-color var(--dur-fast) var(--ease-out);
+    }
+    .promo-input::placeholder { color: var(--fg3); }
+    .promo-input:focus { outline: none; border-color: var(--fg1); }
+    .promo .is-error .promo-input { border-color: var(--error); background: var(--error-bg); }
+    .promo-apply {
+      flex-shrink: 0; padding: 0 var(--sp-5); height: 43px;
+      background: transparent; border: 1px solid var(--fg1); color: var(--fg1);
+      border-radius: var(--radius-sm); cursor: pointer;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+    }
+    .promo-apply:hover { background: var(--fg1); color: var(--fg-inverse); }
+    .promo-msg {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--error); margin: -16px 0 var(--sp-6);
+    }
+    .promo-msg svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    .os-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: var(--sp-4);
+    }
+    .os-row-label { font-family: var(--font-sans); font-size: 13px; color: var(--fg2); }
+    .os-row-value { font-family: var(--font-mono); font-size: 14px; color: var(--fg1); }
+    .os-row-value.free { color: var(--brown); letter-spacing: 0.06em; }
+    .os-ship-note { font-family: var(--font-sans); font-size: 12px; color: var(--fg3); font-style: italic; }
+    .os-freeship {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; color: var(--brown-dark); line-height: 1.4;
+      padding: 11px 13px; margin-bottom: var(--sp-5);
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-xs);
+    }
+    .os-freeship svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--brown); }
+    .os-divider { height: 1px; background: var(--border-strong); margin: var(--sp-5) 0; }
+    .os-total-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: var(--sp-6);
+    }
+    .os-total-label {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg1);
+    }
+    .os-total-cur { font-size: 11px; color: var(--fg3); margin-left: 5px; }
+    .os-total-val { font-family: var(--font-mono); font-size: 26px; color: var(--fg1); }
+
+    .pay-now {
+      display: flex; align-items: center; justify-content: center;
+      gap: var(--sp-3); width: 100%; min-height: 56px;
+      margin-bottom: var(--sp-4);
+      background: var(--gold); color: var(--brown-dark); border: 1px solid var(--gold);
+      border-radius: var(--radius-sm); cursor: pointer;
+      font-family: var(--font-sans); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      transition: background var(--dur-fast) var(--ease-out),
+                  border-color var(--dur-fast) var(--ease-out),
+                  transform var(--dur-fast) var(--ease-out);
+    }
+    .pay-now:hover { background: var(--gold-hover); border-color: var(--gold-hover); transform: translateY(-1px); }
+    .pay-now:active { transform: scale(0.99); }
+    .pay-now svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .os-secure {
+      display: flex; align-items: center; justify-content: center; gap: var(--sp-2);
+      font-family: var(--font-sans); font-size: 11px; color: var(--fg2);
+    }
+    .os-secure svg { color: var(--brown); }
+    .os-notes { margin-top: var(--sp-5); padding-top: var(--sp-5); border-top: 1px solid var(--border); }
+    .os-note-item {
+      display: flex; align-items: flex-start; gap: var(--sp-3);
+      font-family: var(--font-sans); font-size: 12px;
+      color: var(--fg3); line-height: 1.5; margin-bottom: var(--sp-3);
+    }
+    .os-note-item:last-child { margin-bottom: 0; }
+    .os-note-dot { width: 4px; height: 4px; background: var(--brown-light); border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 920px) {
+      .checkout-wrap {
+        grid-template-columns: 1fr; gap: var(--sp-7); padding: var(--sp-7) var(--sp-5);
+        max-width: 620px;
+      }
+      /* Summary collapses to a top disclosure (Shopify mobile pattern); rendered open here */
+      .order-summary {
+        position: static; order: -1;
+        border: 1px solid var(--border);
+      }
+      .summary-toggle {
+        display: flex; align-items: center; justify-content: space-between;
+        width: 100%; padding-bottom: var(--sp-4); margin-bottom: var(--sp-4);
+        border-bottom: 1px solid var(--border); background: none;
+        border-top: none; border-left: none; border-right: none;
+        cursor: pointer; color: var(--fg1);
+      }
+      .summary-toggle-l { display: inline-flex; align-items: center; gap: 9px; font-size: 13px; }
+      .summary-toggle-l svg { width: 16px; height: 16px; color: var(--brown); }
+      .summary-toggle-r { display: inline-flex; align-items: center; gap: 7px; }
+      .summary-toggle-amt { font-family: var(--font-mono); font-size: 16px; }
+      .summary-toggle-chev { width: 12px; height: 12px; }
+    }
+    @media (max-width: 600px) {
+      .field-row, .field-row.triple { grid-template-columns: 1fr; gap: 0; }
+      .field-row .field, .field-row.triple .field { margin-bottom: var(--sp-4); }
+      .checkout-wrap { padding: var(--sp-6) var(--sp-4); }
+      .order-summary { padding: var(--sp-6); }
+      .step-head { padding: var(--sp-5); }
+      .step-body { padding: var(--sp-2) var(--sp-5) var(--sp-5); }
+    }
+
+    /* ─── SITE FOOTER ─── */
+    .site-footer {
+      display: none;
+      background: var(--surface-warm, #F5F1EA);
+      color: var(--fg1, #1A1714);
+      border-top: 1px solid var(--border-default, #E8E3DA);
+      padding: 76px var(--gutter) 28px;
+    }
+    .footer-inner { max-width: var(--content-width); margin-inline: auto; }
+    .footer-main {
+      display: grid;
+      grid-template-columns: minmax(280px, 1.25fr) repeat(4, minmax(132px, 0.5fr));
+      gap: clamp(34px, 4vw, 72px);
+      align-items: start; padding-bottom: 56px;
+    }
+    .footer-brand { max-width: 390px; }
+    .footer-logo { display: inline-flex; align-items: center; margin-bottom: 28px; }
+    .footer-logo img { width: 220px; height: auto; display: block; }
+    .footer-copy {
+      max-width: 330px; font-family: var(--font-sans);
+      font-size: 14px; line-height: 1.75;
+      color: var(--fg2, #6B5E57); margin-bottom: 30px;
+    }
+    .footer-contact {
+      display: grid; gap: 9px;
+      font-family: var(--font-sans); font-size: 13px;
+      line-height: 1.55; color: var(--fg2, #6B5E57); font-style: normal;
+    }
+    .footer-contact a { color: inherit; text-decoration: none; transition: color 0.2s ease; }
+    .footer-contact a:hover { color: var(--fg1, #1A1714); }
+    .footer-heading {
+      font-family: var(--font-sans); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.18em; line-height: 1.4; text-transform: uppercase;
+      color: var(--fg1, #1A1714); margin-bottom: 18px;
+    }
+    .footer-heading::after {
+      content: ''; display: block; width: 24px; height: 1px;
+      background: var(--gold, #FFCF36); margin-top: 8px;
+    }
+    .footer-list { list-style: none; display: grid; gap: 12px; }
+    .footer-link {
+      position: relative; display: inline-flex; width: fit-content;
+      color: var(--fg2, #6B5E57); font-family: var(--font-sans);
+      font-size: 13px; line-height: 1.35; text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s var(--ease-expo);
+    }
+    .footer-link::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: -4px;
+      height: 1px; background: var(--brown, #7A5C38);
+      transform: scaleX(0); transform-origin: left center;
+      transition: transform 0.32s var(--ease-expo);
+    }
+    .footer-link:hover { color: var(--fg1, #1A1714); transform: translateX(2px); }
+    .footer-link:hover::after { transform: scaleX(1); }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 28px; border-top: 1px solid rgba(255,207,54,0.32); padding-top: 24px;
+    }
+    .footer-legal {
+      display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+      font-family: var(--font-sans); font-size: 12px;
+      line-height: 1.4; color: var(--fg2, #6B5E57);
+    }
+    .footer-legal a { color: inherit; text-decoration: none; transition: color 0.2s ease; }
+    .footer-legal a:hover { color: var(--fg1, #1A1714); }
+    .footer-social { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+    .social-link {
+      width: 38px; height: 38px; display: grid; place-items: center;
+      border: 1px solid var(--border-strong, #C8BFB4);
+      border-radius: var(--radius-sm, 4px);
+      color: var(--fg1, #1A1714); text-decoration: none;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.24s var(--ease-expo);
+    }
+    .social-link:hover {
+      background: var(--gold, #FFCF36); border-color: var(--gold, #FFCF36);
+      color: var(--brown-dark, #5A4228); transform: translateY(-2px);
+    }
+    .social-link:focus-visible, .footer-link:focus-visible,
+    .footer-contact a:focus-visible, .footer-legal a:focus-visible {
+      outline: 2px solid var(--gold, #FFCF36); outline-offset: 4px;
+    }
+    .social-link svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    .social-link .icon-fill { fill: currentColor; stroke: none; }
+    @media (max-width: 1080px) {
+      .footer-main { grid-template-columns: minmax(260px, 1fr) repeat(2, minmax(160px, 0.55fr)); }
+    }
+    @media (max-width: 760px) {
+      .site-footer { padding: 62px 24px 26px; }
+      .footer-main { grid-template-columns: 1fr 1fr; gap: 36px 28px; }
+      .footer-brand { grid-column: 1 / -1; }
+      .footer-bottom { align-items: flex-start; flex-direction: column-reverse; }
+      .footer-social { justify-content: flex-start; }
+    }
+    @media (max-width: 500px) {
+      .footer-main { grid-template-columns: 1fr; padding-bottom: 42px; }
+      .footer-legal { gap: 12px 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; }
+      .footer-link:hover, .social-link:hover, .return-link:hover .return-arrow { transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Progress indicator -->
+<div class="progress" role="navigation" aria-label="Checkout steps">
+  <span class="prog-step done"><span class="prog-dot"></span><span>Cart</span></span>
+  <div class="prog-sep"></div>
+  <span class="prog-step done"><span class="prog-dot"></span><span>Information</span></span>
+  <div class="prog-sep"></div>
+  <span class="prog-step done"><span class="prog-dot"></span><span>Shipping</span></span>
+  <div class="prog-sep"></div>
+  <span class="prog-step active" aria-current="step"><span class="prog-dot"></span><span>Payment</span></span>
+</div>
+
+<!-- Main -->
+<main>
+  <div class="checkout-wrap">
+
+    <!-- Left: checkout form -->
+    <div class="co-col">
+      <h1 class="co-heading">Checkout</h1>
+      <p class="co-sub">A few details and your piece begins. Each order is insured in transit and crafted to your specifications.</p>
+
+      <!-- Express payment (unified warm-monochrome, mocked) -->
+      <div class="express-row" role="group" aria-label="Express checkout">
+        <button class="express-btn" type="button" aria-label="Pay with Shop Pay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Shop&nbsp;<span class="wm-light">Pay</span>
+        </button>
+        <button class="express-btn" type="button" aria-label="Pay with Apple Pay">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.3 12.7c0-1.9 1.5-2.8 1.6-2.9-0.9-1.3-2.2-1.4-2.7-1.5-1.1-0.1-2.2 0.7-2.8 0.7-0.6 0-1.5-0.7-2.4-0.6-1.2 0-2.4 0.7-3 1.8-1.3 2.2-0.3 5.5 0.9 7.3 0.6 0.9 1.3 1.9 2.3 1.8 0.9 0 1.3-0.6 2.4-0.6 1.1 0 1.4 0.6 2.4 0.6 1 0 1.6-0.9 2.2-1.8 0.7-1 1-2 1-2.1-0.1 0-1.9-0.7-1.9-2.9zM14.6 6.9c0.5-0.6 0.8-1.4 0.7-2.3-0.7 0-1.6 0.5-2.1 1.1-0.5 0.5-0.9 1.4-0.8 2.2 0.8 0.1 1.6-0.4 2.2-1z"/></svg>
+          <span class="wm-light">Pay</span>
+        </button>
+        <button class="express-btn" type="button" aria-label="Pay with Google Pay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5"/><path d="M12 10.6h4.3c.1.4.1.8.1 1.2 0 2.8-1.9 4.8-4.4 4.8a4.6 4.6 0 1 1 3-8.1" stroke-linecap="round"/></svg>
+          G&nbsp;<span class="wm-light">Pay</span>
+        </button>
+      </div>
+      <div class="express-divider"><span>or pay with card</span></div>
+
+      <!-- Accordion steps -->
+      <div class="steps">
+
+        <!-- Step 1 — Contact (completed) -->
+        <section class="step active" aria-label="Contact information">
+          <div class="step-head">
+            <span class="step-num" aria-hidden="true">1</span>
+            <div class="step-titlewrap">
+              <p class="step-kicker">Step 1 of 4</p>
+              <h2 class="step-title">Contact</h2>
+            </div>
+          </div>
+          <div class="step-body">
+            <div class="field">
+              <label class="field-label" for="email">Email</label>
+              <input class="field-input" id="email" name="email" type="email" value="amelia.rao@studio-mail.com" autocomplete="email">
+            </div>
+            <div class="field is-error">
+              <label class="field-label" for="phone">Phone</label>
+              <input class="field-input" id="phone" name="phone" type="tel" value="415-555" aria-invalid="true" aria-describedby="phoneMsg" autocomplete="tel">
+              <p class="field-msg" id="phoneMsg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01" stroke-linecap="round"/></svg>
+                Add a complete phone number for delivery updates.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 2 — Ship to (completed) -->
+        <section class="step active" aria-label="Shipping address">
+          <div class="step-head">
+            <span class="step-num" aria-hidden="true">2</span>
+            <div class="step-titlewrap">
+              <p class="step-kicker">Step 2 of 4</p>
+              <h2 class="step-title">Ship to</h2>
+            </div>
+          </div>
+          <div class="step-body">
+            <div class="field-row">
+              <div class="field">
+                <label class="field-label" for="firstName">First name</label>
+                <input class="field-input" id="firstName" name="firstName" type="text" value="Amelia" autocomplete="given-name">
+              </div>
+              <div class="field">
+                <label class="field-label" for="lastName">Last name</label>
+                <input class="field-input" id="lastName" name="lastName" type="text" value="Rao" autocomplete="family-name">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label" for="address">Address</label>
+              <input class="field-input" id="address" name="address" type="text" value="418 Vallejo Street" autocomplete="address-line1">
+            </div>
+            <div class="field">
+              <label class="field-label" for="apartment">Apartment, suite, etc.</label>
+              <input class="field-input" id="apartment" name="apartment" type="text" value="Apt 6" autocomplete="address-line2">
+            </div>
+            <div class="field-row triple">
+              <div class="field">
+                <label class="field-label" for="city">City</label>
+                <input class="field-input" id="city" name="city" type="text" value="San Francisco" autocomplete="address-level2">
+              </div>
+              <div class="field">
+                <label class="field-label" for="state">State</label>
+                <select class="field-select" id="state" name="state" autocomplete="address-level1">
+                  <option selected>California</option>
+                  <option>New York</option>
+                  <option>Texas</option>
+                </select>
+              </div>
+              <div class="field">
+                <label class="field-label" for="zip">ZIP</label>
+                <input class="field-input" id="zip" name="zip" type="text" value="94133" autocomplete="postal-code">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label" for="country">Country</label>
+              <select class="field-select" id="country" name="country" autocomplete="country-name">
+                <option selected>United States</option>
+                <option>Japan</option>
+                <option>India</option>
+                <option>Nepal</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 3 — Shipping method (active) -->
+        <section class="step active" aria-label="Shipping method, in progress">
+          <div class="step-head">
+            <span class="step-num" aria-hidden="true">3</span>
+            <div class="step-titlewrap">
+              <p class="step-kicker">Step 3 of 4</p>
+              <h2 class="step-title">Shipping method</h2>
+            </div>
+          </div>
+          <div class="step-body">
+
+            <div class="ship-options" role="radiogroup" aria-label="Shipping method">
+            <label class="ship-opt">
+              <input class="ship-native" type="radio" name="shippingMethod" value="standard" checked>
+              <span class="ship-radio" aria-hidden="true"></span>
+              <div class="ship-opt-main">
+                <p class="ship-opt-name">Insured Standard</p>
+                <p class="ship-opt-desc">Tracked &amp; insured · arrives in 5–7 business days</p>
+              </div>
+              <span class="ship-opt-price free">Free</span>
+            </label>
+
+            <label class="ship-opt">
+              <input class="ship-native" type="radio" name="shippingMethod" value="express">
+              <span class="ship-radio" aria-hidden="true"></span>
+              <div class="ship-opt-main">
+                <p class="ship-opt-name">Express Courier</p>
+                <p class="ship-opt-desc">Signature on delivery · arrives in 2 business days</p>
+              </div>
+              <span class="ship-opt-price">$24.00</span>
+            </label>
+            </div>
+
+            <!-- Gift note — focus state shown statically as a field spec -->
+            <div class="gift-note">
+              <p class="ship-legend">Add a gift note (optional)</p>
+              <div class="field is-focused">
+                <label class="field-label" for="giftNote">Message on the enclosed card</label>
+                <input class="field-input" id="giftNote" type="text" value="For the day you say yes to your own design."
+                       aria-describedby="giftHint">
+                <p class="field-hint" id="giftHint">Hand-written on cotton card, sealed in the atelier.</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Step 4 — Payment (pending) -->
+        <section class="step active payment-step" aria-label="Payment details">
+          <div class="step-head">
+            <span class="step-num" aria-hidden="true">4</span>
+            <div class="step-titlewrap">
+              <p class="step-kicker">Step 4 of 4</p>
+              <h2 class="step-title">Payment</h2>
+            </div>
+          </div>
+          <div class="step-body">
+            <div class="payment-note">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+              Secure card details. This static page does not process payments.
+            </div>
+            <div class="field is-focused">
+              <label class="field-label" for="cardNumber">Card number</label>
+              <input class="field-input card-input" id="cardNumber" name="cardNumber" type="text" inputmode="numeric" value="4242 4242 4242 4242" autocomplete="cc-number">
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label class="field-label" for="expiry">Expiration</label>
+                <input class="field-input" id="expiry" name="expiry" type="text" inputmode="numeric" value="04 / 29" autocomplete="cc-exp">
+              </div>
+              <div class="field">
+                <label class="field-label" for="cvc">CVC</label>
+                <input class="field-input" id="cvc" name="cvc" type="text" inputmode="numeric" value="123" autocomplete="cc-csc">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label" for="cardName">Name on card</label>
+              <input class="field-input" id="cardName" name="cardName" type="text" value="Amelia Rao" autocomplete="cc-name">
+            </div>
+            <label class="billing-check">
+              <input type="checkbox" checked>
+              <span>Use shipping address as billing address</span>
+            </label>
+            <a class="pay-now" href="thank-you.html" aria-label="Pay 780 dollars now and view order confirmation">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+              Pay $780.00
+            </a>
+            <p class="payment-microcopy">Your card is encrypted. You can review the order before any production begins.</p>
+          </div>
+        </section>
+
+      </div>
+
+      <a href="cart-page.html" class="return-link">
+        <svg class="return-arrow" width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.25"><path d="M5 1L1 5l4 4M1 5h12"/></svg>
+        Return to Cart
+      </a>
+    </div>
+
+    <!-- Right: order summary -->
+    <aside class="order-summary" aria-label="Order summary">
+      <button class="summary-toggle" type="button" aria-expanded="true">
+        <span class="summary-toggle-l">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Order summary
+          <svg class="summary-toggle-chev" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 1.5L6 6.5l5-5"/></svg>
+        </span>
+        <span class="summary-toggle-r"><span class="summary-toggle-amt">$780.00</span></span>
+      </button>
+
+      <p class="os-title">Order Summary</p>
+
+      <ul class="os-items">
+        <li class="os-li">
+          <div class="os-li-thumb">
+            <img src="./prototype-assets/Rings/ChatGPT%20Image%20May%2027%2C%202026%2C%2002_47_31%20PM.png" alt="Soleil Ring in 18K gold, tapered band with sun motif">
+            <span class="os-li-qty" aria-label="Quantity 1">1</span>
+          </div>
+          <div>
+            <p class="os-li-name">Soleil Ring</p>
+            <p class="os-li-meta">18K Gold · Size 5½</p>
+          </div>
+          <span class="os-li-price">$485</span>
+        </li>
+        <li class="os-li">
+          <div class="os-li-thumb">
+            <img src="./prototype-assets/Rings/ChatGPT%20Image%20May%2027%2C%202026%2C%2002_47_34%20PM.png" alt="Crescent Stud Earrings in 18K gold, half-moon silhouette">
+            <span class="os-li-qty" aria-label="Quantity 1">1</span>
+          </div>
+          <div>
+            <p class="os-li-name">Crescent Studs</p>
+            <p class="os-li-meta">18K Gold · Pair</p>
+          </div>
+          <span class="os-li-price">$295</span>
+        </li>
+      </ul>
+
+      <!-- Promo code — error state shown statically as a field spec -->
+      <div class="promo">
+        <div class="field is-error">
+          <label class="field-label" for="promo" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Discount code</label>
+          <input class="promo-input" id="promo" type="text" value="WELCOME10" aria-invalid="true" aria-describedby="promoMsg">
+        </div>
+        <button class="promo-apply" type="button">Apply</button>
+      </div>
+      <p class="promo-msg" id="promoMsg">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01" stroke-linecap="round"/></svg>
+        That code has expired. Try another at checkout.
+      </p>
+
+      <div class="os-freeship">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg>
+        Your order qualifies for free insured shipping.
+      </div>
+
+      <div class="os-row">
+        <span class="os-row-label">Subtotal</span>
+        <span class="os-row-value">$780.00</span>
+      </div>
+      <div class="os-row">
+        <span class="os-row-label">Shipping</span>
+        <span class="os-row-value free">Free</span>
+      </div>
+      <div class="os-row">
+        <span class="os-row-label">Duties &amp; taxes</span>
+        <span class="os-ship-note">Calculated at payment</span>
+      </div>
+
+      <div class="os-divider"></div>
+
+      <div class="os-total-row">
+        <span class="os-total-label">Total <span class="os-total-cur">USD</span></span>
+        <span class="os-total-val">$780.00</span>
+      </div>
+
+      <div class="os-secure">
+        <svg width="11" height="13" viewBox="0 0 11 13" fill="none" stroke="currentColor" stroke-width="1.1"><path d="M5.5 1L1 3.2V6.8c0 2.8 2.1 4.6 4.5 5.4 2.4-.8 4.5-2.6 4.5-5.4V3.2L5.5 1z"/></svg>
+        SSL-encrypted · Secure payment
+      </div>
+
+      <div class="os-notes">
+        <div class="os-note-item"><span class="os-note-dot"></span>Each piece is crafted to order. Production begins upon payment.</div>
+        <div class="os-note-item"><span class="os-note-dot"></span>Free returns within 30 days of delivery.</div>
+        <div class="os-note-item"><span class="os-note-dot"></span>All prices in USD. International duties may apply.</div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+
+<script>
+  // ── Navbar + announcement bar (Headroom pattern, shared with cart-page.html) ──
+  const bar = document.getElementById('announcementBar');
+  const nav = document.getElementById('navbar');
+  const dismiss = document.getElementById('barDismiss');
+  let lastScrollY = 0;
+
+  if (bar && nav && dismiss) {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        bar.classList.add('visible');
+        nav.classList.add('visible');
+        lastScrollY = window.scrollY;
+      }, 80);
+    });
+
+    dismiss.addEventListener('click', () => {
+      bar.classList.add('hidden');
+      nav.classList.add('bar-gone');
+    });
+
+    let rafPending = false;
+    window.addEventListener('scroll', () => {
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(() => {
+        const currentY = window.scrollY;
+        if (currentY <= 80) nav.classList.remove('nav-hidden');
+        else if (currentY > lastScrollY) nav.classList.add('nav-hidden');
+        else nav.classList.remove('nav-hidden');
+        lastScrollY = currentY;
+        rafPending = false;
+      });
+    }, { passive: true });
+  }
+
+  // ── Static specimen note ──
+  // This page is a high-fidelity STATIC checkout (no live form logic). When wired up:
+  //   · clicking a completed step's "Edit" re-expands it and collapses the active one
+  //   · selecting a .ship-opt updates aria-checked, the gold radio dot, and the order total
+  //   · "Continue to Payment" advances the accordion (Payment becomes .active)
+  //   · the Payment step's terminal "Pay now" is the page's one decisive gold action
+  //   · .is-focused / .is-error classes here mark the documented field states; live code
+  //     would toggle them on :focus and on validation.
+</script>
+
+<!-- ─── PROTOTYPE NAV ─── -->
+<style>
+  .proto-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+    display: flex; align-items: center; gap: 0;
+    background: #1A1714; border-top: 1px solid #2E2925;
+    font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .proto-nav__label {
+    padding: 0 14px; color: #5A4228; white-space: nowrap; border-right: 1px solid #2E2925;
+    font-size: 9px; letter-spacing: 0.12em; line-height: 40px;
+  }
+  .proto-nav a {
+    display: block; padding: 0 16px; line-height: 40px; color: #A8988E;
+    text-decoration: none; border-right: 1px solid #2E2925; transition: color 0.15s;
+    white-space: nowrap;
+  }
+  .proto-nav a:hover { color: #FAFAF8; }
+  .proto-nav a[aria-current="page"] { color: #FFCF36; }
+</style>
+<nav class="proto-nav" aria-label="Prototype navigation">
+  <span class="proto-nav__label">Prototype</span>
+  <a href="./hero-v1-dark.html">Home</a>
+  <a href="./shop-v1-dark.html">Shop</a>
+  <a href="./product-v1.html">Product</a>
+  <a href="./cart-page.html">Cart</a>
+  <a href="./checkout.html" aria-current="page">Checkout</a>
+  <a href="./thank-you.html">Thank You</a>
+</nav>
+</body>
+</html>

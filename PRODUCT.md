@@ -12,7 +12,7 @@ Women 25–45, browsing on mobile and desktop during leisure time. Comparing Gau
 
 Gaura Style is a creative house whose product is **original jewelry design**. The pieces — primarily rings — are the medium; the design itself is what's being sold. The brand is not moving inventory, it is presenting work: every piece exists because the design exists. Sold direct-to-consumer across four markets: US, Japan, India, Russia.
 
-The site's job is to convert desire into purchase by foregrounding the design at every moment — making the visitor feel like they've discovered a singular object, not selected from a catalog. A curated gallery, not a warehouse. Design must dominate every screen; price, CTA, and commerce mechanics recede until the eye has met the work.
+The site's job is to convert desire into purchase by foregrounding the design at every moment — making the visitor feel like they've found a singular object in a private atelier, not selected from a catalog. An atelier gallery, not a warehouse. Design must dominate every screen; price, CTA, and commerce mechanics recede until the eye has met the work.
 
 ## Brand Personality
 
@@ -35,7 +35,7 @@ Generic WooCommerce product grids. Discount-retailer clutter. Dark-mode neon. He
 3. **Restraint as statement.** Say more by showing less. Restraint is not timidity; it's confidence that the work speaks for itself.
 4. **Warmth is non-negotiable.** Cool tones, cold whites, and sterile grids contradict the brand. Every surface, shadow, and photograph must read warm.
 5. **Bold, not loud.** Typography and scale carry authority; animation and decoration do not. Big, decisive type over ornamental flourishes.
-6. **Curated gallery, not warehouse.** Every product moment should feel selected, not listed. Spacing, photography, and editorial rhythm over density.
+6. **Atelier gallery, not warehouse.** Every product moment should feel selected, not listed. Spacing, photography, and object-led rhythm over density.
 
 ## Accessibility & Inclusion
 

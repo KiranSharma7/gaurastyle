@@ -15,7 +15,7 @@
     letter-spacing: 0.22em; text-transform: uppercase;
     border: none; cursor: pointer; text-decoration: none; white-space: nowrap;
     transition: all 280ms cubic-bezier(0.25, 0.1, 0.25, 1);
-    border-radius: 0; /* sharp, editorial */
+    border-radius: 0; /* sharp, atelier */
   }
   .btn .arrow {
     display: inline-block; width: 18px; height: 1px; background: currentColor;
@@ -35,14 +35,14 @@
   }
   .btn-primary:hover { background: var(--gold-hover); transform: translateY(-1px); box-shadow: 0 2px 0 var(--brown-dark); }
 
-  /* Editorial — underlined serif label, no box */
-  .btn-editorial {
+  /* Atelier — underlined serif label, no box */
+  .btn-atelier {
     padding: 6px 0; height: auto;
     font-family: var(--font-display); font-size: 18px; font-weight: 400; font-style: italic;
     text-transform: none; letter-spacing: 0; color: var(--fg1);
     background: transparent; border-bottom: 1px solid var(--fg1);
   }
-  .btn-editorial:hover { color: var(--brown); border-bottom-color: var(--brown); }
+  .btn-atelier:hover { color: var(--brown); border-bottom-color: var(--brown); }
 
   /* Inverse — dark with gold arrow */
   .btn-dark { background: var(--fg1); color: var(--fg-inverse); }
@@ -91,15 +91,15 @@
 </head><body>
 
 <div class="group">
-  <div class="label">Primary · Editorial · Inverse</div>
+  <div class="label">Primary · Atelier · Inverse</div>
   <div class="row">
     <div class="item">
       <button class="btn btn-primary">Shop the Collection<span class="arrow"></span></button>
       <div class="tag">primary · gold</div>
     </div>
     <div class="item">
-      <button class="btn btn-editorial">Discover the story</button>
-      <div class="tag">editorial · serif</div>
+      <button class="btn btn-atelier">Discover the story</button>
+      <div class="tag">atelier · serif</div>
     </div>
     <div class="item">
       <button class="btn btn-dark">Add to Selection<span class="arrow"></span></button>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accordion — Gaura Style Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--surface-warm); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; padding: 48px 40px; }
+
+    .specimen-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      margin-bottom: 24px;
+    }
+
+    .specimen { max-width: 620px; margin-bottom: 56px; }
+
+    /* ── ACCORDION ── */
+    .accordion { border-top: 1px solid var(--border); }
+
+    .acc-item { border-bottom: 1px solid var(--border); }
+
+    .acc-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 2px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      color: var(--fg1);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+    }
+
+    .acc-trigger:hover { color: var(--brown); }
+
+    .acc-icon {
+      position: relative;
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+    }
+
+    .acc-icon::before,
+    .acc-icon::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 0;
+      width: 13px; height: 1.5px;
+      background: currentColor;
+      transition: transform 0.3s var(--ease-expo);
+    }
+
+    .acc-icon::after { transform: rotate(90deg); }
+
+    .acc-trigger[aria-expanded="true"] .acc-icon::after { transform: rotate(0deg); }
+
+    .acc-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.36s var(--ease-expo);
+    }
+
+    .acc-panel.is-open { grid-template-rows: 1fr; }
+    .acc-panel > div { overflow: hidden; }
+
+    .acc-body {
+      padding: 2px 2px 24px;
+      color: var(--fg2);
+      font-size: 14px;
+      line-height: 1.72;
+    }
+
+    .acc-body p + p { margin-top: 14px; }
+
+    .acc-body ul {
+      padding-left: 18px;
+      display: grid;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    /* Spec list variant — two-column key/value */
+    .acc-spec-list {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      gap: 9px;
+      margin-top: 4px;
+    }
+
+    .acc-spec-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      font-size: 14px;
+    }
+
+    .acc-spec-list .k { color: var(--fg3); letter-spacing: 0.04em; }
+    .acc-spec-list .v { color: var(--fg1); text-align: right; }
+
+    /* Surface variant — on white */
+    .on-white { background: var(--surface); padding: 32px; border-radius: var(--radius-sm); }
+  </style>
+</head>
+<body>
+
+  <!-- Default accordion on page background -->
+  <div class="specimen">
+    <p class="specimen-label">Accordion — default (on surface-warm, e.g. PDP details)</p>
+    <div class="accordion" role="list">
+
+      <div class="acc-item" role="listitem">
+        <button class="acc-trigger" aria-expanded="true" aria-controls="panel-1" id="trigger-1">
+          Description
+          <span class="acc-icon" aria-hidden="true"></span>
+        </button>
+        <div class="acc-panel is-open" id="panel-1" role="region" aria-labelledby="trigger-1">
+          <div>
+            <div class="acc-body">
+              <p>The Luna Pear Ring is a study in proportion. A pear-cut white topaz — selected for its water-clarity — sits on a tapered shank that widens to cradle the stone, creating a silhouette that reads as modern from the side and sculptural from above.</p>
+              <p>Designed to be worn alone or stacked. The stone and setting sit flush to the finger, making it as comfortable for daily wear as it is at the table.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item" role="listitem">
+        <button class="acc-trigger" aria-expanded="false" aria-controls="panel-2" id="trigger-2">
+          Material & Specifications
+          <span class="acc-icon" aria-hidden="true"></span>
+        </button>
+        <div class="acc-panel" id="panel-2" role="region" aria-labelledby="trigger-2">
+          <div>
+            <div class="acc-body">
+              <ul class="acc-spec-list">
+                <li><span class="k">Stone</span><span class="v">White Topaz, pear cut</span></li>
+                <li><span class="k">Carat</span><span class="v">1.8 ct</span></li>
+                <li><span class="k">Setting</span><span class="v">Bezel, prong-free</span></li>
+                <li><span class="k">Metal</span><span class="v">925 Sterling Silver, rhodium-plated</span></li>
+                <li><span class="k">Finish</span><span class="v">High polish</span></li>
+                <li><span class="k">Shank width</span><span class="v">1.8 mm (tapered)</span></li>
+                <li><span class="k">Available sizes</span><span class="v">5 – 9 US</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item" role="listitem">
+        <button class="acc-trigger" aria-expanded="false" aria-controls="panel-3" id="trigger-3">
+          Engraving
+          <span class="acc-icon" aria-hidden="true"></span>
+        </button>
+        <div class="acc-panel" id="panel-3" role="region" aria-labelledby="trigger-3">
+          <div>
+            <div class="acc-body">
+              <p>Every Gaura Style ring includes complimentary engraving — up to 20 characters on the interior of the band. Choose a date, initials, or a phrase. Add it before checkout.</p>
+              <ul>
+                <li>Script or block lettering</li>
+                <li>Up to 20 characters including spaces</li>
+                <li>Delivered without extra charge, within the standard lead time</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item" role="listitem">
+        <button class="acc-trigger" aria-expanded="false" aria-controls="panel-4" id="trigger-4">
+          Shipping & Returns
+          <span class="acc-icon" aria-hidden="true"></span>
+        </button>
+        <div class="acc-panel" id="panel-4" role="region" aria-labelledby="trigger-4">
+          <div>
+            <div class="acc-body">
+              <p>Orders ship within 3–5 business days. Engraved pieces ship within 5–7 business days. All orders include insured shipping and a signature requirement on delivery.</p>
+              <p>Returns accepted within 30 days of delivery for unworn, unaltered pieces. Engraved items are final sale.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- White surface variant -->
+  <div class="specimen">
+    <p class="specimen-label">Accordion — on white surface</p>
+    <div class="on-white">
+      <div class="accordion" role="list">
+
+        <div class="acc-item" role="listitem">
+          <button class="acc-trigger" aria-expanded="true" aria-controls="panel-w1" id="trigger-w1">
+            Care Instructions
+            <span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-panel is-open" id="panel-w1" role="region" aria-labelledby="trigger-w1">
+            <div>
+              <div class="acc-body">
+                <p>Store in the pouch provided. Clean with a soft cloth; avoid ultrasonic cleaners. Remove before swimming or sleeping. Rhodium plating may be re-applied after 2–3 years of daily wear.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item" role="listitem">
+          <button class="acc-trigger" aria-expanded="false" aria-controls="panel-w2" id="trigger-w2">
+            Sizing Guide
+            <span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-panel" id="panel-w2" role="region" aria-labelledby="trigger-w2">
+            <div>
+              <div class="acc-body">
+                <p>Measure your finger at the end of the day when fingers are warmest. The ring should slide over the knuckle with mild resistance and feel snug without pinching at the base.</p>
+                <ul>
+                  <li>US size 5 = 15.7 mm diameter</li>
+                  <li>US size 6 = 16.5 mm diameter</li>
+                  <li>US size 7 = 17.3 mm diameter</li>
+                  <li>US size 8 = 18.2 mm diameter</li>
+                  <li>US size 9 = 19.0 mm diameter</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.acc-trigger').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', !expanded);
+        const panel = document.getElementById(btn.getAttribute('aria-controls'));
+        panel.classList.toggle('is-open', !expanded);
+      });
+    });
+  </script>
+</body>
+</html>

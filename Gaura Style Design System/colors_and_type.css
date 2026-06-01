@@ -111,13 +111,25 @@
   /* ── Transitions ─────────────────────────────────────── */
   --ease-out:   cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-in:    cubic-bezier(0.4, 0, 1, 1);
+  --ease-expo:  cubic-bezier(0.16, 1, 0.3, 1);   /* fast, snappy — primary micro-interaction */
+  --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);   /* smooth, structural — layout transitions */
   --dur-fast:   150ms;
   --dur-base:   280ms;
   --dur-slow:   400ms;
 
   /* ── Layout ──────────────────────────────────────────── */
-  --max-width:  1280px;
-  --nav-height: 72px;
+  --max-width:     1280px;    /* legacy alias */
+  --content-width: 1440px;   /* full-bleed page width: hero, nav, footer */
+  --gutter:        40px;     /* page horizontal padding */
+  --bar-h:         44px;     /* announcement bar height */
+  --nav-h:         92px;     /* full nav: utility row + wordmark + category links */
+  --nav-height:    72px;     /* compact nav: wordmark + links only (no utility row) */
+}
+
+/* ── Surface / Border Aliases ──────────────────────────── */
+:root {
+  --surface-white:  var(--surface);   /* alias used in pages: explicit pure-white context */
+  --border-default: var(--border);    /* alias used in pages: same as --border */
 }
 
 /* ── Semantic Aliases ──────────────────────────────────── */
