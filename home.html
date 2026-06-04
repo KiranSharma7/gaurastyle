@@ -814,44 +814,48 @@
       .scroll-indicator { display: none; }
     }
 
-    /* ─── COLLECTION SHOWCASE (staggered puzzle; title is grid cell 1) ─── */
+    /* ─── COLLECTION SHOWCASE (moment-layout) ─── */
     .collection-showcase {
-      max-width: var(--content-width);
-      margin-inline: auto;
-      padding: clamp(36px, 4vw, 60px) var(--gutter);
-      display: grid;
-      /* col 1 = title · cols 2-4 = three image columns */
-      grid-template-columns: minmax(220px, 0.92fr) repeat(3, minmax(0, 1fr));
-      /* short middle band creates the staggered drop; vh-scaled to stay < 100vh */
-      grid-template-rows:
-        clamp(208px, 30vh, 300px)
-        clamp(84px, 12vh, 118px)
-        clamp(208px, 30vh, 300px);
-      gap: clamp(12px, 1.2vw, 18px);
+      width: 100%;
       background: var(--bg);
+      padding: 78px var(--gutter) 72px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
     }
 
-    /* Title cell: spans col 1 full height; headline top, link bottom */
-    .cshow-head {
+    .moment-layout {
+      width: min(1240px, 100%);
+      display: grid;
+      grid-template-columns: 280px 330px 330px 330px;
+      grid-template-rows: 305px 120px 305px;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .title-wrap {
       grid-column: 1;
-      grid-row: 1 / 4;
+      grid-row: 1 / 4; /* Spans all three rows to move CTA to the end of the column */
+      padding-top: 6px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 40px;
-      padding: 6px clamp(20px, 2vw, 40px) 6px 0;
+      gap: 32px;
     }
 
     .cshow-headline {
       font-family: var(--font-display);
-      font-size: clamp(40px, 4.4vw, 72px);
-      font-weight: 500; /* medium — more presence, still Cormorant */
-      line-height: 1.02;
-      letter-spacing: -0.02em;
+      font-size: clamp(40px, 4.8vw, 68px); /* adjusted for uppercase styling */
+      font-weight: 300; /* Light weight as per Light Weight Rule */
+      line-height: 1.0;
+      letter-spacing: 0.05em; /* tracked out uppercase */
       color: var(--fg1);
+      text-transform: uppercase;
     }
 
-    .cshow-headline span { display: block; } /* 3 stacked lines */
+    .cshow-headline span {
+      display: block;
+    }
 
     .cshow-link {
       position: relative;
@@ -913,37 +917,45 @@
     .cshow-link:hover .cshow-link-arrow,
     .cshow-link:focus-visible .cshow-link-arrow { transform: translateX(5px); }
 
-    /* Staggered placement: tall cards span 2 rows; squares fill 1 */
-    .cshow-new      { grid-column: 2; grid-row: 1 / 3; } /* tall — New In */
-    .cshow-disney   { grid-column: 2; grid-row: 3; }     /* square */
-    .cshow-charms   { grid-column: 3; grid-row: 1; }     /* square top */
-    .cshow-princess { grid-column: 3; grid-row: 2 / 4; } /* tall — offset down */
-    .cshow-moments  { grid-column: 4; grid-row: 1 / 3; } /* tall */
-    .cshow-essence  { grid-column: 4; grid-row: 3; }     /* square */
+    /* Card Positions */
+    .new-in      { grid-column: 2; grid-row: 1 / 3; }
+    .charms      { grid-column: 3; grid-row: 1; }
+    .moments     { grid-column: 4; grid-row: 1 / 3; }
+    .disney      { grid-column: 2; grid-row: 3; }
+    .princesses  { grid-column: 3; grid-row: 2 / 4; }
+    .essence     { grid-column: 4; grid-row: 3; }
 
     .cshow-block {
       position: relative;
-      display: block;
       overflow: hidden;
-      text-decoration: none;
       background: var(--surface-warm, #F5F1EA);
       border-radius: var(--radius-sm, 4px);
       isolation: isolate;
-      min-height: 0;
+      display: block;
+      text-decoration: none;
+      box-shadow: none;
+      transform: translateY(0);
+      transition: transform 0.5s var(--ease-expo), box-shadow 0.5s var(--ease-expo);
+    }
+
+    .cshow-block:hover,
+    .cshow-block:focus-visible {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      z-index: 3;
     }
 
     .cshow-media {
-      position: absolute;
-      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
       transition: transform 0.8s var(--ease-expo);
       will-change: transform;
     }
 
-    .cshow-block:hover img.cshow-media { transform: scale(1.05); }
-    .cshow-block:hover video.cshow-media { transform: none; } /* avoid video repaint */
+    .cshow-block:hover img.cshow-media { transform: scale(1.04); }
+    .cshow-block:hover video.cshow-media { transform: none; }
 
     .cshow-veil {
       position: absolute;
@@ -951,84 +963,128 @@
       z-index: 1;
       background: linear-gradient(
         to top,
-        rgba(26, 23, 20, 0.62) 0%,
-        rgba(26, 23, 20, 0.18) 42%,
-        rgba(26, 23, 20, 0.0) 72%
+        rgba(26, 23, 20, 0.70) 0%,
+        rgba(26, 23, 20, 0.20) 45%,
+        transparent 75%
       );
+      opacity: 0.85;
+      transition: opacity 0.4s ease;
     }
 
-    /* White label plate, bottom-left, with gold accent line on hover */
+    .cshow-block:hover .cshow-veil,
+    .cshow-block:focus-visible .cshow-veil {
+      opacity: 0.95;
+    }
+
+    /* Premium design system labels: white box with thin border + hover line */
     .cshow-label {
       position: absolute;
-      left: 16px;
-      bottom: 16px;
+      left: 18px;
+      bottom: 18px;
       z-index: 2;
-      padding: 9px 13px 8px;
-      background: rgba(250, 247, 240, 0.94);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
+      background: rgba(250, 247, 240, 0.96);
+      border: 1px solid var(--border, #E8E3DA);
+      border-radius: var(--radius-sm, 4px);
+      padding: 13px 14px 11px;
       font-family: var(--font-sans);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
+      font-size: 11px;
       line-height: 1;
+      font-weight: 500;
       text-transform: uppercase;
+      letter-spacing: 2.2px;
+      white-space: nowrap;
       color: var(--fg1);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.4s var(--ease-expo);
     }
 
     .cshow-label::after {
-      content: '';
+      content: "";
       display: block;
-      width: 0;
+      width: 100%;
       height: 1px;
-      margin-top: 7px;
-      background: var(--gold);
-      transition: width 0.5s var(--ease-expo);
+      background: var(--gold, #FFCF36);
+      margin-top: 10px;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.4s var(--ease-expo);
     }
 
     .cshow-block:hover .cshow-label::after,
-    .cshow-block:focus-visible .cshow-label::after { width: 26px; }
-
-    .cshow-block:focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 3px;
+    .cshow-block:focus-visible .cshow-label::after {
+      transform: scaleX(1);
     }
 
-    /* Tablet: title on top, keep the staggered 3-image columns below */
-    @media (max-width: 1024px) {
+    @media (max-width: 1100px) {
       .collection-showcase {
+        padding: 50px 24px;
+      }
+
+      .moment-layout {
         grid-template-columns: repeat(3, 1fr);
-        grid-template-rows:
-          auto
-          clamp(200px, 34vw, 300px)
-          clamp(100px, 16vw, 150px)
-          clamp(200px, 34vw, 300px);
+        grid-template-rows: auto 360px 280px 360px;
       }
-      .cshow-head { grid-column: 1 / 4; grid-row: 1; gap: 24px; padding-right: 0; }
-      .cshow-new      { grid-column: 1; grid-row: 2 / 4; }
-      .cshow-disney   { grid-column: 1; grid-row: 4; }
-      .cshow-charms   { grid-column: 2; grid-row: 2; }
-      .cshow-princess { grid-column: 2; grid-row: 3 / 5; }
-      .cshow-moments  { grid-column: 3; grid-row: 2 / 4; }
-      .cshow-essence  { grid-column: 3; grid-row: 4; }
+
+      .title-wrap {
+        grid-column: 1 / 4;
+        grid-row: 1;
+        flex-direction: row;
+        align-items: center;
+        padding-bottom: 24px;
+      }
+
+      .cshow-headline span {
+        display: inline-block;
+        margin-right: 0.25em;
+      }
+      .cshow-headline span:last-child {
+        margin-right: 0;
+      }
+
+      .new-in      { grid-column: 1; grid-row: 2 / 4; }
+      .charms      { grid-column: 2; grid-row: 2; }
+      .moments     { grid-column: 3; grid-row: 2 / 4; }
+      .disney      { grid-column: 1; grid-row: 4; }
+      .princesses  { grid-column: 2; grid-row: 3 / 5; }
+      .essence     { grid-column: 3; grid-row: 4; }
     }
 
-    /* Mobile: title on top, then a simple 2-col grid of equal squares */
-    @media (max-width: 768px) {
+    @media (max-width: 760px) {
       .collection-showcase {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: none;
-        grid-auto-rows: 1fr;
+        padding: 40px var(--gutter);
       }
-      .cshow-headline { font-size: clamp(38px, 11vw, 56px); }
-      .cshow-head { grid-column: 1 / -1; }
-      .cshow-new, .cshow-disney, .cshow-charms,
-      .cshow-princess, .cshow-moments, .cshow-essence {
-        grid-column: auto;
-        grid-row: auto;
+      .moment-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
       }
-      .cshow-block { aspect-ratio: 1 / 1; }
-      .cshow-label { left: 10px; bottom: 10px; font-size: 9px; letter-spacing: 0.12em; }
+
+      .cshow-block {
+        height: 360px;
+      }
+
+      .title-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding-bottom: 10px;
+      }
+
+      .cshow-headline {
+        font-size: 38px;
+        letter-spacing: 0.05em;
+      }
+
+      .cshow-headline span {
+        display: block;
+        margin-right: 0;
+      }
+
+      .cshow-label {
+        font-size: 10px;
+        letter-spacing: 1.8px;
+        padding: 10px 12px 8px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -2774,79 +2830,61 @@
   </section>
 
 
-  <!-- COLLECTION SHOWCASE — text-left / asymmetric puzzle-grid-right -->
+  <!-- COLLECTION SHOWCASE — Custom Grid Layout -->
   <section class="collection-showcase" aria-labelledby="cshowTitle">
-    <div class="cshow-head">
-      <h2 class="cshow-headline" id="cshowTitle">
-        <span>For Every</span>
-        <span>Special</span>
-        <span>Moment</span>
-      </h2>
-      <a class="cshow-link" href="#collections">
-        Explore Collections
-        <span class="cshow-link-arrow" aria-hidden="true"></span>
-      </a>
-    </div>
+    <div class="moment-layout">
+      <div class="title-wrap">
+        <h2 class="cshow-headline" id="cshowTitle">
+          <span>our rings</span>
+        </h2>
+        <a class="cshow-link" href="#collections">
+          Explore Collections
+          <span class="cshow-link-arrow" aria-hidden="true"></span>
+        </a>
+      </div>
 
-    <!-- col 2, rows 1-2: tall (New In) -->
-    <a class="cshow-block cshow-new" href="#collection-new" aria-label="Shop New In">
-        <video class="cshow-media" autoplay muted loop playsinline preload="metadata"
-          poster="./prototype-assets/Second Section Image/rings.webp" aria-hidden="true">
-          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" type="video/mp4">
-        </video>
+      <!-- Card 1: New In (Col 2, Rows 1-2) -->
+      <a class="cshow-block new-in" href="#collection-new" aria-label="Shop New In">
+        <img class="cshow-media" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExampvbTcxaWZiMmg5N2Rlc2lkNXZtOGsyNXlyZGFmejduejcweGVtNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KkmOQ2dlyhyThx6SoI/giphy.gif" alt="New In collection loop" loading="lazy">
         <span class="cshow-veil" aria-hidden="true"></span>
-        <span class="cshow-label">New In</span>
+        <span class="cshow-label">New</span>
       </a>
 
-      <!-- col 2, row 3: square (Solitaire) -->
-      <a class="cshow-block cshow-disney" href="#collection-solitaire" aria-label="Shop Solitaire collection">
-        <video class="cshow-media" autoplay muted loop playsinline preload="metadata"
-          poster="./prototype-assets/Second Section Image/Jan_Red_2-480x600-48f8994.webp" aria-hidden="true">
-          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4" type="video/mp4">
-        </video>
-        <span class="cshow-veil" aria-hidden="true"></span>
-        <span class="cshow-label">Solitaire</span>
-      </a>
-
-      <!-- col 3, row 1: square (Eternity) -->
-      <a class="cshow-block cshow-charms" href="#collection-eternity" aria-label="Shop Eternity collection">
-        <video class="cshow-media" autoplay muted loop playsinline preload="metadata"
-          poster="./prototype-assets/Second Section Image/0L6A9415_cropped_3f30682f-8dfb-4b57-b9a6-9b3c608729ad.webp" aria-hidden="true">
-          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
-        </video>
+      <!-- Card 2: Eternity (Col 3, Row 1) -->
+      <a class="cshow-block charms" href="#collection-eternity" aria-label="Shop Eternity collection">
+        <img class="cshow-media" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdnBqOGJ5bDZlN3pjeTE4dndqMXR4ems3ZXVqczAxeTluOGI4c2JnbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Qk0sLvkhAAROKqB8Ky/giphy.gif" alt="Eternity collection loop" loading="lazy">
         <span class="cshow-veil" aria-hidden="true"></span>
         <span class="cshow-label">Eternity</span>
       </a>
 
-      <!-- col 3, rows 2-3: tall, offset down (Stackables) -->
-      <a class="cshow-block cshow-princess" href="#collection-stackables" aria-label="Shop Stackables collection">
-        <video class="cshow-media" autoplay muted loop playsinline preload="metadata"
-          poster="./prototype-assets/Second Section Image/KALLICLOSEUPLIFESTYLE4170_4x5-477x600-0c84d7d.webp" aria-hidden="true">
-          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" type="video/mp4">
-        </video>
-        <span class="cshow-veil" aria-hidden="true"></span>
-        <span class="cshow-label">Stackables</span>
-      </a>
-
-      <!-- col 4, rows 1-2: tall (Bridal) -->
-      <a class="cshow-block cshow-moments" href="#collection-bridal" aria-label="Shop Bridal collection">
-        <video class="cshow-media" autoplay muted loop playsinline preload="metadata"
-          poster="./prototype-assets/Second Section Image/WPJANU134026_a5ee8be8-2ba0-4651-8a49-476e00fb76ef.webp" aria-hidden="true">
-          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4" type="video/mp4">
-        </video>
+      <!-- Card 3: Bridal (Col 4, Rows 1-2) -->
+      <a class="cshow-block moments" href="#collection-bridal" aria-label="Shop Bridal collection">
+        <img class="cshow-media" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcm5lbHR5am9naHd4NGhxbjM2OHJoY3RpYXhqNG9hb2llaWJzazR2YyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/mlWoIeOYyadVrOtMy4/giphy.gif" alt="Bridal collection loop" loading="lazy">
         <span class="cshow-veil" aria-hidden="true"></span>
         <span class="cshow-label">Bridal</span>
       </a>
 
-      <!-- col 4, row 3: square (Heritage) -->
-      <a class="cshow-block cshow-essence" href="#collection-heritage" aria-label="Shop Heritage collection">
-        <video class="cshow-media" autoplay muted loop playsinline preload="metadata"
-          poster="./prototype-assets/Second Section Image/rings.webp" aria-hidden="true">
-          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBubble.mp4" type="video/mp4">
-        </video>
+      <!-- Card 4: Solitaire (Col 2, Row 3) -->
+      <a class="cshow-block disney" href="#collection-solitaire" aria-label="Shop Solitaire collection">
+        <img class="cshow-media" src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXZnYWRlbjZ0cHAweWZxcHN3cng0dWtwZ3Y1OXo1MDd3bmQ5YjVwMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vWsV9mG3guj8KdlKRd/giphy.gif" alt="Solitaire collection loop" loading="lazy">
+        <span class="cshow-veil" aria-hidden="true"></span>
+        <span class="cshow-label">Solitaire</span>
+      </a>
+
+      <!-- Card 5: Stackables (Col 3, Rows 2-3) -->
+      <a class="cshow-block princesses" href="#collection-stackables" aria-label="Shop Stackables collection">
+        <img class="cshow-media" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjVqemdtbjB1enNncjEwMG5yeDl2aG15ODVhZXNtOWZweml6cnFnbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4UZhiCA8Q3cHTnwBTD/giphy.gif" alt="Stackables collection loop" loading="lazy">
+        <span class="cshow-veil" aria-hidden="true"></span>
+        <span class="cshow-label">Stackables</span>
+      </a>
+
+      <!-- Card 6: Heritage (Col 4, Row 3) -->
+      <a class="cshow-block essence" href="#collection-heritage" aria-label="Shop Heritage collection">
+        <img class="cshow-media" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExampvbTcxaWZiMmg5N2Rlc2lkNXZtOGsyNXlyZGFmejduejcweGVtNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KkmOQ2dlyhyThx6SoI/giphy.gif" alt="Heritage collection loop" loading="lazy">
         <span class="cshow-veil" aria-hidden="true"></span>
         <span class="cshow-label">Heritage</span>
       </a>
+    </div>
   </section>
 
 
