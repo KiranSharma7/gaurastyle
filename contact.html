@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Gaura Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="./Gaura Style Design System/colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --content-width: 1440px;
+      --gutter: 40px;
+      --nav-h: 92px;
+      --bar-h: 44px;
+      --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: #FFFFFF;
+      color: var(--fg1);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      /* Clear the fixed announcement bar + compact navbar */
+      padding-top: clamp(146px, 20vw, 164px);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── ANNOUNCEMENT BAR ─── */
+    .announcement-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: var(--bar-h);
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transform: translateY(-100%);
+      transition: transform 0.5s var(--ease-expo);
+    }
+
+    .announcement-bar.visible { transform: translateY(0); }
+
+    .announcement-bar.hidden {
+      transform: translateY(-100%);
+      pointer-events: none;
+    }
+
+    .announcement-bar p {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg1);
+    }
+
+    .announcement-bar a {
+      color: var(--fg1);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .bar-dismiss {
+      position: absolute;
+      right: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--fg1);
+      font-size: 18px;
+      line-height: 1;
+      padding: 4px 8px;
+      opacity: 0.7;
+      transition: opacity 0.15s;
+    }
+
+    .bar-dismiss:hover { opacity: 1; }
+
+    /* ─── NAVBAR ─── */
+    .navbar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      top: var(--bar-h);
+      transition:
+        top 0.3s var(--ease-quart),
+        background 0.4s ease,
+        backdrop-filter 0.4s ease,
+        box-shadow 0.4s ease,
+        opacity 0.5s ease,
+        padding 0.45s var(--ease-quart),
+        transform 0.35s var(--ease-quart);
+      opacity: 0;
+      padding-block: 16px 22px;
+    }
+
+    .navbar.nav-hidden { transform: translateY(-200%); }
+
+    .nav-inner {
+      position: relative;
+      max-width: var(--content-width);
+      margin-inline: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 18px;
+      padding: 0 var(--gutter);
+      transition: gap 0.4s var(--ease-quart);
+    }
+
+    .navbar.visible { opacity: 1; }
+    .navbar.bar-gone { top: 0; }
+
+    .nav-utility {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 22px;
+      transition: opacity 0.35s ease, height 0.4s var(--ease-quart), margin 0.4s var(--ease-quart);
+    }
+
+    .nav-util-link,
+    .nav-util-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--fg1);
+      text-decoration: none;
+      background: none;
+      border: none;
+      padding: 4px 2px;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .nav-util-link:hover,
+    .nav-util-btn:hover { color: var(--brown); }
+
+    .nav-util-right {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .nav-util-link svg,
+    .nav-util-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 1.5;
+    }
+
+    .nav-util-btn .cart-count {
+      position: absolute;
+      top: -2px;
+      right: -8px;
+      background: var(--gold);
+      color: var(--brown-dark);
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      font-size: 9px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .nav-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 132px;
+      width: auto;
+      max-width: 76vw;
+      object-fit: contain;
+      transition:
+        filter 0.45s ease,
+        height 0.45s var(--ease-quart);
+    }
+
+    .nav-links-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-link {
+      position: relative;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--fg1);
+      padding: 6px 0;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--brown);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.28s var(--ease-expo);
+    }
+
+    .nav-link:hover { color: var(--brown); }
+    .nav-link:hover::after,
+    .nav-link[aria-current="page"]::after { transform: scaleX(1); }
+    .nav-link[aria-current="page"] { color: var(--brown); }
+
+    .nav-search {
+      margin-left: 36px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--fg1);
+      display: inline-flex;
+      align-items: center;
+      padding: 6px;
+      transition: color 0.2s ease, transform 0.2s var(--ease-expo);
+    }
+
+    .nav-search:hover {
+      color: var(--brown);
+      transform: scale(1.08);
+    }
+
+    .nav-search svg { width: 18px; height: 18px; stroke-width: 1.5; }
+
+    /* This page has no dark hero, so the bar lives in its light state always. */
+    .navbar.scrolled {
+      background: rgba(250, 250, 248, 0.94);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      box-shadow: 0 1px 0 rgba(26, 23, 20, 0.06), 0 4px 24px rgba(26, 23, 20, 0.04);
+      padding-block: 12px 14px;
+    }
+
+    .navbar.scrolled .nav-inner { gap: 8px; }
+
+    .navbar.scrolled .nav-utility {
+      opacity: 0;
+      height: 0;
+      margin: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .navbar.scrolled .nav-logo img { height: 46px; }
+
+    @media (max-width: 768px) {
+      .navbar { padding-block: 10px 14px; }
+      .nav-inner { padding: 0 20px; gap: 12px; }
+
+      .nav-utility { height: 20px; }
+      .nav-util-link span { display: none; }
+      .nav-util-btn[aria-label="Wishlist (0 items)"] { display: none; }
+      .nav-util-right { gap: 18px; }
+
+      .nav-logo img { height: 64px; max-width: 88vw; }
+
+      .nav-links-row {
+        margin: 0 -20px;
+        padding: 0 20px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        justify-content: flex-start;
+      }
+      .nav-links-row::-webkit-scrollbar { display: none; }
+      .nav-links { gap: 22px; }
+      .nav-link { font-size: 11px; letter-spacing: 0.16em; white-space: nowrap; }
+      .nav-search { margin-left: 22px; }
+
+      .navbar.scrolled .nav-logo img { height: 36px; }
+    }
+
+    /* ─── PAGE SHELL ─── */
+    .page-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: clamp(24px, 5vw, 56px) var(--gutter) clamp(88px, 11vw, 132px);
+      opacity: 0;
+      animation: pageReveal 800ms var(--ease-expo) forwards;
+    }
+
+    @keyframes pageReveal {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── HERO ─── */
+    .contact-hero {
+      max-width: 980px;
+      margin-bottom: clamp(48px, 8vw, 96px);
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: var(--fw-regular);
+      letter-spacing: var(--ls-widest);
+      text-transform: uppercase;
+      color: var(--brown);
+      margin-bottom: clamp(20px, 3vw, 32px);
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(58px, 12vw, 124px);
+      font-weight: var(--fw-light);
+      line-height: 0.95;
+      letter-spacing: -0.035em;
+      color: var(--fg1);
+      max-width: 13ch;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--brown);
+    }
+
+    .intro-text {
+      font-family: var(--font-sans);
+      font-size: clamp(17px, 1.6vw, 21px);
+      line-height: var(--lh-relaxed);
+      color: var(--fg2);
+      max-width: 50ch;
+      margin-top: clamp(24px, 3vw, 36px);
+    }
+
+    /* ─── ASYMMETRIC GRID ─── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+      gap: clamp(40px, 6vw, 104px);
+      align-items: start;
+    }
+
+    .contact-rail {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(32px, 4vw, 48px);
+    }
+
+    @media (max-width: 880px) {
+      .contact-grid { grid-template-columns: 1fr; gap: clamp(40px, 8vw, 56px); }
+    }
+
+    /* ─── RAIL DETAILS ─── */
+    .reach { border-top: 1px solid var(--border-strong); padding-top: 18px; }
+
+    .rail-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: var(--fw-regular);
+      letter-spacing: var(--ls-wider);
+      text-transform: uppercase;
+      color: var(--fg3);
+      margin-bottom: 14px;
+    }
+
+    /* The email is the primary action: render it as a statement, not a line of body copy. */
+    .email-link {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      font-family: var(--font-display);
+      font-size: clamp(25px, 3vw, 35px);
+      font-weight: var(--fw-light);
+      line-height: 1.1;
+      letter-spacing: -0.015em;
+      color: var(--fg1);
+      transition: color var(--dur-base) var(--ease-out);
+    }
+
+    .email-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -2px;
+      height: 1.5px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform var(--dur-base) var(--ease-expo);
+    }
+
+    .email-link:hover { color: var(--brown); }
+    .email-link:hover::after { transform: scaleX(1); }
+
+    .hours {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.6vw, 30px);
+      font-weight: var(--fw-light);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--fg1);
+    }
+
+    .hours span {
+      display: block;
+      color: var(--fg2);
+    }
+
+    /* ─── FORM ─── */
+    .form-panel {
+      background: var(--surface-warm);
+      border-radius: var(--radius-sm);
+      padding: clamp(32px, 4vw, 56px);
+      box-shadow: 0 24px 64px rgba(26, 23, 20, 0.06);
+    }
+
+    .form-title {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 3.4vw, 44px);
+      font-weight: var(--fw-light);
+      line-height: var(--lh-snug);
+      letter-spacing: -0.02em;
+      color: var(--fg1);
+      margin-bottom: clamp(28px, 3vw, 40px);
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 8px; }
+
+    .field-label {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: var(--fw-semibold);
+      letter-spacing: var(--ls-wider);
+      text-transform: uppercase;
+      color: var(--fg1);
+    }
+
+    .field-input,
+    .field-textarea {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      color: var(--fg1);
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      padding: 15px 16px;
+      width: 100%;
+      transition: border-color var(--dur-fast) var(--ease-out),
+                  box-shadow var(--dur-fast) var(--ease-out),
+                  background-color var(--dur-fast) var(--ease-out);
+    }
+
+    .field-input::placeholder,
+    .field-textarea::placeholder { color: var(--fg3); }
+
+    .field-textarea { min-height: 132px; resize: vertical; line-height: var(--lh-normal); }
+
+    .field-input:focus,
+    .field-textarea:focus {
+      outline: none;
+      border-color: var(--fg1);
+      box-shadow: inset 0 0 0 0.5px var(--fg1);
+    }
+
+    .field-input[aria-invalid="true"],
+    .field-textarea[aria-invalid="true"] {
+      border-color: var(--error);
+      background: var(--error-bg);
+    }
+
+    .field-error {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--error);
+      display: none;
+    }
+
+    .field-input[aria-invalid="true"] ~ .field-error,
+    .field-textarea[aria-invalid="true"] ~ .field-error { display: block; }
+
+    .btn-submit {
+      align-self: stretch;
+      min-height: 60px;
+      margin-top: 10px;
+      padding: 0 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gold);
+      color: var(--fg1);
+      border: 1px solid var(--gold);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: var(--fw-semibold);
+      letter-spacing: var(--ls-wider);
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background-color var(--dur-fast) var(--ease-out),
+                  border-color var(--dur-fast) var(--ease-out),
+                  transform var(--dur-fast) var(--ease-expo),
+                  filter var(--dur-fast) var(--ease-out);
+    }
+
+    .btn-submit:hover { background: var(--gold-hover); border-color: var(--gold-hover); transform: scale(1.01); }
+    .btn-submit:active { transform: scale(0.98); filter: brightness(0.96); }
+    .btn-submit:disabled { opacity: 0.55; cursor: default; transform: none; filter: none; }
+
+    .form-success {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+      text-align: left;
+    }
+
+    .form-panel.is-sent .contact-form { display: none; }
+    .form-panel.is-sent .form-title { display: none; }
+    .form-panel.is-sent .form-success { display: flex; }
+
+    .success-heading {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 4vw, 48px);
+      font-weight: var(--fw-light);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--fg1);
+    }
+
+    .success-text {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: var(--lh-relaxed);
+      color: var(--fg2);
+      max-width: 48ch;
+    }
+
+    /* ─── SIGN-OFF (rail foot) ─── */
+    .signoff-text {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(20px, 2.4vw, 27px);
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      color: var(--brown);
+      max-width: 30ch;
+      margin-top: clamp(8px, 2vw, 20px);
+      padding-top: clamp(24px, 3vw, 36px);
+      border-top: 1px solid var(--border);
+    }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    /* --- SITE FOOTER --- */
+    .site-footer {
+      background: var(--surface-warm, #F5F1EA);
+      color: var(--fg1, #1A1714);
+      border-top: 1px solid var(--border-default, #E8E3DA);
+      padding: 76px var(--gutter) 28px;
+    }
+
+    .footer-inner {
+      max-width: var(--content-width);
+      margin-inline: auto;
+    }
+
+    .footer-main {
+      display: grid;
+      grid-template-columns: minmax(280px, 1.25fr) repeat(4, minmax(132px, 0.5fr));
+      gap: clamp(34px, 4vw, 72px);
+      align-items: start;
+      padding-bottom: 56px;
+    }
+
+    .footer-brand { max-width: 390px; }
+
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .footer-logo img {
+      width: 220px;
+      height: auto;
+      display: block;
+    }
+
+    .footer-copy {
+      max-width: 330px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--fg2, #6B5E57);
+      margin-bottom: 30px;
+    }
+
+    .footer-contact {
+      display: grid;
+      gap: 9px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--fg2, #6B5E57);
+      font-style: normal;
+    }
+
+    .footer-contact a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-contact a:hover { color: var(--fg1, #1A1714); }
+
+    .footer-heading {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      line-height: 1.4;
+      text-transform: uppercase;
+      color: var(--fg1, #1A1714);
+      margin-bottom: 18px;
+    }
+
+    .footer-heading::after {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--gold, #FFCF36);
+      margin-top: 8px;
+    }
+
+    .footer-list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .footer-link {
+      position: relative;
+      display: inline-flex;
+      width: fit-content;
+      color: var(--fg2, #6B5E57);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.35;
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s var(--ease-expo);
+    }
+
+    .footer-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1px;
+      background: var(--brown, #7A5C38);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.32s var(--ease-expo);
+    }
+
+    .footer-link:hover {
+      color: var(--fg1, #1A1714);
+      transform: translateX(2px);
+    }
+
+    .footer-link:hover::after { transform: scaleX(1); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      border-top: 1px solid rgba(255, 207, 54, 0.32);
+      padding-top: 24px;
+    }
+
+    .footer-legal {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--fg2, #6B5E57);
+    }
+
+    .footer-legal a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-legal a:hover { color: var(--fg1, #1A1714); }
+
+    .footer-social {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .social-link {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border-strong, #C8BFB4);
+      border-radius: var(--radius-sm, 4px);
+      color: var(--fg1, #1A1714);
+      text-decoration: none;
+      transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.24s var(--ease-expo);
+    }
+
+    .social-link:hover {
+      background: var(--gold, #FFCF36);
+      border-color: var(--gold, #FFCF36);
+      color: var(--brown-dark, #5A4228);
+      transform: translateY(-2px);
+    }
+
+    .social-link:focus-visible,
+    .footer-link:focus-visible,
+    .footer-contact a:focus-visible,
+    .footer-legal a:focus-visible {
+      outline: 2px solid var(--gold, #FFCF36);
+      outline-offset: 4px;
+    }
+
+    .social-link svg {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .social-link .icon-fill {
+      fill: currentColor;
+      stroke: none;
+    }
+
+    @media (max-width: 1080px) {
+      .footer-main {
+        grid-template-columns: minmax(260px, 1fr) repeat(2, minmax(160px, 0.55fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .site-footer { padding: 62px 24px 26px; }
+      .footer-main {
+        grid-template-columns: 1fr 1fr;
+        gap: 36px 28px;
+      }
+      .footer-brand { grid-column: 1 / -1; }
+      .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column-reverse;
+      }
+      .footer-social { justify-content: flex-start; }
+    }
+
+    @media (max-width: 500px) {
+      .footer-main {
+        grid-template-columns: 1fr;
+        padding-bottom: 42px;
+      }
+      .footer-legal { gap: 12px 16px; }
+    }
+
+    /* ─── REDUCED MOTION ─── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+      /* pageReveal is disabled above; ensure the content is not left hidden */
+      .page-shell { opacity: 1; }
+      .btn-submit:hover, .btn-submit:active { transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar" id="announcementBar" role="banner">
+    <p>New Summer Arrivals. <a href="./shop-v1-dark.html">Shop Now</a></p>
+    <button class="bar-dismiss" id="barDismiss" aria-label="Dismiss announcement">&times;</button>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar scrolled" id="navbar" aria-label="Main navigation">
+    <div class="nav-inner">
+
+      <!-- Utility row -->
+      <div class="nav-utility">
+        <a href="#" class="nav-util-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Stores</span>
+        </a>
+        <div class="nav-util-right">
+          <a href="#" class="nav-util-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Login</span>
+          </a>
+          <button class="nav-util-btn" aria-label="Wishlist (0 items)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span class="cart-count" aria-hidden="true">0</span>
+          </button>
+          <button class="nav-util-btn" aria-label="Cart (0 items)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span class="cart-count" aria-hidden="true">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hero-scale logo -->
+      <a href="./hero-v1-dark.html" class="nav-logo" aria-label="Gaura Style home">
+        <img src="logo.webp" alt="Gaura Style" width="724" height="132">
+      </a>
+
+      <!-- Category links -->
+      <div class="nav-links-row">
+        <ul class="nav-links" role="list">
+          <li><a href="#" class="nav-link">New In</a></li>
+          <li><a href="#" class="nav-link">Rings</a></li>
+          <li><a href="#" class="nav-link">Earrings</a></li>
+          <li><a href="#" class="nav-link">Bracelets</a></li>
+          <li><a href="#" class="nav-link">Pendants</a></li>
+          <li><a href="#" class="nav-link">Brooches</a></li>
+          <li><a href="#" class="nav-link">World of Gaura</a></li>
+        </ul>
+        <button class="nav-search" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page-shell" aria-labelledby="contactTitle">
+
+    <header class="contact-hero">
+      <p class="eyebrow">Contact</p>
+      <h1 id="contactTitle">We're here to <em>help.</em></h1>
+      <p class="intro-text">For any questions regarding orders, exchanges, or product care, our customer care team is happy to assist.</p>
+    </header>
+
+    <div class="contact-grid">
+
+      <aside class="contact-rail" aria-label="Contact details">
+        <div class="reach">
+          <span class="rail-label">Email</span>
+          <a class="email-link" href="mailto:support@gaurastyle.com">support@gaurastyle.com</a>
+        </div>
+        <div class="reach">
+          <span class="rail-label">Business Hours</span>
+          <p class="hours">Monday to Saturday<span>10:00 AM to 6:00 PM</span></p>
+        </div>
+        <p class="signoff-text">We appreciate your trust in Gaura Style and thank you for being part of our journey.</p>
+      </aside>
+
+      <section class="form-panel" id="formPanel" aria-label="Send a message">
+      <h2 class="form-title">Send a message</h2>
+
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="field">
+          <label class="field-label" for="name">Name</label>
+          <input class="field-input" type="text" id="name" name="name" autocomplete="name"
+                 placeholder="Your name" required aria-describedby="name-error">
+          <span class="field-error" id="name-error">Please enter your name.</span>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="email">Email</label>
+          <input class="field-input" type="email" id="email" name="email" autocomplete="email"
+                 placeholder="you@example.com" required aria-describedby="email-error">
+          <span class="field-error" id="email-error">Please enter a valid email address.</span>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="message">Message</label>
+          <textarea class="field-textarea" id="message" name="message"
+                    placeholder="How can we help?" required aria-describedby="message-error"></textarea>
+          <span class="field-error" id="message-error">Please enter a message.</span>
+        </div>
+
+        <button class="btn-submit" type="submit">Send Message</button>
+      </form>
+
+      <div class="form-success" role="status" aria-live="polite">
+        <p class="success-heading">Your message is on its way.</p>
+        <p class="success-text">Thank you for reaching out. Our customer care team will respond within one business day.</p>
+      </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer" id="site-footer" aria-labelledby="footerTitle">
+    <div class="footer-inner">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <a class="footer-logo" href="./hero-v1-dark.html" aria-label="Gaura Style home">
+            <img src="logo.webp" alt="Gaura Style" width="138" height="60" loading="lazy">
+          </a>
+          <p class="footer-copy">Designed for women who choose their own signatures. Explore rings, gems, and gifts shaped with warmth, confidence, and craft.</p>
+          <address class="footer-contact">
+            <span>Gaura Style Studio, Kathmandu, Nepal</span>
+            <a href="mailto:support@gaurastyle.com">support@gaurastyle.com</a>
+            <a href="tel:+9779800000000">+977 980 000 0000</a>
+          </address>
+        </div>
+
+        <nav class="footer-col" aria-label="Shop">
+          <h3 class="footer-heading">Shop</h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#rings">Rings</a></li>
+            <li><a class="footer-link" href="#necklaces">Necklaces</a></li>
+            <li><a class="footer-link" href="#earrings">Earrings</a></li>
+            <li><a class="footer-link" href="#bracelets">Bracelets</a></li>
+            <li><a class="footer-link" href="#new-arrivals">New Arrivals</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col" aria-label="Collections">
+          <h3 class="footer-heading">Collections</h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#statement-rings">Statement Rings</a></li>
+            <li><a class="footer-link" href="#gemstone-edit">Gemstone Edit</a></li>
+            <li><a class="footer-link" href="#gift-guide">Gift Guide</a></li>
+            <li><a class="footer-link" href="#wedding">Wedding</a></li>
+            <li><a class="footer-link" href="#bestsellers">Bestsellers</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col" aria-label="Support">
+          <h3 class="footer-heading">Support</h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="./contact.html" aria-current="page">Contact Us</a></li>
+            <li><a class="footer-link" href="#shipping">Shipping</a></li>
+            <li><a class="footer-link" href="#returns">Returns</a></li>
+            <li><a class="footer-link" href="#size-guide">Ring Size Guide</a></li>
+            <li><a class="footer-link" href="#care">Jewelry Care</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col" aria-label="Company">
+          <h3 class="footer-heading">Company</h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#about">About Gaura</a></li>
+            <li><a class="footer-link" href="#craft">Our Craft</a></li>
+            <li><a class="footer-link" href="#stores">Stores</a></li>
+            <li><a class="footer-link" href="#journal">Journal</a></li>
+            <li><a class="footer-link" href="#wholesale">Wholesale</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-legal">
+          <span>&copy; 2026 Gaura Style.</span>
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Use</a>
+          <a href="#accessibility">Accessibility</a>
+          <a href="#us">US</a>
+          <a href="#jp">Japan</a>
+          <a href="#in">India</a>
+          <a href="#ru">Russia</a>
+        </div>
+
+        <div class="footer-social" aria-label="Social media">
+          <a class="social-link" href="https://www.instagram.com/" aria-label="Gaura Style on Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="4.5" y="4.5" width="15" height="15" rx="4"></rect>
+              <circle cx="12" cy="12" r="3.6"></circle>
+              <circle class="icon-fill" cx="16.9" cy="7.1" r="1"></circle>
+            </svg>
+          </a>
+          <a class="social-link" href="https://www.facebook.com/" aria-label="Gaura Style on Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14.5 8H16V5.4C15.3 5.3 14.7 5.2 13.8 5.2C11.8 5.2 10.5 6.4 10.5 8.7V11H8.3V14H10.5V20H13.6V14H15.9L16.3 11H13.6V9C13.6 8.3 13.8 8 14.5 8Z"></path>
+            </svg>
+          </a>
+          <a class="social-link" href="https://www.pinterest.com/" aria-label="Gaura Style on Pinterest">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M11.7 14.2C11.2 16.4 10.6 18.5 9.2 19.7C8.7 16.8 9.9 14.6 10.4 12.2C9.5 10.7 10.5 7.7 12.5 8.5C15 9.5 10.4 14.6 13.5 15.2C16.7 15.8 18 9.6 16 7.6C13.2 4.8 7.9 7.5 8.6 11.5C8.8 12.5 9.8 12.8 9.1 14.2C7.1 13.7 6.5 12.1 6.6 10.1C6.8 6.8 9.6 4.5 12.5 4.2C16.2 3.8 19.7 5.6 20.2 9.1C20.8 13 18.5 17.2 14.4 16.9C13.3 16.8 12.8 16.3 11.7 14.2Z"></path>
+            </svg>
+          </a>
+          <a class="social-link" href="https://www.tiktok.com/" aria-label="Gaura Style on TikTok">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15.4 4.5C15.8 7.1 17.3 8.7 19.5 8.9V12C18 12 16.6 11.5 15.4 10.7V15.8C15.4 18.4 13.3 20.5 10.7 20.5C8.1 20.5 6 18.5 6 15.9C6 13.2 8.2 11.2 10.9 11.2C11.3 11.2 11.7 11.2 12.1 11.4V14.6C11.7 14.3 11.3 14.2 10.8 14.2C9.8 14.2 9 14.9 9 15.9C9 16.9 9.8 17.6 10.8 17.6C11.8 17.6 12.5 16.8 12.5 15.8V4.5H15.4Z"></path>
+            </svg>
+          </a>
+          <a class="social-link" href="https://www.youtube.com/" aria-label="Gaura Style on YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 12C21 9.8 20.8 8.4 20.4 7.8C20 7.2 19.4 7 18.4 6.9C16.7 6.8 14.6 6.8 12 6.8C9.4 6.8 7.3 6.8 5.6 6.9C4.6 7 4 7.2 3.6 7.8C3.2 8.4 3 9.8 3 12C3 14.2 3.2 15.6 3.6 16.2C4 16.8 4.6 17 5.6 17.1C7.3 17.2 9.4 17.2 12 17.2C14.6 17.2 16.7 17.2 18.4 17.1C19.4 17 20 16.8 20.4 16.2C20.8 15.6 21 14.2 21 12Z"></path>
+              <path class="icon-fill" d="M10.5 9.5V14.5L14.8 12L10.5 9.5Z"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Header: announcement bar + nav reveal / hide-on-scroll ──────
+    (function () {
+      var bar = document.getElementById('announcementBar');
+      var nav = document.getElementById('navbar');
+      var dismiss = document.getElementById('barDismiss');
+      var lastScrollY = 0;
+
+      requestAnimationFrame(function () {
+        setTimeout(function () {
+          bar.classList.add('visible');
+          nav.classList.add('visible');
+          lastScrollY = window.scrollY;
+        }, 80);
+      });
+
+      dismiss.addEventListener('click', function () {
+        bar.classList.add('hidden');
+        nav.classList.add('bar-gone');
+      });
+
+      // No dark hero on this page: keep the nav in its light (scrolled)
+      // state always; only manage hide-on-down / reveal-on-up.
+      var rafPending = false;
+      window.addEventListener('scroll', function () {
+        if (rafPending) return;
+        rafPending = true;
+        requestAnimationFrame(function () {
+          var currentY = window.scrollY;
+          if (currentY <= 80) {
+            nav.classList.remove('nav-hidden');
+          } else if (currentY > lastScrollY) {
+            nav.classList.add('nav-hidden');
+          } else {
+            nav.classList.remove('nav-hidden');
+          }
+          lastScrollY = currentY;
+          rafPending = false;
+        });
+      }, { passive: true });
+    })();
+
+    // ── Contact form: client-side validation + in-place success ─────
+    (function () {
+      var form = document.getElementById('contactForm');
+      var panel = document.getElementById('formPanel');
+      if (!form) return;
+
+      var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      function validateField(input) {
+        var valid = input.type === 'email'
+          ? emailRe.test(input.value.trim())
+          : input.value.trim().length > 0;
+        input.setAttribute('aria-invalid', valid ? 'false' : 'true');
+        return valid;
+      }
+
+      form.querySelectorAll('.field-input, .field-textarea').forEach(function (input) {
+        ['blur', 'input'].forEach(function (evt) {
+          input.addEventListener(evt, function () {
+            if (input.getAttribute('aria-invalid') === 'true') validateField(input);
+          });
+        });
+      });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var fields = form.querySelectorAll('.field-input, .field-textarea');
+        var allValid = true;
+        var firstInvalid = null;
+        fields.forEach(function (input) {
+          if (!validateField(input)) {
+            allValid = false;
+            if (!firstInvalid) firstInvalid = input;
+          }
+        });
+
+        if (!allValid) {
+          if (firstInvalid) firstInvalid.focus();
+          return;
+        }
+
+        var btn = form.querySelector('.btn-submit');
+        btn.disabled = true;
+        btn.textContent = 'Sending';
+
+        // Front-end only: hand off to WP/WooCommerce handler on integration.
+        window.setTimeout(function () {
+          panel.classList.add('is-sent');
+        }, 600);
+      });
+    })();
+  </script>
+
+  <!-- ─── PROTOTYPE NAV ─── -->
+  <style>
+    .proto-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+      display: flex; align-items: center; gap: 0;
+      background: #1A1714; border-top: 1px solid #2E2925;
+      font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .proto-nav__label {
+      padding: 0 14px; color: #5A4228; white-space: nowrap; border-right: 1px solid #2E2925;
+      font-size: 9px; letter-spacing: 0.12em; line-height: 40px;
+    }
+    .proto-nav a {
+      display: block; padding: 0 16px; line-height: 40px; color: #A8988E;
+      text-decoration: none; border-right: 1px solid #2E2925; transition: color 0.15s;
+      white-space: nowrap;
+    }
+    .proto-nav a:hover { color: #FAFAF8; }
+    .proto-nav a[aria-current="page"] { color: #FFCF36; }
+  </style>
+  <nav class="proto-nav" aria-label="Prototype navigation">
+    <span class="proto-nav__label">Prototype</span>
+    <a href="./hero-v1-dark.html">Home</a>
+    <a href="./shop-v1-dark.html">Shop</a>
+    <a href="./product-v1.html">Product</a>
+    <a href="./size-guide.html">Size Guide</a>
+    <a href="./cart-page.html">Cart</a>
+    <a href="./checkout.html">Checkout</a>
+    <a href="./thank-you.html">Thank You</a>
+    <a href="./contact.html" aria-current="page">Contact</a>
+  </nav>
+</body>
+</html>

@@ -12,3 +12,7 @@ build/
 *.log
 
 .prototypes-assets/
+
+# Oversized prototype videos (exceed GitHub 100MB limit)
+prototype-assets/For Japan.mov
+prototype-assets/Herosection vertical.mov

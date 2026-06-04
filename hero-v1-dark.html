@@ -393,6 +393,13 @@
       z-index: 1;
     }
 
+    .hero-video--mobile { display: none; }
+
+    @media (max-width: 768px) {
+      .hero-video--desktop { display: none; }
+      .hero-video--mobile { display: block; }
+    }
+
     .hero-vignette {
       position: absolute;
       bottom: 0;
@@ -2578,7 +2585,7 @@
     <div class="hero-bg-fallback" aria-hidden="true"></div>
 
     <video
-      class="hero-video"
+      class="hero-video hero-video--desktop"
       autoplay
       muted
       loop
@@ -2586,8 +2593,21 @@
       aria-hidden="true"
       preload="metadata"
     >
-      <source src="./prototype-assets/hero-section-video.mp4" type="video/mp4">
-      <source src="./prototype-assets/hero section cideo.mov" type="video/quicktime">
+      <source src="./prototype-assets/Herosection2.mov" type="video/mp4">
+      <source src="./prototype-assets/Herosection2.mov" type="video/quicktime">
+    </video>
+
+    <video
+      class="hero-video hero-video--mobile"
+      autoplay
+      muted
+      loop
+      playsinline
+      aria-hidden="true"
+      preload="metadata"
+    >
+      <source src="./prototype-assets/Herosection vertical.mov" type="video/mp4">
+      <source src="./prototype-assets/Herosection vertical.mov" type="video/quicktime">
     </video>
 
     <div class="hero-vignette" aria-hidden="true"></div>
@@ -3561,9 +3581,11 @@
     <a href="./hero-v1-dark.html" aria-current="page">Home</a>
     <a href="./shop-v1-dark.html">Shop</a>
     <a href="./product-v1.html">Product</a>
+    <a href="./size-guide.html">Size Guide</a>
     <a href="./cart-page.html">Cart</a>
     <a href="./checkout.html">Checkout</a>
     <a href="./thank-you.html">Thank You</a>
+    <a href="./contact.html">Contact</a>
   </nav>
 </body>
 </html>

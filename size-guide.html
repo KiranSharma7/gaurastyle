@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Size Guide · Gaura Style</title>
+  <meta name="description" content="Measure your ring and bracelet size at home with confidence. Gaura Style size charts, fit tips, and a short FAQ.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="./Gaura Style Design System/colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --content-width: 1440px;
+      --gutter: 40px;
+      --nav-h: 92px;
+      --bar-h: 44px;
+      --tabs-h: 60px;
+      --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg1);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: inherit; }
+    button, input, select { font: inherit; }
+
+    .skip-link {
+      position: absolute;
+      left: 12px; top: 12px;
+      z-index: 200;
+      padding: 10px 18px;
+      background: var(--fg1);
+      color: var(--fg-inverse);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transform: translateY(-160%);
+      transition: transform 0.24s var(--ease-expo);
+    }
+    .skip-link:focus-visible { transform: translateY(0); }
+
+    /* ============ ANNOUNCEMENT BAR ============ */
+    .announcement-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: var(--bar-h);
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transform: translateY(-100%);
+      transition: transform 0.5s var(--ease-expo);
+    }
+    .announcement-bar.visible { transform: translateY(0); }
+    .announcement-bar.hidden { transform: translateY(-100%); pointer-events: none; }
+    .announcement-bar p {
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--fg1);
+    }
+    .announcement-bar a { color: var(--fg1); text-decoration: underline; text-underline-offset: 2px; }
+    .bar-dismiss {
+      position: absolute; right: 20px;
+      min-width: 40px; min-height: 40px;
+      background: none; border: none; cursor: pointer;
+      color: var(--fg1); font-size: 18px; line-height: 1;
+      opacity: 0.72;
+      transition: opacity 0.16s ease, transform 0.16s ease;
+    }
+    .bar-dismiss:hover { opacity: 1; }
+    .bar-dismiss:active { transform: scale(0.96); }
+
+    /* ============ NAVBAR ============ */
+    .navbar {
+      position: fixed;
+      left: 0; right: 0;
+      z-index: 99;
+      top: var(--bar-h);
+      opacity: 0;
+      padding-block: 16px 22px;
+      background: rgba(250, 250, 248, 0.94);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      box-shadow: 0 1px 0 rgba(26, 23, 20, 0.06), 0 4px 24px rgba(26, 23, 20, 0.04);
+      transition-property: top, opacity, transform;
+      transition-duration: 0.3s, 0.5s, 0.35s;
+      transition-timing-function: var(--ease-quart), ease, var(--ease-quart);
+    }
+    .navbar.nav-hidden { transform: translateY(-200%); }
+    .navbar.visible { opacity: 1; }
+    .navbar.bar-gone { top: 0; }
+
+    .nav-inner {
+      position: relative;
+      max-width: var(--content-width);
+      margin-inline: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 18px;
+      padding: 0 var(--gutter);
+    }
+    .nav-utility {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 22px;
+    }
+    .nav-util-link, .nav-util-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      min-height: 40px;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+      color: var(--fg1); text-decoration: none;
+      background: none; border: none; padding: 4px 2px; cursor: pointer;
+      position: relative;
+      transition: color 0.2s ease, transform 0.2s var(--ease-expo);
+    }
+    .nav-util-link:hover, .nav-util-btn:hover { color: var(--brown); }
+    .nav-util-btn:active, .nav-search:active { transform: scale(0.96); }
+    .nav-util-right { display: flex; align-items: center; gap: 26px; }
+    .nav-util-link svg, .nav-util-btn svg { width: 16px; height: 16px; stroke-width: 1.5; }
+
+    .nav-logo { display: flex; justify-content: center; align-items: center; text-decoration: none; }
+    .nav-logo img { height: 62px; width: auto; max-width: 76vw; object-fit: contain; }
+
+    .nav-links-row { display: flex; align-items: center; justify-content: center; gap: 0; }
+    .nav-links { display: flex; align-items: center; gap: 40px; list-style: none; }
+    .nav-link {
+      position: relative;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.18em;
+      text-transform: uppercase; text-decoration: none;
+      color: var(--fg1); padding: 8px 0;
+      transition: color 0.2s ease;
+    }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 1px; background: var(--brown);
+      transform: scaleX(0); transform-origin: left center;
+      transition: transform 0.28s var(--ease-expo);
+    }
+    .nav-link:hover { color: var(--brown); }
+    .nav-link:hover::after, .nav-link[aria-current="page"]::after { transform: scaleX(1); }
+    .nav-link[aria-current="page"] { color: var(--brown); }
+    .nav-search {
+      margin-left: 36px; min-width: 40px; min-height: 40px;
+      background: none; border: none; cursor: pointer; color: var(--fg1);
+      display: inline-flex; align-items: center; justify-content: center; padding: 6px;
+      transition: color 0.2s ease, transform 0.2s var(--ease-expo);
+    }
+    .nav-search:hover { color: var(--brown); transform: scale(1.08); }
+    .nav-search svg { width: 18px; height: 18px; stroke-width: 1.5; }
+    .cart-count {
+      position: absolute; top: -2px; right: -8px;
+      background: var(--gold); color: var(--brown-dark);
+      width: 16px; height: 16px; border-radius: 50%;
+      font-size: 9px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1; font-variant-numeric: tabular-nums;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* ============ PAGE SHELL ============ */
+    main { padding-top: calc(var(--bar-h) + var(--nav-h) + 56px); }
+
+    .sg-wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    .sg-breadcrumb {
+      max-width: 1080px;
+      margin: 0 auto 30px;
+      padding: 0 var(--gutter);
+      display: flex; align-items: center; gap: 9px;
+      color: var(--fg3);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+    }
+    .sg-breadcrumb a { text-decoration: none; color: var(--fg2); transition: color 0.2s ease; }
+    .sg-breadcrumb a:hover { color: var(--brown); }
+    .sg-breadcrumb .current { color: var(--fg1); }
+
+    /* ============ INTRO ============ */
+    .sg-intro { text-align: center; padding-bottom: clamp(40px, 5vw, 64px); }
+    .sg-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-bottom: 22px;
+      font-family: var(--font-mono);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--brown);
+    }
+    .sg-eyebrow::before, .sg-eyebrow::after {
+      content: ''; width: 24px; height: 1px; background: var(--gold);
+    }
+    .sg-title {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 300; line-height: 1.04; letter-spacing: -0.02em;
+      color: var(--fg1); text-wrap: balance;
+    }
+    .sg-intro-lede {
+      margin: 26px auto 0;
+      max-width: 60ch;
+      color: var(--fg2);
+      font-size: clamp(16px, 1.5vw, 18px);
+      line-height: 1.72;
+    }
+    .sg-intro-lede + .sg-intro-lede { margin-top: 16px; }
+
+    /* ============ TAB SWITCHER ============ */
+    .sg-tabs-sticky {
+      position: sticky;
+      /* --tabs-top is kept in sync with the headroom navbar via JS so the bar
+         tucks under the nav when it's visible and rises to the top when it hides. */
+      top: var(--tabs-top, calc(var(--bar-h) + 8px));
+      z-index: 60;
+      padding: 14px 0;
+      margin-bottom: clamp(40px, 5vw, 64px);
+      background: rgba(250, 250, 248, 0.86);
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      border-bottom: 1px solid var(--border);
+      transition: top 0.34s var(--ease-quart);
+    }
+    .sg-tabs {
+      display: inline-flex;
+      gap: 4px;
+      margin: 0 auto;
+      padding: 5px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+    }
+    .sg-tabs-rail { display: flex; justify-content: center; }
+    .sg-tab {
+      position: relative;
+      min-width: 148px;
+      padding: 13px 26px;
+      border: none;
+      border-radius: var(--radius-xs);
+      background: none;
+      color: var(--fg2);
+      font-family: var(--font-sans);
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      cursor: pointer;
+      transition: color 0.2s ease, background-color 0.28s var(--ease-expo);
+    }
+    .sg-tab:hover { color: var(--fg1); }
+    .sg-tab[aria-selected="true"] {
+      color: var(--fg1);
+      background: var(--surface-warm);
+    }
+    .sg-tab[aria-selected="true"]::after {
+      content: '';
+      position: absolute;
+      left: 26px; right: 26px; bottom: 7px;
+      height: 2px;
+      background: var(--gold);
+    }
+
+    .sg-panel[hidden] { display: none; }
+    .sg-panel { animation: sg-fade 0.4s var(--ease-expo); }
+    @keyframes sg-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ============ IN-TAB ANCHOR NAV ============ */
+    .sg-jump {
+      display: flex; flex-wrap: wrap; gap: 8px 10px;
+      margin-bottom: clamp(48px, 6vw, 72px);
+      padding-bottom: 4px;
+    }
+    .sg-jump a {
+      padding: 9px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      color: var(--fg2);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+    }
+    .sg-jump a:hover { color: var(--brown); border-color: var(--border-strong); background: var(--surface); }
+
+    /* ============ SECTIONS ============ */
+    .sg-section { scroll-margin-top: calc(var(--bar-h) + var(--tabs-h) + 40px); }
+    .sg-section + .sg-section { margin-top: clamp(64px, 8vw, 112px); }
+
+    .sg-section-head { max-width: 64ch; margin-bottom: clamp(32px, 4vw, 48px); }
+    .sg-kicker {
+      display: block; margin-bottom: 14px;
+      font-family: var(--font-mono);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--brown);
+    }
+    .sg-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 300; line-height: 1.08; letter-spacing: -0.02em;
+      color: var(--fg1);
+    }
+    .sg-h2 em { font-style: italic; color: var(--brown); }
+    .sg-section-lede { margin-top: 20px; max-width: 64ch; color: var(--fg2); font-size: 16px; line-height: 1.72; }
+
+    .sg-h3 {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 2.6vw, 32px);
+      font-weight: 400; line-height: 1.16; letter-spacing: -0.01em;
+      color: var(--fg1);
+    }
+
+    /* ---- Measure steps ---- */
+    .sg-steps { display: grid; gap: clamp(28px, 4vw, 56px); }
+    .sg-step {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: clamp(24px, 4vw, 56px);
+      align-items: center;
+    }
+    .sg-step:nth-child(even) .sg-step-figure { order: 2; }
+    .sg-step-figure {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--surface-warm);
+      outline: 1px solid rgba(26, 23, 20, 0.06);
+    }
+    /* Placeholder treatment until real step imagery is added */
+    .sg-step-figure::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(120% 90% at 28% 22%, rgba(255, 255, 255, 0.65), transparent 60%),
+        repeating-linear-gradient(135deg, rgba(122, 92, 56, 0.05) 0 14px, rgba(122, 92, 56, 0) 14px 28px);
+    }
+    .sg-step-figure img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .sg-ph-tag {
+      position: absolute; left: 14px; bottom: 14px;
+      z-index: 1;
+      padding: 6px 11px;
+      border-radius: var(--radius-xs);
+      background: rgba(250, 250, 248, 0.9);
+      color: var(--fg3);
+      font-family: var(--font-mono);
+      font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .sg-step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px;
+      margin-bottom: 18px;
+      border: 1px solid var(--border-strong);
+      border-radius: 50%;
+      font-family: var(--font-display);
+      font-size: 20px; color: var(--brown);
+      font-variant-numeric: tabular-nums;
+    }
+    .sg-step-body p { margin-top: 14px; max-width: 52ch; color: var(--fg2); font-size: 15.5px; line-height: 1.72; }
+    .sg-substep {
+      margin-top: 18px;
+      display: grid; gap: 11px;
+      list-style: none;
+      counter-reset: substep;
+    }
+    .sg-substep li {
+      position: relative;
+      padding-left: 30px;
+      color: var(--fg2); font-size: 15px; line-height: 1.6;
+    }
+    .sg-substep li::before {
+      counter-increment: substep;
+      content: counter(substep);
+      position: absolute; left: 0; top: 1px;
+      width: 20px; height: 20px;
+      display: grid; place-items: center;
+      border-radius: 50%;
+      background: var(--surface-warm);
+      color: var(--brown);
+      font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums;
+    }
+    .sg-option-label {
+      display: block; margin-bottom: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--brown);
+    }
+    .sg-step-body .sg-option-block + .sg-option-block { margin-top: 24px; }
+
+    /* ---- Two-column guide (measure + chart) ---- */
+    .sg-guide {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: clamp(32px, 5vw, 72px);
+      align-items: start;
+    }
+    .sg-guide-steps { min-width: 0; }
+    .sg-guide-steps .sg-section-lede { max-width: 46ch; }
+    .sg-guide-figure { aspect-ratio: 16 / 10; margin: 6px 0 22px; }
+
+    .sg-disclosures { display: grid; gap: 12px; }
+    .sg-disclosure {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+    .sg-disclosure[open] { border-color: var(--border-strong); }
+    .sg-disclosure summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 20px;
+    }
+    .sg-disclosure summary::-webkit-details-marker { display: none; }
+    .sg-disclosure summary:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; border-radius: var(--radius-md); }
+    .sg-disc-num {
+      width: 30px; height: 30px; flex-shrink: 0;
+      display: grid; place-items: center;
+      border: 1px solid var(--border-strong);
+      border-radius: 50%;
+      font-family: var(--font-display);
+      font-size: 16px; color: var(--brown);
+      font-variant-numeric: tabular-nums;
+    }
+    .sg-disc-titles { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+    .sg-disc-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--brown);
+    }
+    .sg-disc-title {
+      font-family: var(--font-display);
+      font-size: 20px; font-weight: 400; line-height: 1.1; color: var(--fg1);
+    }
+    .sg-disc-icon { position: relative; width: 14px; height: 14px; flex-shrink: 0; color: var(--brown); }
+    .sg-disc-icon::before, .sg-disc-icon::after {
+      content: ''; position: absolute; top: 50%; left: 0;
+      width: 14px; height: 1.5px; background: currentColor;
+      transition: transform 0.3s var(--ease-expo);
+    }
+    .sg-disc-icon::after { transform: rotate(90deg); }
+    .sg-disclosure[open] .sg-disc-icon::after { transform: rotate(0); }
+    .sg-disc-body { padding: 0 20px 20px; }
+    .sg-disc-body p { color: var(--fg2); font-size: 14.5px; line-height: 1.66; }
+    .sg-disc-body .sg-substep { margin-top: 12px; }
+    .sg-disc-body .sg-pref { grid-template-columns: 1fr; gap: 10px; margin-top: 14px; }
+    .sg-disc-body .sg-pref-card { padding: 14px 16px; display: flex; align-items: baseline; gap: 12px; }
+    .sg-disc-body .sg-pref-add { font-size: 22px; flex-shrink: 0; min-width: 92px; }
+    .sg-disc-body .sg-pref-name { margin-top: 0; }
+    .sg-disc-body .sg-pref-desc { display: none; }
+
+    .sg-guide-chart { min-width: 0; }
+    .sg-chart-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+      margin-bottom: 20px; padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sg-chart-title {
+      font-family: var(--font-sans);
+      font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--fg1);
+    }
+
+    /* ---- Charts ---- */
+    .sg-chart-switch { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface-warm); }
+    .sg-chart-head .sg-chart-switch { margin-bottom: 0; }
+    .sg-chart-switch button {
+      padding: 9px 18px;
+      border: none; border-radius: var(--radius-pill);
+      background: none; color: var(--fg2);
+      font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer;
+      transition: color 0.2s ease, background-color 0.24s var(--ease-expo);
+    }
+    .sg-chart-switch button:hover { color: var(--fg1); }
+    .sg-chart-switch button[aria-pressed="true"] { color: var(--fg-inverse); background: var(--fg1); }
+
+    .sg-chart-panel[hidden] { display: none; }
+    .sg-table-scroll { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--border); }
+    table.sg-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      font-variant-numeric: tabular-nums;
+    }
+    .sg-table caption {
+      caption-side: top;
+      text-align: left;
+      padding: 16px 18px;
+      color: var(--fg2);
+      font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--border);
+    }
+    .sg-table th, .sg-table td {
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sg-table thead th {
+      color: var(--fg3);
+      font-weight: 600;
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      background: var(--surface-warm);
+      position: sticky; top: 0;
+    }
+    .sg-table tbody th { font-weight: 600; color: var(--fg1); }
+    .sg-table tbody td { color: var(--fg2); }
+    .sg-table tbody tr:last-child th, .sg-table tbody tr:last-child td { border-bottom: none; }
+    .sg-table tbody tr:hover { background: var(--surface-warm); }
+    .sg-table .col-us { color: var(--brown); font-weight: 600; }
+
+    .sg-chart-note {
+      margin-top: 16px;
+      display: flex; align-items: flex-start; gap: 10px;
+      color: var(--fg2); font-size: 13.5px; line-height: 1.6;
+    }
+    .sg-chart-note svg { width: 16px; height: 16px; stroke-width: 1.7; color: var(--brown); flex-shrink: 0; margin-top: 2px; }
+
+    /* ---- Fit preference (bracelet add-room) ---- */
+    .sg-pref { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 8px; }
+    .sg-pref-card {
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+    }
+    .sg-pref-add {
+      font-family: var(--font-display);
+      font-size: 32px; font-weight: 300; color: var(--brown);
+      line-height: 1;
+    }
+    .sg-pref-name {
+      margin-top: 12px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--fg1);
+    }
+    .sg-pref-desc { margin-top: 8px; color: var(--fg2); font-size: 14px; line-height: 1.55; }
+
+    /* ---- Tip grid ---- */
+    .sg-tips { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(20px, 3vw, 36px) clamp(28px, 4vw, 56px); }
+    .sg-tip h4 {
+      font-family: var(--font-display);
+      font-size: 22px; font-weight: 400; line-height: 1.2;
+      color: var(--fg1);
+    }
+    .sg-tip p { margin-top: 8px; color: var(--fg2); font-size: 15px; line-height: 1.68; }
+
+    /* ---- Gift / aside band ---- */
+    .sg-band {
+      margin-top: clamp(64px, 8vw, 112px);
+      padding: clamp(40px, 6vw, 72px);
+      border-radius: var(--radius-lg);
+      background: var(--surface-warm);
+    }
+    .sg-band .sg-h3 { max-width: 30ch; }
+    .sg-band-lede { margin-top: 16px; max-width: 56ch; color: var(--fg2); font-size: 15.5px; line-height: 1.72; }
+    .sg-band-grid { margin-top: clamp(28px, 4vw, 40px); display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 3vw, 36px); }
+    .sg-band-item h4 {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--brown);
+    }
+    .sg-band-item p { margin-top: 9px; color: var(--fg2); font-size: 14.5px; line-height: 1.62; }
+
+    /* ============ SHARED: QUICK ADVICE + FAQ ============ */
+    .sg-shared { margin-top: clamp(80px, 10vw, 140px); }
+    .sg-shared-divider {
+      max-width: 1080px; margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+    .sg-shared-divider hr { border: none; border-top: 1px solid var(--border); }
+
+    .sg-advice-grid { margin-top: clamp(28px, 4vw, 44px); display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 48px); }
+    .sg-advice-item .sg-advice-mark {
+      display: block; width: 28px; height: 1px; background: var(--gold); margin-bottom: 18px;
+    }
+    .sg-advice-item h4 {
+      font-family: var(--font-display);
+      font-size: 24px; font-weight: 400; line-height: 1.18; color: var(--fg1);
+    }
+    .sg-advice-item p { margin-top: 10px; color: var(--fg2); font-size: 15px; line-height: 1.68; }
+
+    .sg-faq { margin-top: clamp(56px, 7vw, 96px); border-top: 1px solid var(--border); }
+    .sg-faq-item { border-bottom: 1px solid var(--border); }
+    .sg-faq-trigger {
+      width: 100%;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      padding: 24px 4px;
+      background: none; border: none; cursor: pointer; text-align: left;
+      color: var(--fg1);
+      font-family: var(--font-display);
+      font-size: clamp(20px, 2.2vw, 26px); font-weight: 400; line-height: 1.25;
+      transition: color 0.2s ease;
+    }
+    .sg-faq-trigger:hover { color: var(--brown); }
+    .sg-faq-icon { position: relative; width: 15px; height: 15px; flex-shrink: 0; color: var(--brown); }
+    .sg-faq-icon::before, .sg-faq-icon::after {
+      content: ''; position: absolute; top: 50%; left: 0;
+      width: 15px; height: 1.5px; background: currentColor;
+      transition: transform 0.3s var(--ease-expo);
+    }
+    .sg-faq-icon::after { transform: rotate(90deg); }
+    .sg-faq-trigger[aria-expanded="true"] .sg-faq-icon::after { transform: rotate(0); }
+    .sg-faq-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.36s var(--ease-expo); }
+    .sg-faq-panel.is-open { grid-template-rows: 1fr; }
+    .sg-faq-panel > div { overflow: hidden; }
+    .sg-faq-body { padding: 0 4px 26px; max-width: 64ch; color: var(--fg2); font-size: 15.5px; line-height: 1.72; }
+
+    /* --- SITE FOOTER (exact from hero-v1-dark.html) --- */
+    .site-footer {
+      background: var(--surface-warm, #F5F1EA);
+      color: var(--fg1, #1A1714);
+      border-top: 1px solid var(--border-default, #E8E3DA);
+      padding: 76px var(--gutter) 28px;
+    }
+
+    .footer-inner {
+      max-width: var(--content-width);
+      margin-inline: auto;
+    }
+
+    .footer-main {
+      display: grid;
+      grid-template-columns: minmax(280px, 1.25fr) repeat(4, minmax(132px, 0.5fr));
+      gap: clamp(34px, 4vw, 72px);
+      align-items: start;
+      padding-bottom: 56px;
+    }
+
+    .footer-brand {
+      max-width: 390px;
+    }
+
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .footer-logo img {
+      width: 220px;
+      height: auto;
+      display: block;
+    }
+
+    .footer-statement {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 3vw, 46px);
+      font-weight: 300;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      color: var(--fg1, #1A1714);
+      margin-bottom: 24px;
+    }
+
+    .footer-statement em {
+      font-style: italic;
+      color: var(--brown, #7A5C38);
+    }
+
+    .footer-copy {
+      max-width: 330px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--fg2, #6B5E57);
+      margin-bottom: 30px;
+    }
+
+    .footer-contact {
+      display: grid;
+      gap: 9px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--fg2, #6B5E57);
+    }
+
+    .footer-contact a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-contact a:hover {
+      color: var(--fg1, #1A1714);
+    }
+
+    .footer-heading {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      line-height: 1.4;
+      text-transform: uppercase;
+      color: var(--fg1, #1A1714);
+      margin-bottom: 18px;
+    }
+
+    .footer-heading::after {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--gold, #FFCF36);
+      margin-top: 8px;
+    }
+
+    .footer-list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .footer-link {
+      position: relative;
+      display: inline-flex;
+      width: fit-content;
+      color: var(--fg2, #6B5E57);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.35;
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s var(--ease-expo);
+    }
+
+    .footer-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1px;
+      background: var(--brown, #7A5C38);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.32s var(--ease-expo);
+    }
+
+    .footer-link:hover {
+      color: var(--fg1, #1A1714);
+      transform: translateX(2px);
+    }
+
+    .footer-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      border-top: 1px solid rgba(255, 207, 54, 0.32);
+      padding-top: 24px;
+    }
+
+    .footer-legal {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--fg2, #6B5E57);
+    }
+
+    .footer-legal a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-legal a:hover {
+      color: var(--fg1, #1A1714);
+    }
+
+    .footer-social {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .social-link {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border-strong, #C8BFB4);
+      border-radius: var(--radius-sm, 4px);
+      color: var(--fg1, #1A1714);
+      text-decoration: none;
+      transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.24s var(--ease-expo);
+    }
+
+    .social-link:hover {
+      background: var(--gold, #FFCF36);
+      border-color: var(--gold, #FFCF36);
+      color: var(--brown-dark, #5A4228);
+      transform: translateY(-2px);
+    }
+
+    .social-link:focus-visible,
+    .footer-link:focus-visible,
+    .footer-contact a:focus-visible,
+    .footer-legal a:focus-visible {
+      outline: 2px solid var(--gold, #FFCF36);
+      outline-offset: 4px;
+    }
+
+    .social-link svg {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .social-link .icon-fill {
+      fill: currentColor;
+      stroke: none;
+    }
+
+    @media (max-width: 1080px) {
+      .footer-main {
+        grid-template-columns: minmax(260px, 1fr) repeat(2, minmax(160px, 0.55fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .site-footer {
+        padding: 62px 24px 26px;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr 1fr;
+        gap: 36px 28px;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+
+      .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column-reverse;
+      }
+
+      .footer-social {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .footer-main {
+        grid-template-columns: 1fr;
+        padding-bottom: 42px;
+      }
+
+      .footer-statement {
+        font-size: 34px;
+      }
+
+      .footer-legal {
+        gap: 12px 16px;
+      }
+    }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 900px) {
+      .sg-guide { grid-template-columns: 1fr; gap: 40px; }
+      .sg-guide-figure { max-width: 520px; }
+      .sg-pref, .sg-band-grid, .sg-advice-grid { grid-template-columns: 1fr; }
+      .sg-tips { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      :root { --gutter: 22px; }
+      .nav-utility { display: none; }
+      .navbar { padding-block: 14px; }
+      .nav-links { gap: 22px; overflow-x: auto; }
+      .nav-search { display: none; }
+      main { padding-top: calc(var(--bar-h) + 88px); }
+      .sg-tabs-sticky { top: calc(var(--bar-h) + 2px); }
+      .sg-tab { min-width: 0; flex: 1; padding: 12px 10px; letter-spacing: 0.1em; }
+      .sg-tabs { display: flex; width: 100%; }
+      .sg-tabs-rail { display: block; }
+    }
+    @media (max-width: 480px) {
+      .sg-band { padding: 28px 22px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ============ PROTOTYPE NAV ============ */
+    .proto-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+      display: flex; align-items: center; gap: 0;
+      background: #1A1714; border-top: 1px solid #2E2925;
+      font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+      overflow-x: auto;
+    }
+    .proto-nav__label {
+      padding: 0 14px; color: #5A4228; white-space: nowrap; border-right: 1px solid #2E2925;
+      font-size: 9px; letter-spacing: 0.12em; line-height: 40px;
+    }
+    .proto-nav a {
+      display: block; padding: 0 16px; line-height: 40px; color: #A8988E;
+      text-decoration: none; border-right: 1px solid #2E2925; transition: color 0.15s; white-space: nowrap;
+    }
+    .proto-nav a:hover { color: #FAFAF8; }
+    .proto-nav a[aria-current="page"] { color: #FFCF36; }
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to size guide</a>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar" id="announcementBar" role="banner">
+    <p>Between sizes? We recommend going up for an effortless fit.</p>
+    <button class="bar-dismiss" id="barDismiss" aria-label="Dismiss announcement">&times;</button>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar" aria-label="Main navigation">
+    <div class="nav-inner">
+      <div class="nav-utility">
+        <a href="#stores" class="nav-util-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Stores</span>
+        </a>
+        <div class="nav-util-right">
+          <a href="#login" class="nav-util-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Login</span>
+          </a>
+          <button class="nav-util-btn" aria-label="Wishlist (0 items)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <button class="nav-util-btn" aria-label="Cart (0 items)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span class="cart-count" aria-hidden="true">0</span>
+          </button>
+        </div>
+      </div>
+
+      <a href="./index.html" class="nav-logo" aria-label="Gaura Style home">
+        <img src="logo.webp" alt="Gaura Style" width="724" height="132">
+      </a>
+
+      <div class="nav-links-row">
+        <ul class="nav-links" role="list">
+          <li><a href="#new-arrivals" class="nav-link">New In</a></li>
+          <li><a href="./shop-v1-dark.html" class="nav-link">Rings</a></li>
+          <li><a href="#earrings" class="nav-link">Earrings</a></li>
+          <li><a href="#bracelets" class="nav-link">Bracelets</a></li>
+          <li><a href="#pendants" class="nav-link">Pendants</a></li>
+          <li><a href="#brooches" class="nav-link">Brooches</a></li>
+          <li><a href="#world" class="nav-link">World of Gaura</a></li>
+        </ul>
+        <button class="nav-search" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+
+    <!-- BREADCRUMB -->
+    <nav class="sg-breadcrumb" aria-label="Breadcrumb">
+      <a href="./index.html">Home</a>
+      <span aria-hidden="true">/</span>
+      <a href="#support">Support</a>
+      <span aria-hidden="true">/</span>
+      <span class="current" aria-current="page">Size Guide</span>
+    </nav>
+
+    <!-- INTRO -->
+    <section class="sg-wrap sg-intro" aria-labelledby="sgTitle">
+      <span class="sg-eyebrow">Gaura Style Size Guide</span>
+      <h1 class="sg-title" id="sgTitle">Find the fit that feels effortless</h1>
+      <p class="sg-intro-lede">Our size guides for rings and bracelets are designed to help you measure at home with confidence. A good fit should feel secure, comfortable, and easy to wear every day.</p>
+      <p class="sg-intro-lede">If you are between sizes, we usually recommend choosing the larger size for a more natural fit.</p>
+    </section>
+
+    <!-- STICKY TABS -->
+    <div class="sg-tabs-sticky">
+      <div class="sg-wrap sg-tabs-rail">
+        <div class="sg-tabs" role="tablist" aria-label="Choose a size guide">
+          <button class="sg-tab" id="tab-rings" role="tab" aria-selected="true" aria-controls="panel-rings" type="button">Rings</button>
+          <button class="sg-tab" id="tab-bracelets" role="tab" aria-selected="false" aria-controls="panel-bracelets" tabindex="-1" type="button">Bracelets</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ RING PANEL ============ -->
+    <div class="sg-wrap sg-panel" id="panel-rings" role="tabpanel" aria-labelledby="tab-rings" tabindex="0">
+
+      <nav class="sg-jump" aria-label="Jump to ring section">
+        <a href="#ring-guide">How to measure &amp; chart</a>
+        <a href="#ring-tips">Fit tips</a>
+        <a href="#ring-gift">Buying a gift</a>
+      </nav>
+
+      <!-- Ring: how to measure -->
+      <section class="sg-section sg-guide-section" id="ring-guide" aria-labelledby="ring-measure-h">
+        <div class="sg-guide">
+
+          <!-- LEFT: how to measure -->
+          <div class="sg-guide-steps">
+            <span class="sg-kicker">Ring Size Guide</span>
+            <h2 class="sg-h2" id="ring-measure-h">How to measure your <em>ring size</em></h2>
+            <p class="sg-section-lede">Find your size in two ways: measure the inside diameter of a ring you already own, or the circumference of your finger. Open a method below, then match your measurement to the chart.</p>
+
+            <figure class="sg-step-figure sg-guide-figure">
+              <span class="sg-ph-tag">Image placeholder</span>
+              <figcaption class="sg-ph-tag" style="left:auto;right:14px;bottom:auto;top:14px;">Ring measurement</figcaption>
+            </figure>
+
+            <div class="sg-disclosures">
+              <details class="sg-disclosure" open>
+                <summary>
+                  <span class="sg-disc-num" aria-hidden="true">1</span>
+                  <span class="sg-disc-titles">
+                    <span class="sg-disc-eyebrow">Option 1</span>
+                    <span class="sg-disc-title">Find your diameter</span>
+                  </span>
+                  <span class="sg-disc-icon" aria-hidden="true"></span>
+                </summary>
+                <div class="sg-disc-body">
+                  <p>Choose a ring that fits the finger you plan to wear your new ring on, then measure the inside diameter.</p>
+                  <ol class="sg-substep">
+                    <li>Place the ring on a ruler.</li>
+                    <li>Measure the inside edge from one side to the other.</li>
+                    <li>Use the inside diameter in millimeters to find your size in the chart.</li>
+                  </ol>
+                </div>
+              </details>
+
+              <details class="sg-disclosure">
+                <summary>
+                  <span class="sg-disc-num" aria-hidden="true">2</span>
+                  <span class="sg-disc-titles">
+                    <span class="sg-disc-eyebrow">Option 2</span>
+                    <span class="sg-disc-title">Find your circumference</span>
+                  </span>
+                  <span class="sg-disc-icon" aria-hidden="true"></span>
+                </summary>
+                <div class="sg-disc-body">
+                  <p>If you do not already have a ring that fits, measure your finger directly.</p>
+                  <ol class="sg-substep">
+                    <li>Wrap a thin strip of paper or soft measuring tape around the base of your finger.</li>
+                    <li>Make sure it feels snug but not tight.</li>
+                    <li>Mark the point where the strip overlaps, then measure the length in millimeters.</li>
+                    <li>Use that circumference measurement in the chart.</li>
+                  </ol>
+                </div>
+              </details>
+
+              <details class="sg-disclosure">
+                <summary>
+                  <span class="sg-disc-num" aria-hidden="true">3</span>
+                  <span class="sg-disc-titles">
+                    <span class="sg-disc-eyebrow">Then</span>
+                    <span class="sg-disc-title">Match your measurement</span>
+                  </span>
+                  <span class="sg-disc-icon" aria-hidden="true"></span>
+                </summary>
+                <div class="sg-disc-body">
+                  <p>Compare your diameter or circumference with the chart to find your fit. If your measurement falls between two rows, choose the larger size.</p>
+                </div>
+              </details>
+            </div>
+          </div>
+
+          <!-- RIGHT: chart -->
+          <div class="sg-guide-chart">
+            <div class="sg-chart-head">
+              <span class="sg-chart-title">Rings</span>
+              <div class="sg-chart-switch" role="group" aria-label="Choose how to read the ring chart">
+                <button type="button" data-chart="diameter" aria-pressed="true">Diameter</button>
+                <button type="button" data-chart="circumference" aria-pressed="false">Circumference</button>
+              </div>
+            </div>
+
+        <div class="sg-chart-panel" data-chart-panel="diameter">
+          <div class="sg-table-scroll">
+            <table class="sg-table">
+              <caption>By inside diameter</caption>
+              <thead>
+                <tr><th scope="col">Inside diameter (mm)</th><th scope="col">US size</th><th scope="col">EU size</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">14.0</th><td class="col-us">3</td><td>44</td></tr>
+                <tr><th scope="row">14.6</th><td class="col-us">3.75</td><td>46</td></tr>
+                <tr><th scope="row">15.3</th><td class="col-us">4.5</td><td>48</td></tr>
+                <tr><th scope="row">16.0</th><td class="col-us">5</td><td>50</td></tr>
+                <tr><th scope="row">16.2</th><td class="col-us">5.5</td><td>51</td></tr>
+                <tr><th scope="row">16.5</th><td class="col-us">6</td><td>52</td></tr>
+                <tr><th scope="row">16.9</th><td class="col-us">6.5</td><td>53</td></tr>
+                <tr><th scope="row">17.2</th><td class="col-us">7</td><td>54</td></tr>
+                <tr><th scope="row">17.5</th><td class="col-us">7.25</td><td>55</td></tr>
+                <tr><th scope="row">17.8</th><td class="col-us">7.5</td><td>56</td></tr>
+                <tr><th scope="row">18.1</th><td class="col-us">8</td><td>57</td></tr>
+                <tr><th scope="row">18.5</th><td class="col-us">8.5</td><td>58</td></tr>
+                <tr><th scope="row">18.8</th><td class="col-us">8.75</td><td>59</td></tr>
+                <tr><th scope="row">19.0</th><td class="col-us">9</td><td>60</td></tr>
+                <tr><th scope="row">19.8</th><td class="col-us">10</td><td>62</td></tr>
+                <tr><th scope="row">20.4</th><td class="col-us">10.5</td><td>64</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="sg-chart-panel" data-chart-panel="circumference" hidden>
+          <div class="sg-table-scroll">
+            <table class="sg-table">
+              <caption>By finger circumference</caption>
+              <thead>
+                <tr><th scope="col">Finger circumference (mm)</th><th scope="col">US size</th><th scope="col">EU size</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">44</th><td class="col-us">3</td><td>44</td></tr>
+                <tr><th scope="row">46</th><td class="col-us">3.75</td><td>46</td></tr>
+                <tr><th scope="row">48</th><td class="col-us">4.5</td><td>48</td></tr>
+                <tr><th scope="row">50</th><td class="col-us">5</td><td>50</td></tr>
+                <tr><th scope="row">51</th><td class="col-us">5.5</td><td>51</td></tr>
+                <tr><th scope="row">52</th><td class="col-us">6</td><td>52</td></tr>
+                <tr><th scope="row">53</th><td class="col-us">6.5</td><td>53</td></tr>
+                <tr><th scope="row">54</th><td class="col-us">7</td><td>54</td></tr>
+                <tr><th scope="row">55</th><td class="col-us">7.25</td><td>55</td></tr>
+                <tr><th scope="row">56</th><td class="col-us">7.5</td><td>56</td></tr>
+                <tr><th scope="row">57</th><td class="col-us">8</td><td>57</td></tr>
+                <tr><th scope="row">58</th><td class="col-us">8.5</td><td>58</td></tr>
+                <tr><th scope="row">59</th><td class="col-us">8.75</td><td>59</td></tr>
+                <tr><th scope="row">60</th><td class="col-us">9</td><td>60</td></tr>
+                <tr><th scope="row">62</th><td class="col-us">10</td><td>62</td></tr>
+                <tr><th scope="row">64</th><td class="col-us">10.5</td><td>64</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+            <p class="sg-chart-note">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="11" x2="12" y2="16"/></svg>
+              If your measurement sits between two rows, choose the larger size, especially for a relaxed fit or long hours of wear.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ring: fit tips -->
+      <section class="sg-section" id="ring-tips" aria-labelledby="ring-tips-h">
+        <div class="sg-section-head">
+          <span class="sg-kicker">Ring fit tips</span>
+          <h2 class="sg-h2" id="ring-tips-h">Getting it right</h2>
+        </div>
+        <div class="sg-tips">
+          <div class="sg-tip">
+            <h4>Measure more than once</h4>
+            <p>Finger size can shift through the day with temperature, hydration, and activity. For the most reliable result, measure two or three times at different times of day.</p>
+          </div>
+          <div class="sg-tip">
+            <h4>Think about the knuckle</h4>
+            <p>Your ring should slide on with ease and come off without forcing it. If your knuckle is wider than the base of your finger, choose a size that comfortably passes over it.</p>
+          </div>
+          <div class="sg-tip">
+            <h4>If you are between sizes</h4>
+            <p>Choose the larger size, especially if you prefer a relaxed fit or plan to wear the ring for long hours.</p>
+          </div>
+          <div class="sg-tip">
+            <h4>For wider bands</h4>
+            <p>Wide-band rings often fit more snugly than delicate bands. We recommend sizing up slightly for styles with a broader shank.</p>
+          </div>
+          <div class="sg-tip">
+            <h4>For stackable rings</h4>
+            <p>If you plan to stack several rings together, going up half a size can create a more comfortable fit.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ring: gift band -->
+      <section class="sg-band sg-section" id="ring-gift" aria-labelledby="ring-gift-h">
+        <span class="sg-kicker">A quiet surprise</span>
+        <h3 class="sg-h3" id="ring-gift-h">Buying a ring as a gift</h3>
+        <p class="sg-band-lede">Trying to keep it a surprise? Here are a few subtle ways to estimate the right size.</p>
+        <div class="sg-band-grid">
+          <div class="sg-band-item">
+            <h4>Check a ring they wear</h4>
+            <p>Measure the inside diameter of a ring they already wear on the correct finger.</p>
+          </div>
+          <div class="sg-band-item">
+            <h4>Ask someone close</h4>
+            <p>A friend, sibling, or partner may already know their usual size.</p>
+          </div>
+          <div class="sg-band-item">
+            <h4>Compare by fit</h4>
+            <p>Try one of their rings on your own finger and note where it sits. A jeweler can help estimate the size from there.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ BRACELET PANEL ============ -->
+    <div class="sg-wrap sg-panel" id="panel-bracelets" role="tabpanel" aria-labelledby="tab-bracelets" tabindex="0" hidden>
+
+      <nav class="sg-jump" aria-label="Jump to bracelet section">
+        <a href="#bracelet-guide">How to measure &amp; chart</a>
+        <a href="#bracelet-tips">Fit tips</a>
+        <a href="#bracelet-fit">Choosing the fit</a>
+      </nav>
+
+      <!-- Bracelet: how to measure -->
+      <section class="sg-section sg-guide-section" id="bracelet-guide" aria-labelledby="bracelet-measure-h">
+        <div class="sg-guide">
+
+          <!-- LEFT: how to measure -->
+          <div class="sg-guide-steps">
+            <span class="sg-kicker">Bracelet Size Guide</span>
+            <h2 class="sg-h2" id="bracelet-measure-h">How to measure your <em>bracelet size</em></h2>
+            <p class="sg-section-lede">Measure your wrist, then add a little room depending on how close or loose you want the fit. Open a step below, then match it to the chart.</p>
+
+            <figure class="sg-step-figure sg-guide-figure">
+              <span class="sg-ph-tag">Image placeholder</span>
+              <figcaption class="sg-ph-tag" style="left:auto;right:14px;bottom:auto;top:14px;">Bracelet measurement</figcaption>
+            </figure>
+
+            <div class="sg-disclosures">
+              <details class="sg-disclosure" open>
+                <summary>
+                  <span class="sg-disc-num" aria-hidden="true">1</span>
+                  <span class="sg-disc-titles">
+                    <span class="sg-disc-eyebrow">Step 1</span>
+                    <span class="sg-disc-title">Measure your wrist</span>
+                  </span>
+                  <span class="sg-disc-icon" aria-hidden="true"></span>
+                </summary>
+                <div class="sg-disc-body">
+                  <p>Wrap a soft measuring tape around your wrist just below the wrist bone.</p>
+                  <ol class="sg-substep">
+                    <li>Keep the tape close to the skin without pulling tightly.</li>
+                    <li>Note your wrist measurement in centimeters or inches.</li>
+                  </ol>
+                </div>
+              </details>
+
+              <details class="sg-disclosure">
+                <summary>
+                  <span class="sg-disc-num" aria-hidden="true">2</span>
+                  <span class="sg-disc-titles">
+                    <span class="sg-disc-eyebrow">Step 2</span>
+                    <span class="sg-disc-title">Add room for comfort</span>
+                  </span>
+                  <span class="sg-disc-icon" aria-hidden="true"></span>
+                </summary>
+                <div class="sg-disc-body">
+                  <p>Add a little extra length depending on how close or relaxed you want the fit.</p>
+                  <div class="sg-pref">
+                    <div class="sg-pref-card">
+                      <div class="sg-pref-add">+1 cm</div>
+                      <div class="sg-pref-name">Close fit</div>
+                      <p class="sg-pref-desc">Sits near the skin.</p>
+                    </div>
+                    <div class="sg-pref-card">
+                      <div class="sg-pref-add">+1.5–2 cm</div>
+                      <div class="sg-pref-name">Standard fit</div>
+                      <p class="sg-pref-desc">Easy everyday movement.</p>
+                    </div>
+                    <div class="sg-pref-card">
+                      <div class="sg-pref-add">+2–2.5 cm</div>
+                      <div class="sg-pref-name">Looser fit</div>
+                      <p class="sg-pref-desc">Relaxed and draping.</p>
+                    </div>
+                  </div>
+                </div>
+              </details>
+
+              <details class="sg-disclosure">
+                <summary>
+                  <span class="sg-disc-num" aria-hidden="true">3</span>
+                  <span class="sg-disc-titles">
+                    <span class="sg-disc-eyebrow">Then</span>
+                    <span class="sg-disc-title">Choose your bracelet size</span>
+                  </span>
+                  <span class="sg-disc-icon" aria-hidden="true"></span>
+                </summary>
+                <div class="sg-disc-body">
+                  <p>Use your wrist measurement to select the bracelet size that will feel best on you, then compare it with the chart.</p>
+                </div>
+              </details>
+            </div>
+          </div>
+
+          <!-- RIGHT: chart -->
+          <div class="sg-guide-chart">
+            <div class="sg-chart-head">
+              <span class="sg-chart-title">Bracelets</span>
+              <div class="sg-chart-switch" role="group" aria-label="Choose bracelet chart units">
+                <button type="button" data-chart="cm" aria-pressed="true">Centimeters</button>
+                <button type="button" data-chart="inch" aria-pressed="false">Inches</button>
+              </div>
+            </div>
+
+        <div class="sg-chart-panel" data-chart-panel="cm">
+          <div class="sg-table-scroll">
+            <table class="sg-table">
+              <caption>Wrist size to recommended bracelet size</caption>
+              <thead>
+                <tr><th scope="col">Wrist size (cm)</th><th scope="col">Recommended bracelet size (cm)</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">13 – 14</th><td class="col-us">15</td></tr>
+                <tr><th scope="row">15 – 16</th><td class="col-us">17</td></tr>
+                <tr><th scope="row">17 – 18</th><td class="col-us">19</td></tr>
+                <tr><th scope="row">19 – 20</th><td class="col-us">21</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="sg-chart-panel" data-chart-panel="inch" hidden>
+          <div class="sg-table-scroll">
+            <table class="sg-table">
+              <caption>Wrist size to recommended bracelet size</caption>
+              <thead>
+                <tr><th scope="col">Wrist size (in)</th><th scope="col">Recommended bracelet size (in)</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">5.1 – 5.5</th><td class="col-us">5.9</td></tr>
+                <tr><th scope="row">5.9 – 6.3</th><td class="col-us">6.7</td></tr>
+                <tr><th scope="row">6.7 – 7.1</th><td class="col-us">7.5</td></tr>
+                <tr><th scope="row">7.5 – 7.9</th><td class="col-us">8.3 – 8.5</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+            <p class="sg-chart-note">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="11" x2="12" y2="16"/></svg>
+              A bracelet should move naturally on the wrist without feeling restrictive or sliding too far down the hand.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bracelet: fit tips -->
+      <section class="sg-section" id="bracelet-tips" aria-labelledby="bracelet-tips-h">
+        <div class="sg-section-head">
+          <span class="sg-kicker">Bracelet fit tips</span>
+          <h2 class="sg-h2" id="bracelet-tips-h">Getting it right</h2>
+        </div>
+        <div class="sg-tips">
+          <div class="sg-tip">
+            <h4>If you are between sizes</h4>
+            <p>Choose the next size up for a more comfortable fit.</p>
+          </div>
+          <div class="sg-tip">
+            <h4>Consider your style</h4>
+            <p>A slim chain bracelet sits differently from a rigid bangle or a charm bracelet. Structured styles often need a little more room.</p>
+          </div>
+          <div class="sg-tip">
+            <h4>Leave space for charms</h4>
+            <p>If you plan to add charms, select a slightly larger size so the bracelet still feels comfortable once styled.</p>
+          </div>
+          <div class="sg-tip">
+            <h4>Keep movement in mind</h4>
+            <p>A bracelet should move naturally on the wrist without feeling restrictive or sliding too far down the hand.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bracelet: choosing the fit band -->
+      <section class="sg-band sg-section" id="bracelet-fit" aria-labelledby="bracelet-fit-h">
+        <span class="sg-kicker">By style</span>
+        <h3 class="sg-h3" id="bracelet-fit-h">Choosing the right bracelet fit</h3>
+        <div class="sg-band-grid">
+          <div class="sg-band-item">
+            <h4>For chain bracelets</h4>
+            <p>A little movement creates the most effortless look. Aim for a fit that feels secure but not tight.</p>
+          </div>
+          <div class="sg-band-item">
+            <h4>For bangles</h4>
+            <p>Your hand needs to pass through comfortably. Size with the widest part of your hand in mind, not only your wrist.</p>
+          </div>
+          <div class="sg-band-item">
+            <h4>For charm bracelets</h4>
+            <p>Leave extra room for future styling. As charms are added, the bracelet will feel smaller.</p>
+          </div>
+          <div class="sg-band-item">
+            <h4>For cuffs or open bracelets</h4>
+            <p>These should sit neatly on the wrist without pinching. If you prefer a softer fit, size up.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ SHARED: QUICK ADVICE + FAQ ============ -->
+    <div class="sg-shared">
+      <div class="sg-shared-divider"><hr></div>
+
+      <section class="sg-wrap" aria-labelledby="advice-h" style="margin-top: clamp(56px, 7vw, 96px);">
+        <div class="sg-section-head">
+          <span class="sg-kicker">Quick sizing advice</span>
+          <h2 class="sg-h2" id="advice-h">When in doubt</h2>
+        </div>
+        <div class="sg-advice-grid">
+          <div class="sg-advice-item">
+            <span class="sg-advice-mark" aria-hidden="true"></span>
+            <h4>Choose rings that feel balanced</h4>
+            <p>Your ring should stay in place while still sliding over the knuckle without strain.</p>
+          </div>
+          <div class="sg-advice-item">
+            <span class="sg-advice-mark" aria-hidden="true"></span>
+            <h4>Choose bracelets that feel easy</h4>
+            <p>Your bracelet should rest naturally on the wrist and move with you, not against you.</p>
+          </div>
+          <div class="sg-advice-item">
+            <span class="sg-advice-mark" aria-hidden="true"></span>
+            <h4>When in doubt</h4>
+            <p>If you are between sizes, the safer choice is usually the larger one.</p>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="sg-faq" id="support">
+          <div class="sg-faq-item">
+            <h3>
+              <button class="sg-faq-trigger" type="button" aria-expanded="false" aria-controls="faq-1">
+                What if I am between two ring sizes?
+                <span class="sg-faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="sg-faq-panel" id="faq-1" role="region"><div>
+              <p class="sg-faq-body">We recommend choosing the larger size for comfort.</p>
+            </div></div>
+          </div>
+          <div class="sg-faq-item">
+            <h3>
+              <button class="sg-faq-trigger" type="button" aria-expanded="false" aria-controls="faq-2">
+                What if my fingers swell during the day?
+                <span class="sg-faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="sg-faq-panel" id="faq-2" role="region"><div>
+              <p class="sg-faq-body">Measure more than once, especially in the morning and evening, then choose the size that feels most balanced.</p>
+            </div></div>
+          </div>
+          <div class="sg-faq-item">
+            <h3>
+              <button class="sg-faq-trigger" type="button" aria-expanded="false" aria-controls="faq-3">
+                What if I want a tighter bracelet fit?
+                <span class="sg-faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="sg-faq-panel" id="faq-3" role="region"><div>
+              <p class="sg-faq-body">Add around 1 cm to your wrist measurement.</p>
+            </div></div>
+          </div>
+          <div class="sg-faq-item">
+            <h3>
+              <button class="sg-faq-trigger" type="button" aria-expanded="false" aria-controls="faq-4">
+                What if I want to wear charms?
+                <span class="sg-faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="sg-faq-panel" id="faq-4" role="region"><div>
+              <p class="sg-faq-body">Choose a slightly longer bracelet to allow space for styling.</p>
+            </div></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <footer class="site-footer" id="site-footer" aria-labelledby="footerTitle">
+    <div class="footer-inner">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <a class="footer-logo" href="#" aria-label="Gaura Style home">
+            <img src="logo.webp" alt="Gaura Style" width="138" height="60" loading="lazy">
+          </a>
+<p class="footer-copy">Designed for women who choose their own signatures. Explore rings, gems, and gifts shaped with warmth, confidence, and craft.</p>
+          <address class="footer-contact">
+            <span>Gaura Style Studio, Kathmandu, Nepal</span>
+            <a href="mailto:care@gaurastyle.com">care@gaurastyle.com</a>
+            <a href="tel:+9779800000000">+977 980 000 0000</a>
+          </address>
+        </div>
+
+        <nav class="footer-col" aria-label="Shop">
+          <h3 class="footer-heading">Shop</h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#rings">Rings</a></li>
+            <li><a class="footer-link" href="#necklaces">Necklaces</a></li>
+            <li><a class="footer-link" href="#earrings">Earrings</a></li>
+            <li><a class="footer-link" href="#bracelets">Bracelets</a></li>
+            <li><a class="footer-link" href="#new-arrivals">New Arrivals</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col" aria-label="Collections">
+          <h3 class="footer-heading">Collections</h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#statement-rings">Statement Rings</a></li>
+            <li><a class="footer-link" href="#gemstone-edit">Gemstone Edit</a></li>
+            <li><a class="footer-link" href="#gift-guide">Gift Guide</a></li>
+            <li><a class="footer-link" href="#wedding">Wedding</a></li>
+            <li><a class="footer-link" href="#bestsellers">Bestsellers</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col" aria-label="Support">
+          <h3 class="footer-heading">Support</h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#contact">Contact Us</a></li>
+            <li><a class="footer-link" href="#shipping">Shipping</a></li>
+            <li><a class="footer-link" href="#returns">Returns</a></li>
+            <li><a class="footer-link" href="#size-guide">Ring Size Guide</a></li>
+            <li><a class="footer-link" href="#care">Jewelry Care</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col" aria-label="Company">
+          <h3 class="footer-heading">Company</h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#about">About Gaura</a></li>
+            <li><a class="footer-link" href="#craft">Our Craft</a></li>
+            <li><a class="footer-link" href="#stores">Stores</a></li>
+            <li><a class="footer-link" href="#journal">Journal</a></li>
+            <li><a class="footer-link" href="#wholesale">Wholesale</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-legal">
+          <span>&copy; 2026 Gaura Style.</span>
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Use</a>
+          <a href="#accessibility">Accessibility</a>
+          <a href="#us">US</a>
+          <a href="#jp">Japan</a>
+          <a href="#in">India</a>
+          <a href="#ru">Russia</a>
+        </div>
+
+        <div class="footer-social" aria-label="Social media">
+          <a class="social-link" href="https://www.instagram.com/" aria-label="Gaura Style on Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="4.5" y="4.5" width="15" height="15" rx="4"></rect>
+              <circle cx="12" cy="12" r="3.6"></circle>
+              <circle class="icon-fill" cx="16.9" cy="7.1" r="1"></circle>
+            </svg>
+          </a>
+          <a class="social-link" href="https://www.facebook.com/" aria-label="Gaura Style on Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14.5 8H16V5.4C15.3 5.3 14.7 5.2 13.8 5.2C11.8 5.2 10.5 6.4 10.5 8.7V11H8.3V14H10.5V20H13.6V14H15.9L16.3 11H13.6V9C13.6 8.3 13.8 8 14.5 8Z"></path>
+            </svg>
+          </a>
+          <a class="social-link" href="https://www.pinterest.com/" aria-label="Gaura Style on Pinterest">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M11.7 14.2C11.2 16.4 10.6 18.5 9.2 19.7C8.7 16.8 9.9 14.6 10.4 12.2C9.5 10.7 10.5 7.7 12.5 8.5C15 9.5 10.4 14.6 13.5 15.2C16.7 15.8 18 9.6 16 7.6C13.2 4.8 7.9 7.5 8.6 11.5C8.8 12.5 9.8 12.8 9.1 14.2C7.1 13.7 6.5 12.1 6.6 10.1C6.8 6.8 9.6 4.5 12.5 4.2C16.2 3.8 19.7 5.6 20.2 9.1C20.8 13 18.5 17.2 14.4 16.9C13.3 16.8 12.8 16.3 11.7 14.2Z"></path>
+            </svg>
+          </a>
+          <a class="social-link" href="https://www.tiktok.com/" aria-label="Gaura Style on TikTok">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15.4 4.5C15.8 7.1 17.3 8.7 19.5 8.9V12C18 12 16.6 11.5 15.4 10.7V15.8C15.4 18.4 13.3 20.5 10.7 20.5C8.1 20.5 6 18.5 6 15.9C6 13.2 8.2 11.2 10.9 11.2C11.3 11.2 11.7 11.2 12.1 11.4V14.6C11.7 14.3 11.3 14.2 10.8 14.2C9.8 14.2 9 14.9 9 15.9C9 16.9 9.8 17.6 10.8 17.6C11.8 17.6 12.5 16.8 12.5 15.8V4.5H15.4Z"></path>
+            </svg>
+          </a>
+          <a class="social-link" href="https://www.youtube.com/" aria-label="Gaura Style on YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 12C21 9.8 20.8 8.4 20.4 7.8C20 7.2 19.4 7 18.4 6.9C16.7 6.8 14.6 6.8 12 6.8C9.4 6.8 7.3 6.8 5.6 6.9C4.6 7 4 7.2 3.6 7.8C3.2 8.4 3 9.8 3 12C3 14.2 3.2 15.6 3.6 16.2C4 16.8 4.6 17 5.6 17.1C7.3 17.2 9.4 17.2 12 17.2C14.6 17.2 16.7 17.2 18.4 17.1C19.4 17 20 16.8 20.4 16.2C20.8 15.6 21 14.2 21 12Z"></path>
+              <path class="icon-fill" d="M10.5 9.5V14.5L14.8 12L10.5 9.5Z"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ---- Announcement bar + nav reveal ----
+    const bar = document.getElementById('announcementBar');
+    const nav = document.getElementById('navbar');
+    const dismiss = document.getElementById('barDismiss');
+    const root = document.documentElement;
+    const BAR_H = 44;
+    let lastScrollY = 0;
+
+    // Keep the sticky tab bar tucked under the navbar (visible) or at the top (hidden).
+    function syncTabsTop() {
+      const barGone = bar.classList.contains('hidden');
+      const topOfNav = barGone ? 0 : BAR_H;
+      const navHidden = nav.classList.contains('nav-hidden');
+      const top = navHidden ? topOfNav + 4 : topOfNav + nav.offsetHeight;
+      root.style.setProperty('--tabs-top', top + 'px');
+    }
+
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        bar.classList.add('visible');
+        nav.classList.add('visible');
+        lastScrollY = window.scrollY;
+        syncTabsTop();
+      }, 80);
+    });
+
+    dismiss.addEventListener('click', () => {
+      bar.classList.add('hidden');
+      nav.classList.add('bar-gone');
+      syncTabsTop();
+    });
+
+    let rafPending = false;
+    window.addEventListener('scroll', () => {
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        if (y > 240 && y > lastScrollY) {
+          nav.classList.add('nav-hidden');
+        } else {
+          nav.classList.remove('nav-hidden');
+        }
+        syncTabsTop();
+        lastScrollY = y;
+        rafPending = false;
+      });
+    }, { passive: true });
+
+    window.addEventListener('resize', syncTabsTop, { passive: true });
+
+    // ---- Tabs (Rings / Bracelets) ----
+    const tabs = Array.from(document.querySelectorAll('.sg-tab'));
+    const panels = {
+      'tab-rings': document.getElementById('panel-rings'),
+      'tab-bracelets': document.getElementById('panel-bracelets'),
+    };
+
+    function activateTab(tab, { focus = false, updateHash = true } = {}) {
+      tabs.forEach(t => {
+        const selected = t === tab;
+        t.setAttribute('aria-selected', String(selected));
+        t.tabIndex = selected ? 0 : -1;
+        panels[t.id].hidden = !selected;
+      });
+      if (focus) tab.focus();
+      if (updateHash) {
+        const hash = tab.id === 'tab-bracelets' ? '#bracelets' : '#rings';
+        history.replaceState(null, '', hash);
+      }
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => activateTab(tab));
+      tab.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft' && e.key !== 'Home' && e.key !== 'End') return;
+        e.preventDefault();
+        let next = i;
+        if (e.key === 'ArrowRight') next = (i + 1) % tabs.length;
+        else if (e.key === 'ArrowLeft') next = (i - 1 + tabs.length) % tabs.length;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = tabs.length - 1;
+        activateTab(tabs[next], { focus: true });
+      });
+    });
+
+    // ---- Deep-link: open the right tab from the hash ----
+    function syncFromHash() {
+      const h = window.location.hash;
+      if (h === '#bracelets' || h.startsWith('#bracelet-')) {
+        activateTab(document.getElementById('tab-bracelets'), { updateHash: false });
+      } else if (h === '#rings' || h.startsWith('#ring-')) {
+        activateTab(document.getElementById('tab-rings'), { updateHash: false });
+      }
+    }
+    syncFromHash();
+
+    // In-tab anchor links: make sure their panel is active before the jump.
+    document.querySelectorAll('.sg-jump a').forEach(link => {
+      link.addEventListener('click', () => {
+        const id = link.getAttribute('href').slice(1);
+        const tabId = id.startsWith('bracelet') ? 'tab-bracelets' : 'tab-rings';
+        activateTab(document.getElementById(tabId), { updateHash: false });
+      });
+    });
+
+    // ---- Chart unit/view switchers ----
+    document.querySelectorAll('.sg-chart-switch').forEach(group => {
+      const section = group.closest('.sg-section');
+      const buttons = Array.from(group.querySelectorAll('button'));
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+          const key = btn.dataset.chart;
+          section.querySelectorAll('.sg-chart-panel').forEach(panel => {
+            panel.hidden = panel.dataset.chartPanel !== key;
+          });
+        });
+      });
+    });
+
+    // ---- FAQ accordion ----
+    document.querySelectorAll('.sg-faq-trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const panel = document.getElementById(trigger.getAttribute('aria-controls'));
+        const open = trigger.getAttribute('aria-expanded') === 'true';
+        trigger.setAttribute('aria-expanded', String(!open));
+        panel.classList.toggle('is-open', !open);
+      });
+    });
+  </script>
+
+  <!-- ─── PROTOTYPE NAV ─── -->
+  <nav class="proto-nav" aria-label="Prototype navigation">
+    <span class="proto-nav__label">Prototype</span>
+    <a href="./hero-v1-dark.html">Home</a>
+    <a href="./shop-v1-dark.html">Shop</a>
+    <a href="./product-v1.html">Product</a>
+    <a href="./size-guide.html" aria-current="page">Size Guide</a>
+    <a href="./cart-page.html">Cart</a>
+    <a href="./checkout.html">Checkout</a>
+    <a href="./thank-you.html">Thank You</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+</body>
+</html>
