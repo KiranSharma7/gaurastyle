@@ -15,6 +15,7 @@
       --gutter: 40px;
       --nav-h: 92px;
       --bar-h: 44px;
+      --hero-feature-width: clamp(280px, 34vw, 460px);
       --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
       --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
     }
@@ -27,8 +28,6 @@
       color: var(--fg1);
       -webkit-font-smoothing: antialiased;
     }
-
-
 
     /* ─── ANNOUNCEMENT BAR ─── */
     .announcement-bar {
@@ -363,6 +362,20 @@
       contain: layout style;
     }
 
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(26, 23, 20, 0.12) 0%,
+        rgba(26, 23, 20, 0.07) 36%,
+        rgba(26, 23, 20, 0.16) 100%
+      );
+      z-index: 2;
+      pointer-events: none;
+    }
+
     .hero-bg-fallback {
       position: absolute;
       inset: 0;
@@ -493,15 +506,18 @@
 
     .hero-headline {
       font-family: var(--font-display);
-      /* one line at every width — scales down on small screens so it never wraps */
-      font-size: clamp(38px, 7vw, 84px);
+      /* Shared compact measure with the category row so the hero reads as one block */
+      font-size: clamp(34px, 5.8vw, 72px);
       font-weight: 300;
       line-height: 1.0;
       letter-spacing: -0.015em;
+      width: min(100%, var(--hero-feature-width));
+      margin-inline: auto;
+      text-align: center;
       white-space: nowrap;
+      text-wrap: balance;
       color: oklch(96% 0.014 82);
-      max-width: none;
-      margin-bottom: 20px;
+      margin-bottom: 0;
       text-shadow:
         0 1px 1px rgba(26, 23, 20, 0.68),
         0 4px 18px rgba(26, 23, 20, 0.58),
@@ -552,9 +568,8 @@
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 16px;
-      width: 100%;
-      max-width: 600px;
-      margin-top: 44px;
+      width: min(100%, var(--hero-feature-width));
+      margin: 28px auto 0;
       opacity: 0;
       animation: fade-up 0.9s var(--ease-expo) 0.74s both;
     }
@@ -772,15 +787,56 @@
       }
     }
 
+    /* ─── TABLET (769–1024px) ───
+       Below 1024px the 7-item category row + giant logo no longer fit the
+       desktop layout. Portrait iPads (810/834px) fell through to the desktop
+       rules and overflowed with no scroll fallback (that only kicked in at
+       ≤768px). This tier shrinks the wordmark, gives the category row the
+       same scroll-when-needed behaviour as mobile, and grows the utility
+       hit-areas for touch. */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .navbar { padding-block: 14px 18px; }
+      .nav-inner { padding: 0 28px; gap: 16px; }
+
+      /* Utility row: taller for comfortable touch targets */
+      .nav-utility { height: 34px; }
+      .nav-util-link,
+      .nav-util-btn { padding: 9px 8px; }
+
+      /* Smaller, still-grand wordmark */
+      .nav-logo img { height: 100px; max-width: 80vw; }
+      .navbar.scrolled .nav-logo img { height: 40px; }
+
+      /* Category row scrolls when the links overflow, sits still when they fit */
+      .nav-links-row {
+        margin: 0 -28px;
+        padding: 0 28px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        justify-content: flex-start;
+      }
+      .nav-links-row::-webkit-scrollbar { display: none; }
+      .nav-links { gap: 30px; }
+      .nav-link { white-space: nowrap; }
+      .nav-search { margin-left: 26px; padding: 12px; }
+
+      /* Hero: match the tightened gutter; tiles a touch narrower */
+      .hero-content { padding: 0 28px 64px; }
+    }
+
     /* ─── MOBILE ─── */
     @media (max-width: 768px) {
       .navbar { padding-block: 10px 14px; }
       .nav-inner { padding: 0 20px; gap: 12px; }
 
-      .nav-utility { height: 20px; }
+      .nav-utility { height: 32px; }
       .nav-util-link span { display: none; }
       .nav-util-btn[aria-label="Wishlist (0 items)"] { display: none; }
-      .nav-util-right { gap: 18px; }
+      .nav-util-right { gap: 14px; }
+      /* Grow the utility + search hit-areas for touch */
+      .nav-util-link,
+      .nav-util-btn { padding: 8px; }
+      .nav-search { padding: 11px; }
 
       .nav-logo img { height: 64px; max-width: 88vw; }
 
@@ -802,7 +858,17 @@
 
       /* Single row of 4, shrunk — tighten tracking so the longest label
          ("Bracelets") clears the ~72px tile width at 360px */
-      .hero-cats { max-width: none; gap: 8px; margin-top: 26px; }
+      .hero-headline,
+      .hero-cats {
+        width: 100%;
+      }
+
+      .hero-headline {
+        text-align: left;
+        white-space: normal;
+      }
+
+      .hero-cats { gap: 8px; margin-top: 26px; }
       .hero-cat-label {
         left: 8px;
         right: 6px;
@@ -829,7 +895,10 @@
     .moment-layout {
       width: min(1240px, 100%);
       display: grid;
-      grid-template-columns: 280px 330px 330px 330px;
+      /* Fluid-capped tracks so the mosaic never exceeds the container —
+         landscape tablets (1180/1366px) fall in the desktop rule and would
+         otherwise overflow with fixed px columns. */
+      grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
       grid-template-rows: 305px 120px 305px;
       gap: 18px;
       align-items: stretch;
@@ -841,8 +910,8 @@
       padding-top: 6px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 32px;
+      justify-content: flex-start;
+      gap: 20px;
     }
 
     .cshow-headline {
@@ -853,6 +922,16 @@
       letter-spacing: 0.05em; /* tracked out uppercase */
       color: var(--fg1);
       text-transform: uppercase;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .cshow-title-icon {
+      height: 42px;
+      width: auto;
+      object-fit: contain;
     }
 
     .cshow-headline span {
@@ -1031,8 +1110,19 @@
         grid-column: 1 / 4;
         grid-row: 1;
         flex-direction: row;
+        justify-content: space-between;
         align-items: center;
         padding-bottom: 24px;
+      }
+
+      .cshow-headline {
+        flex-direction: row;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .cshow-title-icon {
+        height: 32px;
       }
 
       .cshow-headline span {
@@ -1053,28 +1143,40 @@
 
     @media (max-width: 760px) {
       .collection-showcase {
-        padding: 40px var(--gutter);
-      }
-      .moment-layout {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
+        padding: 40px 24px 48px;
       }
 
-      .cshow-block {
-        height: 360px;
+      /* Editorial 2-column mosaic: one tall tile beside two short tiles,
+         mirrored band to band. Keeps the "moment" composition on phones
+         instead of a flat 6-up stack, and the tall tiles stay dramatic. */
+      .moment-layout {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto repeat(4, clamp(140px, 38vw, 184px));
+        gap: 10px;
       }
 
       .title-wrap {
+        grid-column: 1 / -1;
+        grid-row: 1;
         flex-direction: column;
         align-items: flex-start;
-        gap: 16px;
-        padding-bottom: 10px;
+        justify-content: flex-start;
+        gap: 14px;
+        padding: 0 0 6px;
       }
 
       .cshow-headline {
         font-size: 38px;
         letter-spacing: 0.05em;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .cshow-title-icon {
+        height: 28px;
       }
 
       .cshow-headline span {
@@ -1082,7 +1184,19 @@
         margin-right: 0;
       }
 
+      /* Tile placement — perfectly tiled, no holes:
+         band 1 = tall New | (Eternity / Bridal);  band 2 = (Solitaire / Stackables) | tall Heritage */
+      .cshow-block { height: auto; }
+      .new-in      { grid-column: 1; grid-row: 2 / 4; }
+      .charms      { grid-column: 2; grid-row: 2; }
+      .moments     { grid-column: 2; grid-row: 3; }
+      .disney      { grid-column: 1; grid-row: 4; }
+      .princesses  { grid-column: 1; grid-row: 5; }
+      .essence     { grid-column: 2; grid-row: 4 / 6; }
+
       .cshow-label {
+        left: 12px;
+        bottom: 12px;
         font-size: 10px;
         letter-spacing: 1.8px;
         padding: 10px 12px 8px;
@@ -1096,6 +1210,24 @@
       .cshow-link-arrow { transition: none; }
       .cshow-block:hover img.cshow-media { transform: none; }
       video.cshow-media { animation-play-state: paused; }
+    }
+
+    /* Reversed layout for desktop (title on the right) */
+    @media (min-width: 1101px) {
+      .moment-layout--reversed {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.4fr);
+      }
+      .moment-layout--reversed .title-wrap {
+        grid-column: 4;
+        align-items: flex-start;
+        text-align: left;
+      }
+      .moment-layout--reversed .new-in     { grid-column: 1; }
+      .moment-layout--reversed .charms     { grid-column: 2; }
+      .moment-layout--reversed .moments    { grid-column: 3; }
+      .moment-layout--reversed .disney     { grid-column: 1; }
+      .moment-layout--reversed .princesses { grid-column: 2; }
+      .moment-layout--reversed .essence    { grid-column: 3; }
     }
 
     /* ─── 2×2 SHOWCASE GRID ─── */
@@ -2751,9 +2883,9 @@
       <div class="nav-links-row">
         <ul class="nav-links" role="list">
           <li><a href="#" class="nav-link">New In</a></li>
-          <li><a href="#" class="nav-link">Rings</a></li>
-          <li><a href="#" class="nav-link">Earrings</a></li>
-          <li><a href="#" class="nav-link">Bracelets</a></li>
+          <li><a href="#rings" class="nav-link">Rings</a></li>
+          <li><a href="#earrings" class="nav-link">Earrings</a></li>
+          <li><a href="#bracelets" class="nav-link">Bracelets</a></li>
           <li><a href="#" class="nav-link">Pendants</a></li>
           <li><a href="#" class="nav-link">Brooches</a></li>
           <li><a href="#" class="nav-link">World of Gaura</a></li>
@@ -2832,12 +2964,13 @@
   </section>
 
 
-  <!-- COLLECTION SHOWCASE — Custom Grid Layout -->
-  <section class="collection-showcase" aria-labelledby="cshowTitle">
+  <!-- COLLECTION SHOWCASE — Rings -->
+  <section class="collection-showcase" id="rings" aria-labelledby="ringsTitle">
     <div class="moment-layout">
       <div class="title-wrap">
-        <h2 class="cshow-headline" id="cshowTitle">
-          <span>our rings</span>
+        <h2 class="cshow-headline" id="ringsTitle">
+          <img src="./prototype-assets/logo%20icon.png" class="cshow-title-icon" alt="Gaura Style Icon">
+          <span>rings</span>
         </h2>
         <a class="cshow-link" href="#collections">
           Explore Collections
@@ -2889,82 +3022,120 @@
     </div>
   </section>
 
-
-  <!-- 2×2 SHOWCASE GRID -->
-  <section class="showcase" aria-label="Featured Collections">
-
-    <!-- Top-Left: Graduation — text at top-right -->
-    <a class="showcase-quad showcase-quad--tl" href="#graduation" aria-label="Shop Graduation">
-      <img
-        class="showcase-quad-img"
-        src="https://images.unsplash.com/photo-1611085583191-a3b181a88401?auto=format&fit=crop&w=1200&q=80"
-        alt="Silver chain against clean white background"
-        loading="lazy"
-      >
-      <div class="showcase-quad-veil" aria-hidden="true"></div>
-      <div class="showcase-quad-body">
-        <h2 class="showcase-quad-headline">Nicely done, grads.</h2>
-        <span class="showcase-quad-cta">
-          Shop Graduation
-          <span class="cta-arrow" aria-hidden="true"></span>
-        </span>
+  <!-- COLLECTION SHOWCASE — Bracelets -->
+  <section class="collection-showcase" id="bracelets" aria-labelledby="braceletsTitle">
+    <div class="moment-layout moment-layout--reversed">
+      <div class="title-wrap">
+        <h2 class="cshow-headline" id="braceletsTitle">
+          <img src="./prototype-assets/logo%20icon.png" class="cshow-title-icon" alt="Gaura Style Icon">
+          <span>bracelets</span>
+        </h2>
+        <a class="cshow-link" href="#bracelets">
+          Explore Bracelets
+          <span class="cshow-link-arrow" aria-hidden="true"></span>
+        </a>
       </div>
-    </a>
 
-    <!-- Top-Right: Gifts — text at top-left -->
-    <a class="showcase-quad showcase-quad--tr" href="#gifts" aria-label="Customize gifts for loved ones">
-      <img
-        class="showcase-quad-img"
-        src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1200&q=80"
-        alt="Stacked silver, gold, and diamond interlocking rings"
-        loading="lazy"
-      >
-      <div class="showcase-quad-veil" aria-hidden="true"></div>
-      <div class="showcase-quad-body">
-        <h2 class="showcase-quad-headline">For the ones wrapped around your finger.</h2>
-        <span class="showcase-quad-cta">
-          Customize gifts for loved ones
-          <span class="cta-arrow" aria-hidden="true"></span>
-        </span>
+      <!-- Card 1: New In -->
+      <a class="cshow-block new-in" href="#collection-bracelets-new" aria-label="Shop New In Bracelets">
+        <img class="cshow-media" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmthcmszNzk2MDY1NWh1Nm05dDA0ZTg0czNjOGdwM2Yxc2Zia29kayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/H1AsZ8RNUEty45MF3K/giphy.gif" alt="New In bracelets loop" loading="lazy">
+        <span class="cshow-veil" aria-hidden="true"></span>
+        <span class="cshow-label">New In</span>
+      </a>
+
+      <!-- Card 2: Cuffs -->
+      <a class="cshow-block charms" href="#collection-bracelets-cuffs" aria-label="Shop Cuffs">
+        <img class="cshow-media" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaWpzYTk0dWY2YzdqcHg5MWRqNDhnaXB6bTl1eHFmeTFma3I3NnZlcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jRZ9aW9FqUfsZ9lkpk/giphy.gif" alt="Cuffs loop" loading="lazy">
+        <span class="cshow-veil" aria-hidden="true"></span>
+        <span class="cshow-label">Cuffs</span>
+      </a>
+
+      <!-- Card 3: Chain -->
+      <a class="cshow-block moments" href="#collection-bracelets-chain" aria-label="Shop Chain Bracelets">
+        <img class="cshow-media" src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExeXdxbGVuaWo5c3llcDFsNDVmM3p4cmppaDRlbTN1enBlYng4Z3RtdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/9J3KJxli8VrgpiXC16/giphy.gif" alt="Chain bracelets loop" loading="lazy">
+        <span class="cshow-veil" aria-hidden="true"></span>
+        <span class="cshow-label">Chain</span>
+      </a>
+
+      <!-- Card 4: Tennis -->
+      <a class="cshow-block disney" href="#collection-bracelets-tennis" aria-label="Shop Tennis Bracelets">
+        <img class="cshow-media" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdHVyYWV3Z2lsOTU4enhmYW8zbHE3aGVqOTQwazZmbjE3ZHh0ODRhMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/f4rOzyO19sTcJu3Ozg/giphy.gif" alt="Tennis bracelets loop" loading="lazy">
+        <span class="cshow-veil" aria-hidden="true"></span>
+        <span class="cshow-label">Tennis</span>
+      </a>
+
+      <!-- Card 5: Bangles -->
+      <a class="cshow-block princesses" href="#collection-bracelets-bangles" aria-label="Shop Bangles">
+        <img class="cshow-media" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmthcmszNzk2MDY1NWh1Nm05dDA0ZTg0czNjOGdwM2Yxc2Zia29kayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/H1AsZ8RNUEty45MF3K/giphy.gif" alt="Bangles loop" loading="lazy">
+        <span class="cshow-veil" aria-hidden="true"></span>
+        <span class="cshow-label">Bangles</span>
+      </a>
+
+      <!-- Card 6: Charm -->
+      <a class="cshow-block essence" href="#collection-bracelets-charm" aria-label="Shop Charm Bracelets">
+        <img class="cshow-media" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaWpzYTk0dWY2YzdqcHg5MWRqNDhnaXB6bTl1eHFmeTFma3I3NnZlcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jRZ9aW9FqUfsZ9lkpk/giphy.gif" alt="Charm bracelets loop" loading="lazy">
+        <span class="cshow-veil" aria-hidden="true"></span>
+        <span class="cshow-label">Charm</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- COLLECTION SHOWCASE — Earrings -->
+  <section class="collection-showcase" id="earrings" aria-labelledby="earringsTitle">
+    <div class="moment-layout">
+      <div class="title-wrap">
+        <h2 class="cshow-headline" id="earringsTitle">
+          <img src="./prototype-assets/logo%20icon.png" class="cshow-title-icon" alt="Gaura Style Icon">
+          <span>earrings</span>
+        </h2>
+        <a class="cshow-link" href="#earrings">
+          Explore Earrings
+          <span class="cshow-link-arrow" aria-hidden="true"></span>
+        </a>
       </div>
-    </a>
 
-    <!-- Bottom-Left: Zodiac / Collection — text at top-left -->
-    <a class="showcase-quad showcase-quad--bl" href="#collection" aria-label="Shop The Collection">
-      <img
-        class="showcase-quad-img"
-        src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=1200&q=80"
-        alt="Gold jewelry on warm beige background"
-        loading="lazy"
-      >
-      <div class="showcase-quad-veil" aria-hidden="true"></div>
-      <div class="showcase-quad-body">
-        <h2 class="showcase-quad-headline">Take It As A Sign.</h2>
-        <span class="showcase-quad-cta">
-          Shop The Collection
-          <span class="cta-arrow" aria-hidden="true"></span>
-        </span>
-      </div>
-    </a>
+      <!-- Card 1: New In -->
+      <a class="cshow-block new-in" href="#collection-earrings-new" aria-label="Shop New In Earrings">
+        <img class="cshow-media" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnQ4ZGV6NHQ2aDZnYmdpamZ6MDlsdzZ0NTBveXE2ZXpyazcwc2ZqaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/eiYGFHnxIjY30YBvQV/giphy.gif" alt="New In earrings loop" loading="lazy">
+        <span class="cshow-veil" aria-hidden="true"></span>
+        <span class="cshow-label">New In</span>
+      </a>
 
-    <!-- Bottom-Right: Engagement — text at top-left -->
-    <a class="showcase-quad showcase-quad--br" href="#engagement" aria-label="Shop Engagement">
-      <img
-        class="showcase-quad-img"
-        src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1200&q=80"
-        alt="Close-up of interlocking silver, diamond, gold, and rose gold rings"
-        loading="lazy"
-      >
-      <div class="showcase-quad-veil" aria-hidden="true"></div>
-      <div class="showcase-quad-body">
-        <h2 class="showcase-quad-headline">Crafted for love.</h2>
-        <span class="showcase-quad-cta">
-          Shop Engagement
-          <span class="cta-arrow" aria-hidden="true"></span>
-        </span>
-      </div>
-    </a>
+      <!-- Card 2: Hoops -->
+      <a class="cshow-block charms" href="#collection-earrings-hoops" aria-label="Shop Hoops">
+        <img class="cshow-media" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmFtczM4ZTZmaG5udjJxYjJneDVyNjM5eGkzZDBqamdtdmM3ajllMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KEMJ6NptgGQvZb9HeG/giphy.gif" alt="Hoops loop" loading="lazy">
+        <span class="cshow-veil" aria-hidden="true"></span>
+        <span class="cshow-label">Hoops</span>
+      </a>
 
+      <!-- Card 3: Studs -->
+      <a class="cshow-block moments" href="#collection-earrings-studs" aria-label="Shop Studs">
+        <img class="cshow-media" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcXp2N2ZjYzNoMWR6aWUzc2Zkang1OG50cDA1dGJ1ODM3OWx4OHZ6ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/XFkFW8O1VPbYhj6c5l/giphy.gif" alt="Studs loop" loading="lazy">
+        <span class="cshow-veil" aria-hidden="true"></span>
+        <span class="cshow-label">Studs</span>
+      </a>
+
+      <!-- Card 4: Drops -->
+      <a class="cshow-block disney" href="#collection-earrings-drops" aria-label="Shop Drops">
+        <img class="cshow-media" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2tncmttejQxaHRlemFud3FvMXA3d3FlYTM2MWFnazV1d2NnYWRpMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3EAKxdfpgFOUVfZOyk/giphy.gif" alt="Drops loop" loading="lazy">
+        <span class="cshow-veil" aria-hidden="true"></span>
+        <span class="cshow-label">Drops</span>
+      </a>
+
+      <!-- Card 5: Huggies -->
+      <a class="cshow-block princesses" href="#collection-earrings-huggies" aria-label="Shop Huggies">
+        <img class="cshow-media" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXhnN3IwcDJ2bGhvYjBnbm9jcmhweXcyem1lMDB4cm42a3o5azZmNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Ll3XcnFkZyUfhNfX9q/giphy.gif" alt="Huggies loop" loading="lazy">
+        <span class="cshow-veil" aria-hidden="true"></span>
+        <span class="cshow-label">Huggies</span>
+      </a>
+
+      <!-- Card 6: Threaders -->
+      <a class="cshow-block essence" href="#collection-earrings-threaders" aria-label="Shop Threaders">
+        <img class="cshow-media" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnQ4ZGV6NHQ2aDZnYmdpamZ6MDlsdzZ0NTBveXE2ZXpyazcwc2ZqaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/eiYGFHnxIjY30YBvQV/giphy.gif" alt="Threaders loop" loading="lazy">
+        <span class="cshow-veil" aria-hidden="true"></span>
+        <span class="cshow-label">Threaders</span>
+      </a>
+    </div>
   </section>
 
   <!-- ATELIER SELECTION -->
@@ -3061,45 +3232,6 @@
         <p class="atelier-price">$1,850</p>
       </a>
     </div>
-  </section>
-
-  <!-- FULL-WIDTH EDITORIAL SHOWCASE -->
-  <section class="showcase showcase--single" aria-label="Editorial Highlights">
-
-    <a class="showcase-quad showcase-quad--tr" href="#new-arrivals" aria-label="Shop New Arrivals">
-      <img
-        class="showcase-quad-img"
-        src="https://images.unsplash.com/photo-1734019523113-501bfba06c5c?auto=format&fit=crop&w=1600&q=80"
-        alt="Woman's hand holding a ring against a dark background"
-        loading="lazy"
-      >
-      <div class="showcase-quad-veil" aria-hidden="true"></div>
-      <div class="showcase-quad-body">
-        <h2 class="showcase-quad-headline">New this season.</h2>
-        <span class="showcase-quad-cta">
-          Shop New Arrivals
-          <span class="cta-arrow" aria-hidden="true"></span>
-        </span>
-      </div>
-    </a>
-
-    <a class="showcase-quad showcase-quad--bl" href="#rings" aria-label="Shop Rings">
-      <img
-        class="showcase-quad-img"
-        src="https://images.unsplash.com/photo-1561715679-677241815677?auto=format&fit=crop&w=1600&q=80"
-        alt="Hand wearing rings in a dark moody setting"
-        loading="lazy"
-      >
-      <div class="showcase-quad-veil" aria-hidden="true"></div>
-      <div class="showcase-quad-body">
-        <h2 class="showcase-quad-headline">The ring edit.</h2>
-        <span class="showcase-quad-cta">
-          Explore Rings
-          <span class="cta-arrow" aria-hidden="true"></span>
-        </span>
-      </div>
-    </a>
-
   </section>
 
   <!-- UGC SOCIAL PROOF -->
