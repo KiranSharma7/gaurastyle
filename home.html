@@ -827,7 +827,10 @@
     .moment-layout {
       width: min(1240px, 100%);
       display: grid;
-      grid-template-columns: 280px 330px 330px 330px;
+      /* Fluid-capped tracks so the mosaic never exceeds the container —
+         landscape tablets (1180/1366px) fall in the desktop rule and would
+         otherwise overflow with fixed px columns. */
+      grid-template-columns: minmax(0, 0.85fr) repeat(3, minmax(0, 1fr));
       grid-template-rows: 305px 120px 305px;
       gap: 18px;
       align-items: stretch;
@@ -1051,23 +1054,28 @@
 
     @media (max-width: 760px) {
       .collection-showcase {
-        padding: 40px var(--gutter);
-      }
-      .moment-layout {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
+        padding: 40px 24px 48px;
       }
 
-      .cshow-block {
-        height: 360px;
+      /* Editorial 2-column mosaic: one tall tile beside two short tiles,
+         mirrored band to band. Keeps the "moment" composition on phones
+         instead of a flat 6-up stack, and the tall tiles stay dramatic. */
+      .moment-layout {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto repeat(4, clamp(140px, 38vw, 184px));
+        gap: 10px;
       }
 
       .title-wrap {
+        grid-column: 1 / -1;
+        grid-row: 1;
         flex-direction: column;
         align-items: flex-start;
-        gap: 16px;
-        padding-bottom: 10px;
+        justify-content: flex-start;
+        gap: 14px;
+        padding: 0 0 6px;
       }
 
       .cshow-headline {
@@ -1080,7 +1088,19 @@
         margin-right: 0;
       }
 
+      /* Tile placement — perfectly tiled, no holes:
+         band 1 = tall New | (Eternity / Bridal);  band 2 = (Solitaire / Stackables) | tall Heritage */
+      .cshow-block { height: auto; }
+      .new-in      { grid-column: 1; grid-row: 2 / 4; }
+      .charms      { grid-column: 2; grid-row: 2; }
+      .moments     { grid-column: 2; grid-row: 3; }
+      .disney      { grid-column: 1; grid-row: 4; }
+      .princesses  { grid-column: 1; grid-row: 5; }
+      .essence     { grid-column: 2; grid-row: 4 / 6; }
+
       .cshow-label {
+        left: 12px;
+        bottom: 12px;
         font-size: 10px;
         letter-spacing: 1.8px;
         padding: 10px 12px 8px;
