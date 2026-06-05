@@ -975,6 +975,29 @@
       outline-offset: 5px;
     }
 
+    /* Atelier · serif variant (btn-atelier from the design system):
+       italic Cormorant label, hairline underline, no box, no arrow. */
+    .cshow-link--atelier {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 400;
+      font-style: italic;
+      text-transform: none;
+      letter-spacing: 0;
+      gap: 0;
+      color: var(--fg1);
+      border-bottom: 1px solid var(--fg1);
+      padding: 6px 0;
+    }
+
+    .cshow-link--atelier::after { display: none; }
+
+    .cshow-link--atelier:hover,
+    .cshow-link--atelier:focus-visible {
+      color: var(--brown);
+      border-bottom-color: var(--brown);
+    }
+
     .cshow-link-arrow {
       width: 18px;
       height: 1px;
@@ -1014,7 +1037,9 @@
       isolation: isolate;
       display: block;
       text-decoration: none;
-      box-shadow: none;
+      box-shadow:
+        inset 0 0 0 1px rgba(0, 0, 0, 0.08),
+        0 10px 24px rgba(26, 23, 20, 0.06);
       transform: translateY(0);
       transition: transform 0.5s var(--ease-expo), box-shadow 0.5s var(--ease-expo);
     }
@@ -1214,6 +1239,68 @@
 
     /* Reversed layout for desktop (title on the right) */
     @media (min-width: 1101px) {
+      .moment-layout--rings-swapped {
+        /* Col 1 (Eternity / Bridal) shares Col 2's track so those stacked
+           cards read at the exact width of the New card beside them. */
+        grid-template-columns: minmax(0, 0.74fr) minmax(0, 0.74fr) minmax(0, 0.82fr) minmax(0, 0.82fr);
+        /* Row 1 runs a touch taller than the base 305px so Eternity (and the
+           title placard) gain height; row 2/3 keep Bridal, New and Stackables
+           at their full 443px. */
+        grid-template-rows: 330px 120px 305px;
+      }
+      .moment-layout--rings-swapped .title-wrap {
+        grid-column: 3 / 5;
+        grid-row: 1;
+        padding: 18px 8px 14px 18px;
+        justify-content: flex-end;
+        align-self: stretch;
+        gap: 26px;
+      }
+      .moment-layout--rings-swapped .cshow-headline {
+        /* Larger so the wordmark commands the 585px placard instead of
+           floating in it; tighter leading keeps the icon + word as one mark. */
+        font-size: clamp(60px, 6.4vw, 96px);
+        line-height: 0.9;
+        letter-spacing: 0.03em;
+        gap: 16px;
+        text-wrap: balance;
+      }
+      .moment-layout--rings-swapped .cshow-title-icon {
+        height: 46px;
+        margin-left: 2px;
+      }
+      .moment-layout--rings-swapped .cshow-link {
+        min-height: 40px;
+        padding-left: 2px;
+        align-items: center;
+      }
+      /* Atelier variant hugs its own underline — drop the 40px min-height so
+         the border-bottom stays tight to the serif label. */
+      .moment-layout--rings-swapped .cshow-link--atelier {
+        min-height: 0;
+        padding: 6px 0;
+        align-items: center;
+      }
+      .moment-layout--rings-swapped .charms {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .moment-layout--rings-swapped .moments {
+        grid-column: 1;
+        grid-row: 2 / 4;
+      }
+      /* Stackables rises through rows 2-3 so its top edge meets the Explore
+         CTA. Heritage keeps its original row-3 height; the col-4/row-2 space
+         above it reads as the title placard's own whitespace, not a hole. */
+      .moment-layout--rings-swapped .princesses {
+        grid-column: 3;
+        grid-row: 2 / 4;
+      }
+      .moment-layout--rings-swapped .essence {
+        grid-column: 4;
+        grid-row: 3;
+      }
+
       .moment-layout--reversed {
         grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.4fr);
       }
@@ -1931,7 +2018,7 @@
 
     .ugc-thumb {
       position: relative;
-      aspect-ratio: 9 / 16;
+      aspect-ratio: 2 / 3;
       border-radius: 4px;
       overflow: hidden;
       background: var(--surface-warm, #F5F1EA);
@@ -2004,7 +2091,7 @@
       padding: 5px;
       box-shadow: 0 4px 20px rgba(26, 23, 20, 0.12);
       text-decoration: none;
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 3 / 2;
       overflow: hidden;
       transition:
         box-shadow 0.28s var(--ease-expo),
@@ -2930,10 +3017,6 @@
     <div class="hero-vignette" aria-hidden="true"></div>
 
     <div class="hero-content">
-      <h1 class="hero-headline">
-        <span class="hero-line">Timeless <em class="hero-accent">luxury</em></span>
-      </h1>
-
       <nav class="hero-cats" aria-label="Shop by category">
         <a class="hero-cat" href="#rings" aria-label="Shop Rings">
           <img class="hero-cat-img" src="./prototype-assets/Second Section Image/rings.webp" alt="" decoding="async">
@@ -2966,15 +3049,14 @@
 
   <!-- COLLECTION SHOWCASE — Rings -->
   <section class="collection-showcase" id="rings" aria-labelledby="ringsTitle">
-    <div class="moment-layout">
+    <div class="moment-layout moment-layout--rings-swapped">
       <div class="title-wrap">
         <h2 class="cshow-headline" id="ringsTitle">
           <img src="./prototype-assets/logo%20icon.png" class="cshow-title-icon" alt="Gaura Style Icon">
           <span>rings</span>
         </h2>
-        <a class="cshow-link" href="#collections">
+        <a class="cshow-link cshow-link--atelier" href="#collections">
           Explore Collections
-          <span class="cshow-link-arrow" aria-hidden="true"></span>
         </a>
       </div>
 
@@ -3134,102 +3216,6 @@
         <img class="cshow-media" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnQ4ZGV6NHQ2aDZnYmdpamZ6MDlsdzZ0NTBveXE2ZXpyazcwc2ZqaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/eiYGFHnxIjY30YBvQV/giphy.gif" alt="Threaders loop" loading="lazy">
         <span class="cshow-veil" aria-hidden="true"></span>
         <span class="cshow-label">Threaders</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- ATELIER SELECTION -->
-  <section class="atelier-selection" id="atelier" aria-labelledby="atelierTitle">
-    <header class="atelier-head">
-      <h2 class="atelier-title" id="atelierTitle">Chosen for now.</h2>
-      <a class="atelier-link" href="#atelier">
-        Explore the atelier
-        <span class="atelier-link-arrow" aria-hidden="true"></span>
-      </a>
-    </header>
-
-    <div class="atelier-grid">
-      <a class="atelier-card" href="#luna-pear-ring" aria-label="Shop Luna Pear Ring, new, $2,650">
-        <div class="atelier-media">
-          <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_27 PM.png" alt="Luna pear-cut sapphire ring in yellow gold on warm carved stone" loading="lazy">
-          <img class="atelier-hover-img" src="./prototype-assets/hand-photo.webp" alt="" aria-hidden="true" loading="lazy">
-          <span class="atelier-badge">New</span>
-          <span class="atelier-icon-badge" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-          </span>
-          <div class="atelier-quick-add">
-            <button class="atelier-quick-add-btn" aria-label="Add Luna Pear Ring to bag">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-              Add to Bag
-            </button>
-          </div>
-        </div>
-        <h3 class="atelier-name">Luna Pear Ring</h3>
-        <p class="atelier-material">18K yellow gold, diamond</p>
-        <p class="atelier-price">$2,650</p>
-      </a>
-
-      <a class="atelier-card" href="#mira-hoops" aria-label="Shop Mira Hoops, was $1,810 now $1,450">
-        <div class="atelier-media">
-          <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_25 PM.png" alt="Deep blue emerald-cut gold ring resting on warm stone" loading="lazy">
-          <img class="atelier-hover-img" src="./prototype-assets/hand-photo.webp" alt="" aria-hidden="true" loading="lazy">
-          <span class="atelier-badge atelier-badge--sale">20% Off</span>
-          <span class="atelier-icon-badge" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-          </span>
-          <div class="atelier-quick-add">
-            <button class="atelier-quick-add-btn" aria-label="Add Mira Hoops to bag">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-              Add to Bag
-            </button>
-          </div>
-        </div>
-        <h3 class="atelier-name">Mira Hoops</h3>
-        <p class="atelier-material">18K yellow gold</p>
-        <p class="atelier-price atelier-price-group">
-          <span class="atelier-price--was">$1,810</span>
-          <span class="atelier-price--now">$1,450</span>
-        </p>
-      </a>
-
-      <a class="atelier-card" href="#elan-solitaire-ring" aria-label="Shop Élan Solitaire Ring, best seller, $3,900">
-        <div class="atelier-media">
-          <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_39 PM.png" alt="Oval-cut diamond solitaire ring in yellow gold on warm stone" loading="lazy">
-          <img class="atelier-hover-img" src="./prototype-assets/hand-photo.webp" alt="" aria-hidden="true" loading="lazy">
-          <span class="atelier-badge">Best Seller</span>
-          <span class="atelier-icon-badge" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-          </span>
-          <div class="atelier-quick-add">
-            <button class="atelier-quick-add-btn" aria-label="Add Élan Solitaire Ring to bag">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-              Add to Bag
-            </button>
-          </div>
-        </div>
-        <h3 class="atelier-name">Élan Solitaire Ring</h3>
-        <p class="atelier-material">18K yellow gold, diamond</p>
-        <p class="atelier-price">$3,900</p>
-      </a>
-
-      <a class="atelier-card" href="#aurea-twist-ring" aria-label="Shop Aurea Twist Ring, $1,850">
-        <div class="atelier-media atelier-media--duo">
-          <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_34 PM.png" alt="Aurea twist diamond ring in silver-toned metal on warm stone" loading="lazy">
-          <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_31 PM.png" alt="Rose gold pear-cut ring detail on warm stone" loading="lazy">
-          <img class="atelier-hover-img" src="./prototype-assets/hand-photo.webp" alt="" aria-hidden="true" loading="lazy">
-          <span class="atelier-icon-badge" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-          </span>
-          <div class="atelier-quick-add">
-            <button class="atelier-quick-add-btn" aria-label="Add Aurea Twist Ring to bag">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-              Add to Bag
-            </button>
-          </div>
-        </div>
-        <h3 class="atelier-name">Aurea Twist Ring</h3>
-        <p class="atelier-material">18K yellow gold, diamond</p>
-        <p class="atelier-price">$1,850</p>
       </a>
     </div>
   </section>
