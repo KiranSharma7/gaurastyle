@@ -1014,7 +1014,9 @@
       isolation: isolate;
       display: block;
       text-decoration: none;
-      box-shadow: none;
+      box-shadow:
+        inset 0 0 0 1px rgba(0, 0, 0, 0.08),
+        0 10px 24px rgba(26, 23, 20, 0.06);
       transform: translateY(0);
       transition: transform 0.5s var(--ease-expo), box-shadow 0.5s var(--ease-expo);
     }
@@ -1214,6 +1216,56 @@
 
     /* Reversed layout for desktop (title on the right) */
     @media (min-width: 1101px) {
+      .moment-layout--rings-swapped {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.74fr) minmax(0, 0.82fr) minmax(0, 0.82fr);
+      }
+      .moment-layout--rings-swapped .title-wrap {
+        grid-column: 3 / 5;
+        grid-row: 1 / 3;
+        padding: 18px 8px 14px 18px;
+        justify-content: center;
+        align-self: stretch;
+        gap: 26px;
+      }
+      .moment-layout--rings-swapped .cshow-headline {
+        /* Larger so the wordmark commands the 585px placard instead of
+           floating in it; tighter leading keeps the icon + word as one mark. */
+        font-size: clamp(60px, 6.4vw, 96px);
+        line-height: 0.9;
+        letter-spacing: 0.03em;
+        gap: 16px;
+        text-wrap: balance;
+      }
+      .moment-layout--rings-swapped .cshow-title-icon {
+        height: 46px;
+        margin-left: 2px;
+      }
+      .moment-layout--rings-swapped .cshow-link {
+        min-height: 40px;
+        padding-left: 2px;
+        align-items: center;
+      }
+      .moment-layout--rings-swapped .charms {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .moment-layout--rings-swapped .moments {
+        grid-column: 1;
+        grid-row: 2 / 4;
+      }
+      /* Right column finishes cleanly below the title placard:
+         title spans rows 1-2 over cols 3-4, then these two fill row 3.
+         Without this, princesses kept its default row 2/4 span and
+         collided with the title block, crushing the explore link. */
+      .moment-layout--rings-swapped .princesses {
+        grid-column: 3;
+        grid-row: 3;
+      }
+      .moment-layout--rings-swapped .essence {
+        grid-column: 4;
+        grid-row: 3;
+      }
+
       .moment-layout--reversed {
         grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.4fr);
       }
@@ -1931,7 +1983,7 @@
 
     .ugc-thumb {
       position: relative;
-      aspect-ratio: 9 / 16;
+      aspect-ratio: 2 / 3;
       border-radius: 4px;
       overflow: hidden;
       background: var(--surface-warm, #F5F1EA);
@@ -2004,7 +2056,7 @@
       padding: 5px;
       box-shadow: 0 4px 20px rgba(26, 23, 20, 0.12);
       text-decoration: none;
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 3 / 2;
       overflow: hidden;
       transition:
         box-shadow 0.28s var(--ease-expo),
@@ -2930,10 +2982,6 @@
     <div class="hero-vignette" aria-hidden="true"></div>
 
     <div class="hero-content">
-      <h1 class="hero-headline">
-        <span class="hero-line">Timeless <em class="hero-accent">luxury</em></span>
-      </h1>
-
       <nav class="hero-cats" aria-label="Shop by category">
         <a class="hero-cat" href="#rings" aria-label="Shop Rings">
           <img class="hero-cat-img" src="./prototype-assets/Second Section Image/rings.webp" alt="" decoding="async">
@@ -2966,7 +3014,7 @@
 
   <!-- COLLECTION SHOWCASE — Rings -->
   <section class="collection-showcase" id="rings" aria-labelledby="ringsTitle">
-    <div class="moment-layout">
+    <div class="moment-layout moment-layout--rings-swapped">
       <div class="title-wrap">
         <h2 class="cshow-headline" id="ringsTitle">
           <img src="./prototype-assets/logo%20icon.png" class="cshow-title-icon" alt="Gaura Style Icon">
@@ -3138,13 +3186,12 @@
     </div>
   </section>
 
-
   <!-- UGC SOCIAL PROOF -->
   <section class="ugc-gallery" aria-labelledby="ugcTitle">
     <div class="ugc-inner">
 
       <header class="ugc-head">
-        <h2 class="ugc-title" id="ugcTitle">Love for Gaura Style</h2>
+        <h2 class="ugc-title" id="ugcTitle">Worn and shared.</h2>
       </header>
 
       <div class="ugc-grid" role="list">
