@@ -323,7 +323,7 @@
 
     .pdp-stage {
       position: relative;
-      aspect-ratio: 4 / 5;
+      aspect-ratio: 1 / 1;
       border-radius: var(--radius-md);
       overflow: hidden;
       background: var(--surface-warm);
@@ -1197,9 +1197,7 @@
 
     /* ============ RELATED ============ */
     .pdp-related {
-      max-width: min(1720px, 100%);
-      margin: 0 auto;
-      padding: 0 var(--gutter) clamp(80px, 9vw, 132px);
+      padding-bottom: clamp(80px, 9vw, 132px);
     }
 
     .pdp-related-head {
@@ -1208,6 +1206,7 @@
       justify-content: space-between;
       gap: 24px;
       margin-bottom: clamp(32px, 4vw, 52px);
+      padding: 0 var(--gutter);
     }
 
     .pdp-related-title {
@@ -1241,234 +1240,40 @@
     .pdp-related-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: clamp(24px, 3vw, 40px) clamp(12px, 1.6vw, 20px);
-      align-items: start;
+      gap: 2px;
     }
 
     .pdp-related .atelier-card {
       position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+      display: block;
       min-width: 0;
       color: var(--fg1);
     }
 
-    .pdp-related .atelier-media {
-      position: relative;
-      aspect-ratio: 3 / 4;
-      overflow: hidden;
-      border-radius: var(--radius-sm);
-      background: var(--surface-warm);
-      outline: 1px solid rgba(0, 0, 0, 0.08);
-      isolation: isolate;
-    }
-
     .pdp-related .shop-product-media-link {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
+      position: relative;
       display: block;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      isolation: isolate;
       color: inherit;
       text-decoration: none;
     }
 
-    .pdp-related .atelier-card-img,
-    .pdp-related .atelier-hover-img {
+    .pdp-related .atelier-card-img {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       object-position: center;
-      transition-property: transform, opacity;
-      transition-duration: 0.62s;
-      transition-timing-function: var(--ease-expo);
-    }
-
-    .pdp-related .atelier-card-img { z-index: 0; }
-
-    .pdp-related .atelier-hover-img {
-      z-index: 1;
-      opacity: 0;
-      pointer-events: none;
+      transition: transform 0.7s var(--ease-expo);
     }
 
     .pdp-related .atelier-card:hover .atelier-card-img,
     .pdp-related .atelier-card:focus-within .atelier-card-img {
-      transform: scale(1.035);
+      transform: scale(1.04);
     }
-
-    .pdp-related .atelier-card:hover .atelier-hover-img,
-    .pdp-related .atelier-card:focus-within .atelier-hover-img {
-      opacity: 1;
-    }
-
-    .pdp-related .atelier-badge,
-    .pdp-related .atelier-icon-badge {
-      position: absolute;
-      z-index: 2;
-    }
-
-    .pdp-related .atelier-badge {
-      top: 14px;
-      left: 14px;
-      padding: 7px 10px;
-      border-radius: var(--radius-xs);
-      background: rgba(250, 250, 248, 0.90);
-      color: var(--fg1);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .pdp-related .atelier-badge--sale {
-      background: var(--brown-dark);
-      color: var(--fg-inverse);
-    }
-
-    .pdp-related .atelier-icon-badge {
-      top: 12px;
-      right: 12px;
-      width: 40px;
-      height: 40px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: rgba(250, 250, 248, 0.88);
-      color: var(--brown-dark);
-      transform: translateY(-4px);
-      opacity: 0;
-      transition-property: opacity, transform, background-color, color;
-      transition-duration: 0.28s;
-      transition-timing-function: var(--ease-expo);
-    }
-
-    .pdp-related .atelier-card:hover .atelier-icon-badge,
-    .pdp-related .atelier-card:focus-within .atelier-icon-badge {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .pdp-related .atelier-icon-badge svg {
-      width: 17px;
-      height: 17px;
-      stroke-width: 1.7;
-    }
-
-    .pdp-related .atelier-quick-add {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 3;
-      padding: 12px 14px;
-      opacity: 0;
-      transform: translateY(6px);
-      transition-property: opacity, transform;
-      transition-duration: 0.3s;
-      transition-timing-function: var(--ease-expo);
-      transition-delay: 0.06s;
-      pointer-events: none;
-    }
-
-    .pdp-related .atelier-card:hover .atelier-quick-add,
-    .pdp-related .atelier-card:focus-within .atelier-quick-add {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    .pdp-related .atelier-quick-add-btn {
-      width: 100%;
-      min-height: 44px;
-      background: rgba(26, 23, 20, 0.84);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      color: var(--fg-inverse);
-      border: 1px solid rgba(250, 250, 248, 0.18);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.20em;
-      text-transform: uppercase;
-      transition-property: background-color, border-color, color, transform;
-      transition-duration: 0.22s, 0.22s, 0.22s, 0.2s;
-      transition-timing-function: ease, ease, ease, var(--ease-expo);
-    }
-
-    .pdp-related .atelier-quick-add-btn:hover,
-    .pdp-related .atelier-quick-add-btn.is-added {
-      background: var(--gold);
-      color: var(--brown-dark);
-      border-color: var(--gold);
-    }
-
-    .pdp-related .atelier-quick-add-btn:active { transform: scale(0.96); }
-
-    .pdp-related .atelier-quick-add-btn svg {
-      width: 13px;
-      height: 13px;
-      stroke-width: 1.8;
-      flex-shrink: 0;
-    }
-
-    .pdp-related .shop-product-copy {
-      display: block;
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .pdp-related .atelier-name {
-      margin-bottom: 5px;
-      font-family: var(--font-display);
-      font-size: clamp(25px, 1.72vw, 29px);
-      font-weight: 300;
-      line-height: 1.12;
-      letter-spacing: -0.01em;
-      font-kerning: normal;
-      font-feature-settings: "liga" 1, "clig" 1;
-      color: var(--fg1);
-      text-wrap: balance;
-    }
-
-    .pdp-related .atelier-material {
-      margin-bottom: 6px;
-      color: var(--fg2);
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    .pdp-related .atelier-price,
-    .pdp-related .atelier-price-group {
-      color: var(--fg1);
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .pdp-related .atelier-price-group {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-    }
-
-    .pdp-related .atelier-price--was {
-      color: var(--fg3);
-      text-decoration: line-through;
-      text-decoration-color: var(--fg3);
-      font-size: 13px;
-      font-weight: 400;
-    }
-
-    .pdp-related .atelier-price--now { color: var(--brown); }
 
     /* ============ STICKY MOBILE BUY BAR ============ */
     .pdp-stickybar {
@@ -1689,7 +1494,7 @@
       .nav-links-row { justify-content: flex-start; overflow: hidden; }
       .pdp-story-inner { grid-template-columns: 1fr; gap: 40px; }
       .pdp-story-figure { max-width: 520px; }
-      .pdp-related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .pdp-related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; }
     }
 
     @media (max-width: 720px) {
@@ -1735,9 +1540,8 @@
       .pdp-story-inner { padding-inline: 18px; }
       .pdp-detail { padding-inline: 18px; }
       .pdp-detail-grid { grid-template-columns: 1fr; gap: 30px; }
-      .pdp-related { padding-inline: 18px; }
-      .pdp-related-grid { grid-template-columns: 1fr; }
-      .pdp-related-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .pdp-related-head { padding-inline: 18px; flex-direction: column; align-items: flex-start; gap: 16px; }
+      .pdp-related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; }
 
       .site-footer { padding: 62px 24px 26px; }
       .footer-main { grid-template-columns: 1fr 1fr; gap: 36px 28px; }
@@ -2138,28 +1942,28 @@
       <div class="pdp-gallery">
         <ul class="pdp-thumbs" role="tablist" aria-label="Product images">
           <li><button class="pdp-thumb is-active" type="button" role="tab" aria-selected="true" data-index="0" aria-label="View 1: three-quarter">
-            <img src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_27 PM.png" alt="" loading="eager">
+            <img src="./prototype-assets/Product%20Images/1.135A.7.1-A-1024x1024.webp" alt="" loading="eager">
           </button></li>
           <li><button class="pdp-thumb" type="button" role="tab" aria-selected="false" data-index="1" aria-label="View 2: profile">
-            <img src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_25 PM.png" alt="" loading="lazy">
+            <img src="./prototype-assets/Product%20Images/1.135A.7.3-A-1024x1024.webp" alt="" loading="lazy">
           </button></li>
           <li><button class="pdp-thumb" type="button" role="tab" aria-selected="false" data-index="2" aria-label="View 3: top">
-            <img src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_31 PM.png" alt="" loading="lazy">
+            <img src="./prototype-assets/Product%20Images/1.135A.8.3-A-13-1024x1024.webp" alt="" loading="lazy">
           </button></li>
           <li><button class="pdp-thumb" type="button" role="tab" aria-selected="false" data-index="3" aria-label="View 4: band detail">
-            <img src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_34 PM.png" alt="" loading="lazy">
+            <img src="./prototype-assets/Product%20Images/1.135A.6.4-A-5-1024x1024.webp" alt="" loading="lazy">
           </button></li>
-          <li><button class="pdp-thumb" type="button" role="tab" aria-selected="false" data-index="4" aria-label="View 5: worn on hand">
-            <img src="./prototype-assets/hand-photo.webp" alt="" loading="lazy">
+          <li><button class="pdp-thumb" type="button" role="tab" aria-selected="false" data-index="4" aria-label="View 5: alternate">
+            <img src="./prototype-assets/Product%20Images/1.135A.7.1-A-1024x1024.webp" alt="" loading="lazy">
           </button></li>
         </ul>
 
         <div class="pdp-stage" id="pdpStage">
-          <img class="pdp-stage-img is-active" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_27 PM.png" alt="Luna Pear Ring, a pear-cut sapphire flanked by diamonds in 18K yellow gold, three-quarter view" data-index="0">
-          <img class="pdp-stage-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_25 PM.png" alt="Luna Pear Ring shown in profile, the sapphire raised above a slim gold band" data-index="1">
-          <img class="pdp-stage-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_31 PM.png" alt="Luna Pear Ring from above, pear-cut sapphire centered between two diamonds" data-index="2">
-          <img class="pdp-stage-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_34 PM.png" alt="Close detail of the Luna Pear Ring band and gold setting" data-index="3">
-          <img class="pdp-stage-img" src="./prototype-assets/hand-photo.webp" alt="Luna Pear Ring worn on a hand in warm natural light" data-index="4">
+          <img class="pdp-stage-img is-active" src="./prototype-assets/Product%20Images/1.135A.7.1-A-1024x1024.webp" alt="Luna Pear Ring, three-quarter view" data-index="0">
+          <img class="pdp-stage-img" src="./prototype-assets/Product%20Images/1.135A.7.3-A-1024x1024.webp" alt="Luna Pear Ring, profile view" data-index="1">
+          <img class="pdp-stage-img" src="./prototype-assets/Product%20Images/1.135A.8.3-A-13-1024x1024.webp" alt="Luna Pear Ring, top view" data-index="2">
+          <img class="pdp-stage-img" src="./prototype-assets/Product%20Images/1.135A.6.4-A-5-1024x1024.webp" alt="Luna Pear Ring, band detail" data-index="3">
+          <img class="pdp-stage-img" src="./prototype-assets/Product%20Images/1.135A.7.1-A-1024x1024.webp" alt="Luna Pear Ring, alternate view" data-index="4">
           <span class="pdp-stage-badge">New · Atelier Edition</span>
           <button class="pdp-stage-zoom" type="button" aria-label="Open full-size view">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
@@ -2204,8 +2008,6 @@
             <span>47 reviews</span>
           </span>
         </div>
-
-        <p class="pdp-lede">A single pear-cut sapphire, set off-axis and lifted on a tapering band so the stone catches light from every turn of the hand. Designed in the Kathmandu atelier, cut to be lived in.</p>
 
         <!-- Size -->
         <div class="pdp-option">
@@ -2253,87 +2055,6 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </button>
         </div>
-
-        <div class="pdp-payment" aria-label="Payment reassurance">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 15h4"/><path d="M3 10h18"/></svg>
-          <span class="pdp-payment-text">Secure checkout. Pay in installments available.</span>
-        </div>
-
-        <ul class="pdp-reassure">
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 13l2-5h11l3 4h2v4h-2"/><path d="M3 13v4h2"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>
-            Complimentary insured shipping, delivered in a signed atelier box
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 4 3 9 8 9"/></svg>
-            30-day returns and a lifetime craft warranty
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            Each piece is hand-finished and made to order in 2 to 3 weeks
-          </li>
-        </ul>
-
-        <section class="pdp-gift" aria-labelledby="giftTitle">
-          <div class="pdp-gift-media">
-            <img src="./prototype-assets/gaura-gift-box.png" alt="Gaura Style signed atelier gift box with ribbon and note card" loading="lazy">
-          </div>
-          <div>
-            <h2 class="pdp-gift-title" id="giftTitle">Arrives ready to gift</h2>
-            <p class="pdp-gift-copy">Every Luna ring is packed in a signed atelier box with space for a private note, gift receipt, and complimentary engraving.</p>
-            <div class="pdp-gift-options">
-              <label class="pdp-gift-check">
-                <input type="checkbox" name="gift-note">
-                <span>Add a handwritten gift note</span>
-              </label>
-              <label class="pdp-gift-check">
-                <input type="checkbox" name="gift-receipt">
-                <span>Include a gift receipt without price</span>
-              </label>
-            </div>
-            <div class="pdp-engraving">
-              <label for="engravingType">Engraving option</label>
-              <select id="engravingType" name="engraving">
-                <option value="none">No engraving</option>
-                <option value="initials">Inside band initials</option>
-                <option value="date">Inside band date</option>
-                <option value="message">Short inside-band message</option>
-              </select>
-              <label for="engravingText">Engraving text</label>
-              <input id="engravingText" name="engraving-text" type="text" maxlength="24" placeholder="Up to 24 characters">
-            </div>
-          </div>
-        </section>
-
-        <section class="pdp-pairs" aria-labelledby="pairsTitle">
-          <div class="pdp-pairs-head">
-            <h2 class="pdp-pairs-title" id="pairsTitle">Pairs with Luna</h2>
-          </div>
-          <div class="pdp-pairs-grid">
-            <a class="pdp-pair-card" href="./shop-v1-dark.html#mira-blue-ring">
-              <span class="pdp-pair-media">
-                <img src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_25 PM.png" alt="Mira Blue Ring, an emerald-cut sapphire in yellow gold" loading="lazy">
-              </span>
-              <span>
-                <span class="pdp-pair-tag">Same stone</span>
-                <span class="pdp-pair-name">Mira Blue Ring</span>
-                <span class="pdp-pair-meta">18K yellow gold, sapphire</span>
-                <span class="pdp-pair-price">$1,450</span>
-              </span>
-            </a>
-            <a class="pdp-pair-card" href="./shop-v1-dark.html#elan-solitaire-ring">
-              <span class="pdp-pair-media">
-                <img src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_39 PM.png" alt="Elan Solitaire Ring, an oval diamond in yellow gold" loading="lazy">
-              </span>
-              <span>
-                <span class="pdp-pair-tag">Gold contrast</span>
-                <span class="pdp-pair-name">Elan Solitaire</span>
-                <span class="pdp-pair-meta">18K yellow gold, diamond</span>
-                <span class="pdp-pair-price">$3,900</span>
-              </span>
-            </a>
-          </div>
-        </section>
 
         <!-- Accordion -->
         <div class="pdp-accordion">
@@ -2501,99 +2222,26 @@
       </div>
       <div class="pdp-related-grid">
         <article class="atelier-card shop-product" id="related-mira-blue-ring">
-          <div class="atelier-media">
-            <a class="shop-product-media-link" href="./shop-v1-dark.html#mira-blue-ring" aria-label="Shop Mira Blue Ring, was $1,810 now $1,450">
-              <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_25 PM.png" alt="Deep blue emerald-cut gold ring resting on warm stone" loading="lazy">
-              <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
-              <span class="atelier-badge atelier-badge--sale">20% Off</span>
-              <span class="atelier-icon-badge" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-              </span>
-            </a>
-            <div class="atelier-quick-add">
-              <button class="atelier-quick-add-btn" type="button" aria-label="Add Mira Blue Ring to bag">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                <span class="quick-add-label">Add to Bag</span>
-              </button>
-            </div>
-          </div>
-          <a class="shop-product-copy" href="./shop-v1-dark.html#mira-blue-ring">
-            <h3 class="atelier-name">Mira Blue Ring</h3>
-            <p class="atelier-material">18K yellow gold, sapphire</p>
-            <p class="atelier-price-group">
-              <span class="atelier-price--was">$1,810</span>
-              <span class="atelier-price--now">$1,450</span>
-            </p>
+          <a class="shop-product-media-link" href="./shop-v1-dark.html#petal-ring" aria-label="Shop Petal Ring">
+            <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.7.3-A-1024x1024.webp" alt="Five-stone ring in white gold" loading="lazy">
           </a>
         </article>
 
         <article class="atelier-card shop-product" id="related-elan-solitaire-ring">
-          <div class="atelier-media">
-            <a class="shop-product-media-link" href="./shop-v1-dark.html#elan-solitaire-ring" aria-label="Shop Elan Solitaire Ring, best seller, $3,900">
-              <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_39 PM.png" alt="Oval-cut diamond solitaire ring in yellow gold on warm stone" loading="lazy">
-              <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
-              <span class="atelier-badge">Best Seller</span>
-              <span class="atelier-icon-badge" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-              </span>
-            </a>
-            <div class="atelier-quick-add">
-              <button class="atelier-quick-add-btn" type="button" aria-label="Add Elan Solitaire Ring to bag">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                <span class="quick-add-label">Add to Bag</span>
-              </button>
-            </div>
-          </div>
-          <a class="shop-product-copy" href="./shop-v1-dark.html#elan-solitaire-ring">
-            <h3 class="atelier-name">Elan Solitaire Ring</h3>
-            <p class="atelier-material">18K yellow gold, diamond</p>
-            <p class="atelier-price">$3,900</p>
+          <a class="shop-product-media-link" href="./shop-v1-dark.html#nocturne-ring" aria-label="Shop Nocturne Ring">
+            <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.8.3-A-13-1024x1024.webp" alt="Five-stone ring in white gold with black spinel" loading="lazy">
           </a>
         </article>
 
         <article class="atelier-card shop-product" id="related-aurea-twist-ring">
-          <div class="atelier-media">
-            <a class="shop-product-media-link" href="./shop-v1-dark.html#aurea-twist-ring" aria-label="Shop Aurea Twist Ring, $1,850">
-              <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_34 PM.png" alt="Aurea twist diamond ring in silver-toned metal on warm stone" loading="lazy">
-              <img class="atelier-hover-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_31 PM.png" alt="" aria-hidden="true" loading="lazy">
-              <span class="atelier-icon-badge" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-              </span>
-            </a>
-            <div class="atelier-quick-add">
-              <button class="atelier-quick-add-btn" type="button" aria-label="Add Aurea Twist Ring to bag">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                <span class="quick-add-label">Add to Bag</span>
-              </button>
-            </div>
-          </div>
-          <a class="shop-product-copy" href="./shop-v1-dark.html#aurea-twist-ring">
-            <h3 class="atelier-name">Aurea Twist Ring</h3>
-            <p class="atelier-material">Silver-toned finish, diamond</p>
-            <p class="atelier-price">$1,850</p>
+          <a class="shop-product-media-link" href="./shop-v1-dark.html#ember-ring" aria-label="Shop Ember Ring">
+            <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.6.4-A-5-1024x1024.webp" alt="Five-stone ring in blackened gold" loading="lazy">
           </a>
         </article>
 
-        <article class="atelier-card shop-product" id="related-signature-solitaire-ring">
-          <div class="atelier-media">
-            <a class="shop-product-media-link" href="./shop-v1-dark.html#signature-solitaire-ring" aria-label="Shop Signature Solitaire Ring, $4,200">
-              <img class="atelier-card-img" src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=80" alt="Diamond solitaire ring in a refined studio setting" loading="lazy">
-              <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
-              <span class="atelier-icon-badge" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-              </span>
-            </a>
-            <div class="atelier-quick-add">
-              <button class="atelier-quick-add-btn" type="button" aria-label="Add Signature Solitaire Ring to bag">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                <span class="quick-add-label">Add to Bag</span>
-              </button>
-            </div>
-          </div>
-          <a class="shop-product-copy" href="./shop-v1-dark.html#signature-solitaire-ring">
-            <h3 class="atelier-name">Signature Solitaire</h3>
-            <p class="atelier-material">Platinum, diamond</p>
-            <p class="atelier-price">$4,200</p>
+        <article class="atelier-card shop-product" id="related-dawn-ring">
+          <a class="shop-product-media-link" href="./shop-v1-dark.html#dawn-ring" aria-label="Shop Dawn Ring">
+            <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.7.1-A-1024x1024.webp" alt="Five-stone ring in yellow gold with pink sapphires" loading="lazy">
           </a>
         </article>
       </div>
@@ -3070,7 +2718,7 @@
         { id: 1, name: 'Aiko T.', verified: true, rating: 5, ts: 5, date: '1 week ago',
           title: 'Lighter on the hand than I expected',
           text: 'The sapphire reads deeper blue in daylight than in the photos, almost ink. It sits flat enough that I forget I am wearing it, then it catches the light and I remember. The box it arrived in is worth keeping.',
-          helpful: 12, photo: './prototype-assets/hand-photo.webp' },
+          helpful: 12, photo: './prototype-assets/Product Images/1.135A.7.1-A-1024x1024.webp' },
         { id: 2, name: 'Priya R.', verified: true, rating: 5, ts: 4, date: '3 weeks ago',
           title: 'It catches every light in the room',
           text: 'Bought this for my own birthday and have no regrets. The off-centre setting is what sold me, it looks different from every angle. Compliments every time I wear it out.',
@@ -3078,7 +2726,7 @@
         { id: 3, name: 'Sophie L.', verified: true, rating: 4, ts: 3, date: '1 month ago',
           title: 'Beautiful, runs a touch small',
           text: 'The craft is clearly there and the gold has a warm tone I prefer to the brighter plating on other brands. I would size up by half if you are between sizes. Otherwise faultless.',
-          helpful: 5, photo: './prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_31 PM.png' },
+          helpful: 5, photo: './prototype-assets/Product Images/1.135A.7.3-A-1024x1024.webp' },
         { id: 4, name: 'Elena V.', verified: true, rating: 5, ts: 2, date: '2 months ago',
           title: 'Worth the wait for made to order',
           text: 'Three weeks felt long while waiting, but the finish makes sense of it. You can tell it was set by hand. This is the piece I reach for when I want to feel put together with no effort.',

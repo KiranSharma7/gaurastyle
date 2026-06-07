@@ -632,48 +632,36 @@
     .refine-reset-inline:hover { color: var(--brown-dark); }
 
     .shop-main {
-      background: var(--bg);
+      background: #FFFFFF;
       padding: clamp(44px, 5vw, 76px) 0 clamp(82px, 8vw, 132px);
     }
 
     .shop-shell {
-      max-width: var(--content-width);
-      margin-inline: auto;
+      width: 100%;
     }
 
     .shop-products-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: clamp(24px, 3vw, 40px) clamp(12px, 1.6vw, 20px);
+      gap: 2px;
       align-items: start;
     }
 
     .atelier-card {
       position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+      display: block;
       min-width: 0;
       color: var(--fg1);
     }
 
     .shop-product[hidden] { display: none; }
 
-    .atelier-media {
-      position: relative;
-      aspect-ratio: 3 / 4;
-      overflow: hidden;
-      border-radius: var(--radius-sm);
-      background: var(--surface-warm);
-      outline: 1px solid rgba(0, 0, 0, 0.08);
-      isolation: isolate;
-    }
-
     .shop-product-media-link {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
+      position: relative;
       display: block;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      isolation: isolate;
       color: inherit;
       text-decoration: none;
     }
@@ -699,35 +687,19 @@
       outline-offset: 3px;
     }
 
-    .atelier-card-img,
-    .atelier-hover-img {
+    .atelier-card-img {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       object-position: center;
-      transition-property: transform, opacity;
-      transition-duration: 0.62s;
-      transition-timing-function: var(--ease-expo);
-    }
-
-    .atelier-card-img { z-index: 0; }
-
-    .atelier-hover-img {
-      z-index: 1;
-      opacity: 0;
-      pointer-events: none;
+      transition: transform 0.7s var(--ease-expo);
     }
 
     .atelier-card:hover .atelier-card-img,
     .atelier-card:focus-within .atelier-card-img {
-      transform: scale(1.035);
-    }
-
-    .atelier-card:hover .atelier-hover-img,
-    .atelier-card:focus-within .atelier-hover-img {
-      opacity: 1;
+      transform: scale(1.04);
     }
 
     .atelier-badge,
@@ -847,16 +819,18 @@
 
     .shop-product-copy {
       display: block;
+      padding: clamp(14px, 1.3vw, 20px) 14px clamp(18px, 1.5vw, 24px);
+      text-align: center;
       color: inherit;
       text-decoration: none;
     }
 
     .atelier-name {
-      margin-bottom: 5px;
+      margin-bottom: 7px;
       font-family: var(--font-display);
-      font-size: clamp(25px, 1.72vw, 29px);
+      font-size: clamp(20px, 1.5vw, 25px);
       font-weight: 300;
-      line-height: 1.12;
+      line-height: 1.1;
       letter-spacing: -0.01em;
       font-kerning: normal;
       font-feature-settings: "liga" 1, "clig" 1;
@@ -865,10 +839,13 @@
     }
 
     .atelier-material {
-      margin-bottom: 6px;
-      color: var(--fg2);
-      font-size: 13px;
-      line-height: 1.45;
+      margin-bottom: 11px;
+      color: var(--fg3);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      line-height: 1.4;
+      text-transform: uppercase;
     }
 
     .atelier-price,
@@ -1228,13 +1205,8 @@
       }
 
       .shop-products-grid {
-        grid-template-columns: 1fr;
-        gap: 44px;
-      }
-
-      .atelier-card {
-        max-width: 440px;
-        margin-inline: auto;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2px;
       }
 
       .atelier-quick-add {
@@ -1786,7 +1758,7 @@
         </button>
 
         <div class="shop-refine-meta">
-          <span class="shop-refine-count" data-refine-count aria-live="polite">Results: 10</span>
+          <span class="shop-refine-count" data-refine-count aria-live="polite">Results: 20</span>
           <button class="refine-reset" type="button" hidden>Reset</button>
         </div>
 
@@ -1807,240 +1779,116 @@
     <section class="shop-main" id="shop-products" aria-label="Shop products">
       <div class="shop-shell">
         <div class="shop-products-grid" aria-live="polite">
-          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="sapphire diamond" data-price="2650" data-availability="ready" id="luna-pear-ring">
-            <div class="atelier-media">
-              <a class="shop-product-media-link" href="#luna-pear-ring" aria-label="Shop Luna Pear Ring, new, $2,650">
-                <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_27 PM.png" alt="Luna pear-cut sapphire ring in yellow gold on warm carved stone" loading="lazy">
-                <img class="atelier-hover-img" src="./prototype-assets/hand-photo.webp" alt="" aria-hidden="true" loading="lazy">
-                <span class="atelier-badge">New</span>
-                <span class="atelier-icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-                </span>
-              </a>
-              <div class="atelier-quick-add">
-                <button class="atelier-quick-add-btn" type="button" aria-label="Add Luna Pear Ring to bag">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                  <span class="quick-add-label">Add to Bag</span>
-                </button>
-              </div>
-            </div>
-            <a class="shop-product-copy" href="#luna-pear-ring">
-              <h3 class="atelier-name">Luna Pear Ring</h3>
-              <p class="atelier-material">18K yellow gold, sapphire, diamond</p>
-              <p class="atelier-price">$2,650</p>
+
+          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="sapphire" data-price="2650" data-availability="ready" id="dawn-ring">
+            <a class="shop-product-media-link" href="#dawn-ring" aria-label="View ring in yellow gold with pink sapphires">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.7.1-A-1024x1024.webp" alt="Five-stone ring set with pink sapphires in yellow gold" loading="lazy">
             </a>
           </article>
 
-          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="sapphire" data-price="1450" data-availability="ready" id="mira-blue-ring">
-            <div class="atelier-media">
-              <a class="shop-product-media-link" href="#mira-blue-ring" aria-label="Shop Mira Blue Ring, was $1,810 now $1,450">
-                <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_25 PM.png" alt="Deep blue emerald-cut gold ring resting on warm stone" loading="lazy">
-                <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
-                <span class="atelier-badge atelier-badge--sale">20% Off</span>
-                <span class="atelier-icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-                </span>
-              </a>
-              <div class="atelier-quick-add">
-                <button class="atelier-quick-add-btn" type="button" aria-label="Add Mira Blue Ring to bag">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                  <span class="quick-add-label">Add to Bag</span>
-                </button>
-              </div>
-            </div>
-            <a class="shop-product-copy" href="#mira-blue-ring">
-              <h3 class="atelier-name">Mira Blue Ring</h3>
-              <p class="atelier-material">18K yellow gold, sapphire</p>
-              <p class="atelier-price-group">
-                <span class="atelier-price--was">$1,810</span>
-                <span class="atelier-price--now">$1,450</span>
-              </p>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="platinum" data-stone="sapphire" data-price="2380" data-availability="ready" id="petal-ring">
+            <a class="shop-product-media-link" href="#petal-ring" aria-label="View ring in white gold with pink sapphires">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.7.3-A-1024x1024.webp" alt="Five-stone ring set with pink sapphires in white gold" loading="lazy">
             </a>
           </article>
 
-          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="diamond" data-price="3900" data-availability="made-to-order" id="elan-solitaire-ring">
-            <div class="atelier-media">
-              <a class="shop-product-media-link" href="#elan-solitaire-ring" aria-label="Shop Elan Solitaire Ring, best seller, $3,900">
-                <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_39 PM.png" alt="Oval-cut diamond solitaire ring in yellow gold on warm stone" loading="lazy">
-                <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
-                <span class="atelier-badge">Best Seller</span>
-                <span class="atelier-icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-                </span>
-              </a>
-              <div class="atelier-quick-add">
-                <button class="atelier-quick-add-btn" type="button" aria-label="Add Elan Solitaire Ring to bag">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                  <span class="quick-add-label">Add to Bag</span>
-                </button>
-              </div>
-            </div>
-            <a class="shop-product-copy" href="#elan-solitaire-ring">
-              <h3 class="atelier-name">Elan Solitaire Ring</h3>
-              <p class="atelier-material">18K yellow gold, diamond</p>
-              <p class="atelier-price">$3,900</p>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="platinum" data-stone="spinel" data-price="1920" data-availability="ready" id="nocturne-ring">
+            <a class="shop-product-media-link" href="#nocturne-ring" aria-label="View ring in white gold with black spinel">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.8.3-A-13-1024x1024.webp" alt="Five-stone ring set with black spinel in white gold" loading="lazy">
             </a>
           </article>
 
-          <article class="atelier-card shop-product" data-category="rings" data-metal="silver" data-stone="diamond" data-price="1850" data-availability="ready" id="aurea-twist-ring">
-            <div class="atelier-media">
-              <a class="shop-product-media-link" href="#aurea-twist-ring" aria-label="Shop Aurea Twist Ring, $1,850">
-                <img class="atelier-card-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_34 PM.png" alt="Aurea twist diamond ring in silver-toned metal on warm stone" loading="lazy">
-                <img class="atelier-hover-img" src="./prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_31 PM.png" alt="" aria-hidden="true" loading="lazy">
-                <span class="atelier-icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-                </span>
-              </a>
-              <div class="atelier-quick-add">
-                <button class="atelier-quick-add-btn" type="button" aria-label="Add Aurea Twist Ring to bag">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                  <span class="quick-add-label">Add to Bag</span>
-                </button>
-              </div>
-            </div>
-            <a class="shop-product-copy" href="#aurea-twist-ring">
-              <h3 class="atelier-name">Aurea Twist Ring</h3>
-              <p class="atelier-material">Silver-toned finish, diamond</p>
-              <p class="atelier-price">$1,850</p>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="silver" data-stone="citrine" data-price="1280" data-availability="ready" id="ember-ring">
+            <a class="shop-product-media-link" href="#ember-ring" aria-label="View ring in blackened gold with citrine">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.6.4-A-5-1024x1024.webp" alt="Five-stone ring set with citrine in blackened gold" loading="lazy">
             </a>
           </article>
 
-          <article class="atelier-card shop-product" data-category="rings" data-metal="platinum" data-stone="diamond" data-price="4200" data-availability="made-to-order" id="signature-solitaire-ring">
-            <div class="atelier-media">
-              <a class="shop-product-media-link" href="#signature-solitaire-ring" aria-label="Shop Signature Solitaire Ring, $4,200">
-                <img class="atelier-card-img" src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=80" alt="Diamond solitaire ring in a refined studio setting" loading="lazy">
-                <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
-                <span class="atelier-icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-                </span>
-              </a>
-              <div class="atelier-quick-add">
-                <button class="atelier-quick-add-btn" type="button" aria-label="Add Signature Solitaire Ring to bag">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                  <span class="quick-add-label">Add to Bag</span>
-                </button>
-              </div>
-            </div>
-            <a class="shop-product-copy" href="#signature-solitaire-ring">
-              <h3 class="atelier-name">Signature Solitaire</h3>
-              <p class="atelier-material">Platinum, diamond</p>
-              <p class="atelier-price">$4,200</p>
+          <!-- Row 2 -->
+          <article class="atelier-card shop-product" data-category="rings" data-metal="platinum" data-stone="sapphire" data-price="2380" data-availability="ready">
+            <a class="shop-product-media-link" href="#petal-ring" aria-label="View ring in white gold with pink sapphires">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.7.3-A-1024x1024.webp" alt="Five-stone ring set with pink sapphires in white gold" loading="lazy">
+            </a>
+          </article>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="platinum" data-stone="spinel" data-price="1920" data-availability="ready">
+            <a class="shop-product-media-link" href="#nocturne-ring" aria-label="View ring in white gold with black spinel">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.8.3-A-13-1024x1024.webp" alt="Five-stone ring set with black spinel in white gold" loading="lazy">
+            </a>
+          </article>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="silver" data-stone="citrine" data-price="1280" data-availability="ready">
+            <a class="shop-product-media-link" href="#ember-ring" aria-label="View ring in blackened gold with citrine">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.6.4-A-5-1024x1024.webp" alt="Five-stone ring set with citrine in blackened gold" loading="lazy">
+            </a>
+          </article>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="sapphire" data-price="2650" data-availability="ready">
+            <a class="shop-product-media-link" href="#dawn-ring" aria-label="View ring in yellow gold with pink sapphires">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.7.1-A-1024x1024.webp" alt="Five-stone ring set with pink sapphires in yellow gold" loading="lazy">
             </a>
           </article>
 
-          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="none" data-price="850" data-availability="ready" id="classic-band-ring">
-            <div class="atelier-media">
-              <a class="shop-product-media-link" href="#classic-band-ring" aria-label="Shop Classic Band Ring, $850">
-                <img class="atelier-card-img" src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=900&q=80" alt="Classic gold band with a polished finish" loading="lazy">
-                <img class="atelier-hover-img" src="./prototype-assets/Second Section Image/rings.webp" alt="" aria-hidden="true" loading="lazy">
-                <span class="atelier-icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-                </span>
-              </a>
-              <div class="atelier-quick-add">
-                <button class="atelier-quick-add-btn" type="button" aria-label="Add Classic Band Ring to bag">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                  <span class="quick-add-label">Add to Bag</span>
-                </button>
-              </div>
-            </div>
-            <a class="shop-product-copy" href="#classic-band-ring">
-              <h3 class="atelier-name">Classic Band</h3>
-              <p class="atelier-material">18K yellow gold</p>
-              <p class="atelier-price">$850</p>
+          <!-- Row 3 -->
+          <article class="atelier-card shop-product" data-category="rings" data-metal="platinum" data-stone="spinel" data-price="1920" data-availability="ready">
+            <a class="shop-product-media-link" href="#nocturne-ring" aria-label="View ring in white gold with black spinel">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.8.3-A-13-1024x1024.webp" alt="Five-stone ring set with black spinel in white gold" loading="lazy">
+            </a>
+          </article>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="silver" data-stone="citrine" data-price="1280" data-availability="ready">
+            <a class="shop-product-media-link" href="#ember-ring" aria-label="View ring in blackened gold with citrine">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.6.4-A-5-1024x1024.webp" alt="Five-stone ring set with citrine in blackened gold" loading="lazy">
+            </a>
+          </article>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="sapphire" data-price="2650" data-availability="ready">
+            <a class="shop-product-media-link" href="#dawn-ring" aria-label="View ring in yellow gold with pink sapphires">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.7.1-A-1024x1024.webp" alt="Five-stone ring set with pink sapphires in yellow gold" loading="lazy">
+            </a>
+          </article>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="platinum" data-stone="sapphire" data-price="2380" data-availability="ready">
+            <a class="shop-product-media-link" href="#petal-ring" aria-label="View ring in white gold with pink sapphires">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.7.3-A-1024x1024.webp" alt="Five-stone ring set with pink sapphires in white gold" loading="lazy">
             </a>
           </article>
 
-          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="diamond" data-price="5800" data-availability="made-to-order" id="textured-eternity-ring">
-            <div class="atelier-media">
-              <a class="shop-product-media-link" href="#textured-eternity-ring" aria-label="Shop Textured Eternity Ring, $5,800">
-                <img class="atelier-card-img" src="https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=900&q=80" alt="Textured eternity ring with diamond detail" loading="lazy">
-                <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
-                <span class="atelier-icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-                </span>
-              </a>
-              <div class="atelier-quick-add">
-                <button class="atelier-quick-add-btn" type="button" aria-label="Add Textured Eternity Ring to bag">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                  <span class="quick-add-label">Add to Bag</span>
-                </button>
-              </div>
-            </div>
-            <a class="shop-product-copy" href="#textured-eternity-ring">
-              <h3 class="atelier-name">Textured Eternity</h3>
-              <p class="atelier-material">18K yellow gold, diamond</p>
-              <p class="atelier-price">$5,800</p>
+          <!-- Row 4 -->
+          <article class="atelier-card shop-product" data-category="rings" data-metal="silver" data-stone="citrine" data-price="1280" data-availability="ready">
+            <a class="shop-product-media-link" href="#ember-ring" aria-label="View ring in blackened gold with citrine">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.6.4-A-5-1024x1024.webp" alt="Five-stone ring set with citrine in blackened gold" loading="lazy">
+            </a>
+          </article>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="sapphire" data-price="2650" data-availability="ready">
+            <a class="shop-product-media-link" href="#dawn-ring" aria-label="View ring in yellow gold with pink sapphires">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.7.1-A-1024x1024.webp" alt="Five-stone ring set with pink sapphires in yellow gold" loading="lazy">
+            </a>
+          </article>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="platinum" data-stone="sapphire" data-price="2380" data-availability="ready">
+            <a class="shop-product-media-link" href="#petal-ring" aria-label="View ring in white gold with pink sapphires">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.7.3-A-1024x1024.webp" alt="Five-stone ring set with pink sapphires in white gold" loading="lazy">
+            </a>
+          </article>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="platinum" data-stone="spinel" data-price="1920" data-availability="ready">
+            <a class="shop-product-media-link" href="#nocturne-ring" aria-label="View ring in white gold with black spinel">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.8.3-A-13-1024x1024.webp" alt="Five-stone ring set with black spinel in white gold" loading="lazy">
             </a>
           </article>
 
-          <article class="atelier-card shop-product" data-category="earrings" data-metal="gold" data-stone="pearl" data-price="1250" data-availability="ready" id="sora-pearl-drops">
-            <div class="atelier-media">
-              <a class="shop-product-media-link" href="#sora-pearl-drops" aria-label="Shop Sora Pearl Drops, $1,250">
-                <img class="atelier-card-img" src="./prototype-assets/Second Section Image/KALLICLOSEUPLIFESTYLE4170_4x5-477x600-0c84d7d.webp" alt="Pearl drop earrings in warm lifestyle light" loading="lazy">
-                <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1611085583191-a3b181a88401?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
-                <span class="atelier-badge">New</span>
-                <span class="atelier-icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-                </span>
-              </a>
-              <div class="atelier-quick-add">
-                <button class="atelier-quick-add-btn" type="button" aria-label="Add Sora Pearl Drops to bag">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                  <span class="quick-add-label">Add to Bag</span>
-                </button>
-              </div>
-            </div>
-            <a class="shop-product-copy" href="#sora-pearl-drops">
-              <h3 class="atelier-name">Sora Pearl Drops</h3>
-              <p class="atelier-material">18K yellow gold, pearl</p>
-              <p class="atelier-price">$1,250</p>
+          <!-- Row 5 -->
+          <article class="atelier-card shop-product" data-category="rings" data-metal="gold" data-stone="sapphire" data-price="2650" data-availability="ready">
+            <a class="shop-product-media-link" href="#dawn-ring" aria-label="View ring in yellow gold with pink sapphires">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.7.1-A-1024x1024.webp" alt="Five-stone ring set with pink sapphires in yellow gold" loading="lazy">
             </a>
           </article>
-
-          <article class="atelier-card shop-product" data-category="bracelets" data-metal="silver" data-stone="diamond" data-price="2350" data-availability="made-to-order" id="linea-cuff-bracelet">
-            <div class="atelier-media">
-              <a class="shop-product-media-link" href="#linea-cuff-bracelet" aria-label="Shop Linea Cuff Bracelet, $2,350">
-                <img class="atelier-card-img" src="./prototype-assets/Second Section Image/0L6A9415_cropped_3f30682f-8dfb-4b57-b9a6-9b3c608729ad.webp" alt="Sculptural bracelet detail against warm skin" loading="lazy">
-                <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
-                <span class="atelier-icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-                </span>
-              </a>
-              <div class="atelier-quick-add">
-                <button class="atelier-quick-add-btn" type="button" aria-label="Add Linea Cuff Bracelet to bag">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                  <span class="quick-add-label">Add to Bag</span>
-                </button>
-              </div>
-            </div>
-            <a class="shop-product-copy" href="#linea-cuff-bracelet">
-              <h3 class="atelier-name">Linea Cuff Bracelet</h3>
-              <p class="atelier-material">Silver-toned finish, diamond</p>
-              <p class="atelier-price">$2,350</p>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="silver" data-stone="citrine" data-price="1280" data-availability="ready">
+            <a class="shop-product-media-link" href="#ember-ring" aria-label="View ring in blackened gold with citrine">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.6.4-A-5-1024x1024.webp" alt="Five-stone ring set with citrine in blackened gold" loading="lazy">
             </a>
           </article>
-
-          <article class="atelier-card shop-product" data-category="pendants" data-metal="rose-gold" data-stone="diamond" data-price="1650" data-availability="ready" id="rose-arc-pendant">
-            <div class="atelier-media">
-              <a class="shop-product-media-link" href="#rose-arc-pendant" aria-label="Shop Rose Arc Pendant, $1,650">
-                <img class="atelier-card-img" src="./prototype-assets/Second Section Image/WPJANU134026_a5ee8be8-2ba0-4651-8a49-476e00fb76ef.webp" alt="Rose-toned pendant photographed in warm light" loading="lazy">
-                <img class="atelier-hover-img" src="https://images.unsplash.com/photo-1734019523113-501bfba06c5c?auto=format&fit=crop&w=900&q=80" alt="" aria-hidden="true" loading="lazy">
-                <span class="atelier-icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 0 1 7.1-7.1l.4.4.4-.4a5 5 0 0 1 7.1 7.1Z"/></svg>
-                </span>
-              </a>
-              <div class="atelier-quick-add">
-                <button class="atelier-quick-add-btn" type="button" aria-label="Add Rose Arc Pendant to bag">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                  <span class="quick-add-label">Add to Bag</span>
-                </button>
-              </div>
-            </div>
-            <a class="shop-product-copy" href="#rose-arc-pendant">
-              <h3 class="atelier-name">Rose Arc Pendant</h3>
-              <p class="atelier-material">Rose gold, diamond</p>
-              <p class="atelier-price">$1,650</p>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="platinum" data-stone="spinel" data-price="1920" data-availability="ready">
+            <a class="shop-product-media-link" href="#nocturne-ring" aria-label="View ring in white gold with black spinel">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.8.3-A-13-1024x1024.webp" alt="Five-stone ring set with black spinel in white gold" loading="lazy">
+            </a>
+          </article>
+          <article class="atelier-card shop-product" data-category="rings" data-metal="platinum" data-stone="sapphire" data-price="2380" data-availability="ready">
+            <a class="shop-product-media-link" href="#petal-ring" aria-label="View ring in white gold with pink sapphires">
+              <img class="atelier-card-img" src="./prototype-assets/Product%20Images/1.135A.7.3-A-1024x1024.webp" alt="Five-stone ring set with pink sapphires in white gold" loading="lazy">
             </a>
           </article>
 
@@ -2281,10 +2129,10 @@
     let nextId = 1;
 
     const UPSELL_POOL = [
-      { name: 'Luna Pear Ring',      price: 2650, img: './prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_27 PM.png', meta: '18K Gold · Sapphire' },
-      { name: 'Mira Blue Ring',      price: 1450, img: './prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_25 PM.png', meta: '18K Gold · Sapphire' },
-      { name: 'Elan Solitaire Ring', price: 3900, img: './prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_39 PM.png', meta: '18K Gold · Diamond' },
-      { name: 'Aurea Twist Ring',    price: 1850, img: './prototype-assets/Rings/ChatGPT Image May 27, 2026, 02_47_34 PM.png', meta: 'Silver · Diamond' },
+      { name: 'Luna Pear Ring',      price: 2650, img: './prototype-assets/Product Images/1.135A.7.1-A-1024x1024.webp', meta: '18K Gold · Sapphire' },
+      { name: 'Mira Blue Ring',      price: 1450, img: './prototype-assets/Product Images/1.135A.6.4-A-5-1024x1024.webp', meta: '18K Gold · Sapphire' },
+      { name: 'Elan Solitaire Ring', price: 3900, img: './prototype-assets/Product Images/1.135A.6.4-A-5-1024x1024.webp', meta: '18K Gold · Diamond' },
+      { name: 'Aurea Twist Ring',    price: 1850, img: './prototype-assets/Product Images/1.135A.8.3-A-13-1024x1024.webp', meta: 'Silver · Diamond' },
       { name: 'Sora Pearl Drops',    price: 1250, img: './prototype-assets/Second Section Image/KALLICLOSEUPLIFESTYLE4170_4x5-477x600-0c84d7d.webp', meta: '18K Gold · Pearl' },
     ];
 
