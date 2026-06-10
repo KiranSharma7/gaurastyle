@@ -276,6 +276,41 @@
 
     .nav-search svg { width: 18px; height: 18px; stroke-width: 1.5; }
 
+    .mobile-menu-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      background: rgba(26, 23, 20, 0.08);
+      border: 1px solid rgba(250, 250, 248, 0.18);
+      border-radius: 4px;
+      color: var(--fg-inverse);
+      cursor: pointer;
+      transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s var(--ease-expo);
+    }
+
+    .mobile-menu-toggle:hover {
+      color: var(--gold);
+      transform: scale(1.03);
+    }
+
+    .mobile-menu-toggle svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 1.6;
+    }
+
+    .navbar.scrolled .mobile-menu-toggle {
+      color: var(--fg1);
+      background: rgba(122, 92, 56, 0.08);
+      border-color: rgba(122, 92, 56, 0.16);
+    }
+
     /* ─── SCROLLED STATE: compact light bar ─── */
     .navbar.scrolled {
       background: rgba(250, 250, 248, 0.94);
@@ -826,33 +861,237 @@
 
     /* ─── MOBILE ─── */
     @media (max-width: 768px) {
-      .navbar { padding-block: 10px 14px; }
-      .nav-inner { padding: 0 20px; gap: 12px; }
+      .announcement-bar {
+        min-height: var(--bar-h);
+        padding: 0 48px 0 16px;
+        text-align: center;
+      }
 
-      .nav-utility { height: 32px; }
+      .announcement-bar p {
+        font-size: 10px;
+        letter-spacing: 0.1em;
+      }
+
+      .bar-dismiss {
+        right: 10px;
+        min-width: 44px;
+        min-height: 44px;
+      }
+
+      .navbar {
+        padding-block: 10px;
+        background: linear-gradient(180deg, rgba(26, 23, 20, 0.42), rgba(26, 23, 20, 0.08));
+        border-bottom-color: rgba(250, 250, 248, 0.08);
+      }
+
+      .navbar.visible {
+        opacity: 1;
+      }
+
+      .navbar.scrolled {
+        background: rgba(250, 250, 248, 0.96);
+        padding-block: 8px;
+      }
+
+      .nav-inner {
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+        padding: 0 14px;
+      }
+
+      .mobile-menu-toggle {
+        display: inline-flex;
+        grid-column: 1;
+        grid-row: 1;
+        position: relative;
+        z-index: 104;
+      }
+
+      .nav-utility {
+        grid-column: 3;
+        grid-row: 1;
+        height: 46px;
+        justify-content: flex-end;
+        min-width: 46px;
+        position: relative;
+        z-index: 104;
+      }
+
+      .navbar.scrolled .nav-utility {
+        opacity: 1;
+        height: 46px;
+        pointer-events: auto;
+        overflow: visible;
+      }
+
+      .nav-utility > .nav-util-link,
+      .nav-util-right > .nav-util-link,
+      .nav-util-btn[aria-label="Wishlist (0 items)"] {
+        display: none;
+      }
+
       .nav-util-link span { display: none; }
-      .nav-util-btn[aria-label="Wishlist (0 items)"] { display: none; }
-      .nav-util-right { gap: 14px; }
-      /* Grow the utility + search hit-areas for touch */
-      .nav-util-link,
-      .nav-util-btn { padding: 8px; }
-      .nav-search { padding: 11px; }
+      .nav-util-right { gap: 0; }
 
-      .nav-logo img { height: 64px; max-width: 88vw; }
+      .nav-util-link,
+      .nav-util-btn {
+        min-width: 46px;
+        min-height: 46px;
+        justify-content: center;
+        padding: 0;
+      }
+
+      .nav-util-btn {
+        color: var(--fg-inverse);
+        background: rgba(26, 23, 20, 0.08);
+        border: 1px solid rgba(250, 250, 248, 0.18);
+        border-radius: 4px;
+      }
+
+      .navbar.scrolled .nav-util-btn {
+        color: var(--fg1);
+        background: rgba(122, 92, 56, 0.08);
+        border-color: rgba(122, 92, 56, 0.16);
+      }
+
+      .nav-util-btn .cart-count {
+        top: 7px;
+        right: 6px;
+      }
+
+      .nav-logo {
+        grid-column: 2;
+        grid-row: 1;
+        min-width: 0;
+        position: relative;
+        z-index: 104;
+      }
+
+      .nav-logo img {
+        height: 46px;
+        max-width: min(48vw, 188px);
+      }
 
       .nav-links-row {
-        margin: 0 -20px;
-        padding: 0 20px;
-        overflow-x: auto;
-        scrollbar-width: none;
+        position: fixed;
+        top: calc(var(--bar-h) * -1);
+        right: 0;
+        z-index: 103;
+        width: min(88vw, 380px);
+        height: 100dvh;
+        margin: 0;
+        padding: calc(var(--bar-h) + 78px) 24px 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
         justify-content: flex-start;
+        gap: 22px;
+        overflow-y: auto;
+        background:
+          linear-gradient(180deg, rgba(250, 250, 248, 0.98), rgba(245, 241, 234, 0.98)),
+          var(--bg);
+        box-shadow: -18px 0 48px rgba(26, 23, 20, 0.18);
+        transform: translateX(100%) !important;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          transform 0.38s var(--ease-expo),
+          opacity 0.22s ease;
       }
-      .nav-links-row::-webkit-scrollbar { display: none; }
-      .nav-links { gap: 22px; }
-      .nav-link { font-size: 11px; letter-spacing: 0.16em; white-space: nowrap; }
-      .nav-search { margin-left: 22px; }
 
-      .navbar.scrolled .nav-logo img { height: 36px; }
+      .navbar.menu-open .nav-links-row {
+        transform: translateX(0) !important;
+        opacity: 1 !important;
+        pointer-events: auto;
+      }
+
+      .navbar:not(.menu-open) .nav-links-row {
+        transform: translateX(100%) !important;
+        opacity: 0 !important;
+        pointer-events: none;
+      }
+
+      .navbar.bar-gone .nav-links-row {
+        top: 0;
+        padding-top: 78px;
+      }
+
+      .navbar.menu-open::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 102;
+        background: rgba(26, 23, 20, 0.42);
+      }
+
+      .nav-links-row::before {
+        content: 'Shop Gaura';
+        display: block;
+        font-family: var(--font-serif);
+        font-size: 32px;
+        font-weight: 300;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        color: var(--fg1);
+      }
+
+      .nav-links {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+      }
+
+      .nav-links li {
+        border-bottom: 1px solid rgba(122, 92, 56, 0.16);
+      }
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+        min-height: 58px;
+        width: 100%;
+        font-size: 14px;
+        letter-spacing: 0.16em;
+        color: var(--fg1);
+        white-space: normal;
+      }
+
+      .nav-link::after { display: none; }
+
+      .nav-link:hover { color: var(--brown); }
+
+      .nav-search {
+        width: 100%;
+        min-height: 52px;
+        margin-left: 0;
+        justify-content: space-between;
+        padding: 0 16px;
+        border: 1px solid rgba(122, 92, 56, 0.22);
+        border-radius: 4px;
+        color: var(--fg1);
+        font-family: var(--font-sans);
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .nav-search::before {
+        content: 'Search';
+      }
+
+      .navbar.scrolled .nav-logo img { height: 40px; }
+
+      .navbar.menu-open.nav-hidden {
+        transform: none;
+      }
+
+      body.menu-open {
+        overflow: hidden;
+      }
 
       .hero-content { padding: 0 24px 64px; }
 
@@ -1166,6 +1405,37 @@
       .essence     { grid-column: 3; grid-row: 4; }
     }
 
+    @media (min-width: 761px) and (max-width: 1100px) and (max-height: 900px) {
+      :is(#rings, #bracelets, #earrings).collection-showcase {
+        min-height: 100svh;
+        padding-top: clamp(20px, 3svh, 32px);
+        padding-bottom: clamp(20px, 3svh, 32px);
+        box-sizing: border-box;
+      }
+
+      :is(#rings, #bracelets, #earrings) .moment-layout {
+        height: calc(100svh - clamp(40px, 6svh, 64px));
+        grid-template-rows:
+          auto
+          minmax(0, 0.36fr)
+          minmax(0, 0.28fr)
+          minmax(0, 0.36fr);
+        gap: 14px;
+      }
+
+      :is(#rings, #bracelets, #earrings) .title-wrap {
+        padding-bottom: 8px;
+      }
+
+      :is(#rings, #bracelets, #earrings) .cshow-headline {
+        font-size: clamp(40px, 4.5vw, 48px);
+      }
+
+      :is(#rings, #bracelets, #earrings) .cshow-title-icon {
+        height: 28px;
+      }
+    }
+
     @media (max-width: 760px) {
       .collection-showcase {
         padding: 40px 24px 48px;
@@ -1259,7 +1529,7 @@
       .moment-layout--rings-swapped .cshow-headline {
         /* Larger so the wordmark commands the 585px placard instead of
            floating in it; tighter leading keeps the icon + word as one mark. */
-        font-size: clamp(60px, 6.4vw, 96px);
+        font-size: clamp(52px, 5.5vw, 82px);
         line-height: 0.9;
         letter-spacing: 0.03em;
         gap: 16px;
@@ -1301,6 +1571,34 @@
         grid-row: 3;
       }
 
+      /* Keep the complete rings composition in view on shorter laptop
+         screens while preserving the full-size desktop arrangement. */
+      @media (max-height: 900px) {
+        :is(#rings, #earrings).collection-showcase {
+          min-height: 100svh;
+          padding-top: clamp(20px, 3svh, 32px);
+          padding-bottom: clamp(20px, 3svh, 32px);
+          box-sizing: border-box;
+        }
+
+        :is(#rings, #earrings) .moment-layout--rings-swapped {
+          height: calc(100svh - clamp(40px, 6svh, 64px));
+          max-height: 791px;
+          grid-template-rows:
+            minmax(0, 0.437fr)
+            minmax(0, 0.159fr)
+            minmax(0, 0.404fr);
+        }
+
+        :is(#rings, #earrings) .moment-layout--rings-swapped .title-wrap {
+          gap: clamp(14px, 2.5svh, 22px);
+        }
+
+        :is(#rings, #earrings) .moment-layout--rings-swapped .cshow-headline {
+          font-size: clamp(48px, 5vw, 72px);
+        }
+      }
+
       /* Bracelets: horizontal mirror of the rings placard — title sits in the
          top-LEFT, the mosaic mirrors band-for-band so the composition reads the
          same weight as Rings, just flipped. */
@@ -1317,7 +1615,7 @@
         gap: 26px;
       }
       .moment-layout--bracelets-swapped .cshow-headline {
-        font-size: clamp(60px, 6.4vw, 96px);
+        font-size: clamp(52px, 5.5vw, 82px);
         line-height: 0.9;
         letter-spacing: 0.03em;
         gap: 16px;
@@ -1360,6 +1658,32 @@
       .moment-layout--bracelets-swapped .essence {
         grid-column: 1;
         grid-row: 3;
+      }
+
+      @media (max-height: 900px) {
+        #bracelets.collection-showcase {
+          min-height: 100svh;
+          padding-top: clamp(20px, 3svh, 32px);
+          padding-bottom: clamp(20px, 3svh, 32px);
+          box-sizing: border-box;
+        }
+
+        #bracelets .moment-layout--bracelets-swapped {
+          height: calc(100svh - clamp(40px, 6svh, 64px));
+          max-height: 791px;
+          grid-template-rows:
+            minmax(0, 0.437fr)
+            minmax(0, 0.159fr)
+            minmax(0, 0.404fr);
+        }
+
+        #bracelets .moment-layout--bracelets-swapped .title-wrap {
+          gap: clamp(14px, 2.5svh, 22px);
+        }
+
+        #bracelets .moment-layout--bracelets-swapped .cshow-headline {
+          font-size: clamp(48px, 5vw, 72px);
+        }
       }
 
       .moment-layout--reversed {
@@ -2718,6 +3042,14 @@
   <nav class="navbar" id="navbar" aria-label="Main navigation">
     <div class="nav-inner">
 
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" type="button" aria-label="Open menu" aria-controls="navLinksRow" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+          <line x1="4" y1="7" x2="20" y2="7"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="17" x2="20" y2="17"></line>
+        </svg>
+      </button>
+
       <!-- Utility row -->
       <div class="nav-utility">
         <a href="#" class="nav-util-link">
@@ -2746,7 +3078,7 @@
       </a>
 
       <!-- Category links -->
-      <div class="nav-links-row">
+      <div class="nav-links-row" id="navLinksRow">
         <ul class="nav-links" role="list">
           <li><a href="#" class="nav-link">New In</a></li>
           <li><a href="#rings" class="nav-link">Rings</a></li>
@@ -3302,8 +3634,19 @@
     const bar = document.getElementById('announcementBar');
     const nav = document.getElementById('navbar');
     const dismiss = document.getElementById('barDismiss');
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const navLinksRow = document.getElementById('navLinksRow');
 
     let lastScrollY = 0;
+    let isMobileMenuOpen = false;
+
+    function setMobileMenu(open) {
+      isMobileMenuOpen = open;
+      nav.classList.toggle('menu-open', open);
+      document.body.classList.toggle('menu-open', open);
+      mobileMenuToggle.setAttribute('aria-expanded', String(open));
+      mobileMenuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
 
     // ── Announcement bar slide-in ──────────────────────────────────
     requestAnimationFrame(function() {
@@ -3319,6 +3662,29 @@
       nav.classList.add('bar-gone');
     });
 
+    mobileMenuToggle.addEventListener('click', function() {
+      setMobileMenu(!isMobileMenuOpen);
+    });
+
+    navLinksRow.addEventListener('click', function(event) {
+      if (event.target.closest('a, button')) {
+        setMobileMenu(false);
+      }
+    });
+
+    window.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && isMobileMenuOpen) {
+        setMobileMenu(false);
+        mobileMenuToggle.focus();
+      }
+    });
+
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768 && isMobileMenuOpen) {
+        setMobileMenu(false);
+      }
+    });
+
     // ── Scroll: glass effect + hide on down / reveal on up ────────
     var rafPending = false;
     window.addEventListener('scroll', function() {
@@ -3329,7 +3695,7 @@
         nav.classList.toggle('scrolled', currentY > 40);
         if (currentY <= 80) {
           nav.classList.remove('nav-hidden');
-        } else if (currentY > lastScrollY) {
+        } else if (currentY > lastScrollY && !isMobileMenuOpen) {
           nav.classList.add('nav-hidden');
         } else {
           nav.classList.remove('nav-hidden');
@@ -3370,7 +3736,7 @@
   <style>
     .proto-nav {
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
-      display: flex; align-items: center; gap: 0;
+      display: none; align-items: center; gap: 0; /* Hidden for now; switch back to flex to restore. */
       background: #1A1714; border-top: 1px solid #2E2925;
       font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
     }

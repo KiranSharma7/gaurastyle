@@ -23,7 +23,7 @@ All canonical values live in `Gaura Style Design System/`:
 | `DESIGN.md` | Machine-readable design spec |
 | `preview/*.html` | 12 static HTML specimens (colors, type, buttons, badges, forms, cards, nav, logo) |
 
-**Never use `design-components/` as source** — that is an older variant. Always reference `Gaura Style Design System/`.
+. Always reference `Gaura Style Design System/`.
 
 ## Brand tokens (key values)
 

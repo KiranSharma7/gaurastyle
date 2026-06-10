@@ -40,3 +40,25 @@ ring **Collection** (above), NOT a Category — so it is distinct from the Hero
 category tiles and never functions as a category row. Block labels are small white
 plates with a gold accent line that draws in on hover (the one-voice gold rule).
 _Avoid_: calling these blocks categories or tiles.
+
+**Atelier Selection**:
+A curated four-up row of individual **product** cards lower on the home page —
+hand-picked rings with price, material line, and on-hover quick-add. A product
+showcase, not a Category or Collection row.
+
+**UGC gallery** (social proof):
+The "We ♥ Gaura Style" row of customer/editorial media thumbnails, each pinned to
+a shoppable product card. Editorial proof, not merchandising — never a Category row.
+
+**Trust bar**:
+The slim row of icon + short-label commitments (returns, gemstones, handmade,
+gifting). Brand reassurance, carries no shopping links.
+
+**Announcement bar**:
+The dismissible promo strip pinned above the navbar. Part of the page **chrome**
+(header/footer), not page content.
+
+**Chrome**:
+The shared header (announcement bar + navbar) and footer (brand, link columns,
+social, newsletter signup) delivered as Elementor Theme Builder templates, not as
+page-content sections.
