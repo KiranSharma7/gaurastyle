@@ -1539,10 +1539,10 @@
       :is(#rings, #earrings) .moment-layout--rings-swapped,
       #bracelets .moment-layout--bracelets-swapped {
         grid-template-rows:
-          minmax(0, clamp(248px, 34svh, 300px))
-          minmax(0, clamp(92px, 12svh, 110px))
-          minmax(0, clamp(226px, 30svh, 278px));
-        gap: clamp(12px, 1.8svh, 16px);
+          minmax(0, clamp(200px, 32svh, 300px))
+          minmax(0, clamp(72px, 10svh, 110px))
+          minmax(0, clamp(180px, 26svh, 278px));
+        gap: clamp(10px, 1.5svh, 16px);
       }
 
       .moment-layout--rings-swapped .title-wrap {
@@ -1614,6 +1614,45 @@
         :is(#rings, #earrings) .moment-layout--rings-swapped .cshow-headline,
         #bracelets .moment-layout--bracelets-swapped .cshow-headline {
           font-size: clamp(46px, 4.8vw, 70px);
+        }
+      }
+
+      /* Aggressive squeeze for small laptop screens (≤750px) so the entire
+         showcase stays in the viewport without overflow. */
+      @media (max-height: 750px) {
+        :is(#rings, #earrings) .moment-layout--rings-swapped .title-wrap,
+        #bracelets .moment-layout--bracelets-swapped .title-wrap {
+          gap: clamp(8px, 1.4svh, 14px);
+        }
+
+        :is(#rings, #earrings) .moment-layout--rings-swapped .cshow-headline,
+        #bracelets .moment-layout--bracelets-swapped .cshow-headline {
+          font-size: clamp(32px, 3.8vw, 44px);
+          gap: 10px;
+        }
+
+        :is(#rings, #earrings) .moment-layout--rings-swapped .cshow-title-icon,
+        #bracelets .moment-layout--bracelets-swapped .cshow-title-icon {
+          height: 32px;
+        }
+
+        :is(#rings, #earrings) .moment-layout--rings-swapped .cshow-link,
+        #bracelets .moment-layout--bracelets-swapped .cshow-link {
+          min-height: 28px;
+        }
+
+        :is(#rings, #earrings) .moment-layout--rings-swapped .cshow-link--atelier,
+        #bracelets .moment-layout--bracelets-swapped .cshow-link--atelier {
+          font-size: 16px;
+          padding: 4px 0;
+        }
+
+        .cshow-label {
+          left: 12px;
+          bottom: 12px;
+          padding: 8px 10px 6px;
+          font-size: 9px;
+          letter-spacing: 1.6px;
         }
       }
 
